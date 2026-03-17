@@ -1,0 +1,33 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@/lib/supabase/server";
+
+// POST /api/monitor/alerts/:alertEventId/acknowledge
+export async function POST(
+  _req: NextRequest,
+  { params }: { params: Promise<{ alertEventId: string }> }
+) {
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { alertEventId } = await params;
+
+  const { error } = await supabase
+    .from("monitor_alert_events")
+    .update({
+      acknowledged: true,
+      acknowledged_by: user.id,
+      acknowledged_at: new Date().toISOString(),
+    })
+    .eq("id", alertEventId);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ status: "acknowledged" });
+}
