@@ -28,6 +28,12 @@ export default function LoginPage() {
       setMessage(error.message);
       setLoading(false);
     } else {
+      // Ensure user row exists in public.users (same as callback route)
+      try {
+        await fetch("/api/auth/ensure-user", { method: "POST" });
+      } catch {
+        // Non-blocking — proceed to dashboard even if this fails
+      }
       router.push("/dashboard");
     }
   }
