@@ -37,10 +37,20 @@ export async function POST(req: NextRequest) {
   }
 
   // Queue the monitoring run
-  await inngest.send({
-    name: "monitor/run",
-    data: { clientId, runContentGaps: runContentGaps || false },
-  });
-
-  return NextResponse.json({ status: "queued", clientId }, { status: 202 });
+  try {
+    console.log("[monitor/run] Sending Inngest event for client:", clientId);
+    const sendResult = await inngest.send({
+      name: "monitor/run",
+      data: { clientId, runContentGaps: runContentGaps || false },
+    });
+    console.log("[monitor/run] Inngest send result:", JSON.stringify(sendResult));
+    return NextResponse.json({ status: "queued", clientId }, { status: 202 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[monitor/run] Inngest send FAILED:", message);
+    return NextResponse.json(
+      { error: "Failed to queue scan", details: message },
+      { status: 500 }
+    );
+  }
 }

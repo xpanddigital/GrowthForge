@@ -124,17 +124,32 @@ export default function MonitorPage() {
     loadData();
   }, [loadData]);
 
+  const [scanStatus, setScanStatus] = useState<string | null>(null);
+
   const handleRunScan = async () => {
     if (!selectedClientId) return;
     setScanning(true);
+    setScanStatus(null);
     try {
-      await fetch("/api/monitor/run", {
+      const res = await fetch("/api/monitor/run", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ clientId: selectedClientId }),
       });
-    } catch {
-      // handle error
+      const data = await res.json();
+      if (!res.ok) {
+        console.error("[monitor] Scan failed:", data);
+        setScanStatus(`Error: ${data.details || data.error || "Unknown error"}`);
+      } else {
+        setScanStatus("Scan queued — results will appear shortly.");
+        // Poll for results after a delay
+        setTimeout(() => loadData(), 15000);
+        setTimeout(() => loadData(), 30000);
+        setTimeout(() => loadData(), 60000);
+      }
+    } catch (err) {
+      console.error("[monitor] Scan request failed:", err);
+      setScanStatus("Failed to reach server.");
     } finally {
       setScanning(false);
     }
@@ -232,9 +247,20 @@ export default function MonitorPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-muted-foreground mt-4">
-              Click &quot;Run First Scan&quot; to test your brand across ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.
-            </p>
+            {scanStatus && (
+              <div className={`mt-4 p-3 rounded-md text-sm ${
+                scanStatus.startsWith("Error") || scanStatus.startsWith("Failed")
+                  ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                  : "bg-primary/10 text-primary border border-primary/20"
+              }`}>
+                {scanStatus}
+              </div>
+            )}
+            {!scanStatus && (
+              <p className="text-xs text-muted-foreground mt-4">
+                Click &quot;Run First Scan&quot; to test your brand across ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.
+              </p>
+            )}
           </div>
 
           <div className="flex justify-center">
@@ -317,6 +343,16 @@ export default function MonitorPage() {
           {scanning ? "Scanning..." : "Run Scan"}
         </button>
       </div>
+
+      {scanStatus && (
+        <div className={`p-3 rounded-md text-sm ${
+          scanStatus.startsWith("Error") || scanStatus.startsWith("Failed")
+            ? "bg-red-500/10 text-red-400 border border-red-500/20"
+            : "bg-primary/10 text-primary border border-primary/20"
+        }`}>
+          {scanStatus}
+        </div>
+      )}
 
       {/* Hero: AI Visibility Score + Model Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
