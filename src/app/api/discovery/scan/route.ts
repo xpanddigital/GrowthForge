@@ -76,14 +76,31 @@ export async function POST(request: Request) {
     }
 
     // Queue the Inngest job
-    await inngest.send({
-      name: "discovery/scan",
-      data: {
-        clientId: validated.client_id,
-        keywordIds: validated.keyword_ids,
-        runId: run.id,
-      },
-    });
+    try {
+      await inngest.send({
+        name: "discovery/scan",
+        data: {
+          clientId: validated.client_id,
+          keywordIds: validated.keyword_ids,
+          runId: run.id,
+        },
+      });
+    } catch (inngestError) {
+      // Inngest may not be configured — log but don't fail the request.
+      // The discovery run record is already created and can be retried.
+      console.error("[discovery/scan] Inngest send failed:", inngestError);
+
+      // Mark the run as failed so it doesn't hang as 'pending'
+      await supabase
+        .from("discovery_runs")
+        .update({ status: "failed", error_message: "Failed to queue background job" })
+        .eq("id", run.id);
+
+      return NextResponse.json(
+        { error: "Failed to queue discovery scan. Please check Inngest configuration." },
+        { status: 503 }
+      );
+    }
 
     return NextResponse.json(
       {

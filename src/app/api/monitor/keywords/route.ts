@@ -29,7 +29,9 @@ export async function GET(req: NextRequest) {
     .order("created_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Table may not exist yet (migration 0010 not run) — return empty
+    console.error("[monitor/keywords] query error:", error.message);
+    return NextResponse.json({ keywords: [] });
   }
 
   // For each keyword config, calculate SoM from recent results

@@ -41,7 +41,7 @@ export default function MonitorKeywordsPage() {
 
       // Load all client keywords for onboarding modal
       const kwRes = await fetch(
-        `/api/keywords?clientId=${selectedClientId}`
+        `/api/keywords?client_id=${selectedClientId}`
       );
       if (kwRes.ok) {
         const result = await kwRes.json();

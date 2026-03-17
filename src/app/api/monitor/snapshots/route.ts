@@ -32,7 +32,9 @@ export async function GET(req: NextRequest) {
     .limit(limit);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Table may not exist yet (migration 0010 not run) — return empty
+    console.error("[monitor/snapshots] query error:", error.message);
+    return NextResponse.json({ snapshots: [] });
   }
 
   return NextResponse.json({ snapshots: data });
