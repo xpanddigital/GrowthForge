@@ -53,17 +53,18 @@ export default function MonitorPage() {
   const [timeline, setTimeline] = useState<TimelineEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [clientKeywords] = useState<Array<{ id: string; keyword: string; tags: string[]; is_active: boolean }>>([]);
+  const [clientKeywords, setClientKeywords] = useState<Array<{ id: string; keyword: string; tags: string[]; is_active: boolean }>>([]);
   const [scanning, setScanning] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!selectedClientId) return;
     setLoading(true);
     try {
-      const [snapshotsRes, timelineRes, keywordsRes] = await Promise.all([
+      const [snapshotsRes, timelineRes, keywordsRes, clientKwRes] = await Promise.all([
         fetch(`/api/monitor/snapshots?clientId=${selectedClientId}&limit=12`),
         fetch(`/api/monitor/timeline?clientId=${selectedClientId}`),
         fetch(`/api/monitor/keywords?clientId=${selectedClientId}`),
+        fetch(`/api/keywords?client_id=${selectedClientId}`),
       ]);
 
       if (snapshotsRes.ok) {
@@ -106,6 +107,11 @@ export default function MonitorPage() {
           })
         );
         setKeywords(kwRows);
+      }
+
+      if (clientKwRes.ok) {
+        const result = await clientKwRes.json();
+        setClientKeywords(result.data || []);
       }
     } catch {
       // silently fail
