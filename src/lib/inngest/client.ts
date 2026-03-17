@@ -83,6 +83,77 @@ type Events = {
       clientId: string;
     };
   };
+  // PressForge events
+  "press/ideate": {
+    data: {
+      clientId: string;
+      agencyId: string;
+      spokespersonId: string;
+      month: number;
+      year: number;
+      count?: number;
+    };
+  };
+  "press/generate-release": {
+    data: {
+      campaignId: string;
+      clientId: string;
+      agencyId: string;
+    };
+  };
+  "press/model-voice": {
+    data: {
+      spokespersonId: string;
+      clientId: string;
+      agencyId: string;
+      voiceSamples: string[];
+    };
+  };
+  "press/discover-journalists": {
+    data: {
+      campaignId: string;
+      clientId: string;
+      agencyId: string;
+      targetCount?: number;
+    };
+  };
+  "press/score-journalists": {
+    data: {
+      campaignId: string;
+      clientId: string;
+      agencyId: string;
+      journalistIds: string[];
+    };
+  };
+  "press/generate-pitches": {
+    data: {
+      campaignId: string;
+      clientId: string;
+      agencyId: string;
+      journalistScoreIds: string[];
+    };
+  };
+  "press/send-outreach": {
+    data: {
+      campaignId: string;
+      agencyId: string;
+      emailIds: string[];
+    };
+  };
+  "press/scan-coverage": {
+    data: {
+      clientId: string;
+      agencyId: string;
+      campaignIds?: string[];
+    };
+  };
+  "press/update-journalist-stats": {
+    data: {
+      journalistId: string;
+      agencyId: string;
+      event: "open" | "reply" | "bounce" | "click";
+    };
+  };
 };
 
 export const inngest = new Inngest({

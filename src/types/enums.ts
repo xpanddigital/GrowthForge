@@ -79,6 +79,13 @@ export const AGENT_TYPES = [
   "audit_review",
   "audit_press",
   "monitor",
+  "press_ideation",
+  "press_release",
+  "press_voice",
+  "press_journalist_discovery",
+  "press_journalist_scoring",
+  "press_pitch",
+  "press_coverage",
 ] as const;
 export type AgentType = (typeof AGENT_TYPES)[number];
 
@@ -90,3 +97,82 @@ export const AGENT_TRIGGERS = [
   "onboarding",
 ] as const;
 export type AgentTrigger = (typeof AGENT_TRIGGERS)[number];
+
+// ============================================
+// PressForge enums
+// ============================================
+
+export const PRESS_CAMPAIGN_STATUSES = [
+  "draft",
+  "ideation_complete",
+  "press_release_draft",
+  "press_release_approved",
+  "journalists_found",
+  "outreach_ready",
+  "outreach_sent",
+  "monitoring",
+  "completed",
+  "cancelled",
+  "archived",
+] as const;
+export type PressCampaignStatus = (typeof PRESS_CAMPAIGN_STATUSES)[number];
+
+export const PR_TYPES = [
+  "expert_commentary",
+  "data_driven",
+  "case_study",
+  "thought_leadership",
+  "event",
+  "award",
+  "partnership",
+  "launch",
+] as const;
+export type PrType = (typeof PR_TYPES)[number];
+
+export const PRESS_RELEASE_STATUSES = [
+  "draft",
+  "review",
+  "approved",
+  "rejected",
+] as const;
+export type PressReleaseStatus = (typeof PRESS_RELEASE_STATUSES)[number];
+
+export const OUTREACH_STATUSES = [
+  "pending",
+  "sent",
+  "opened",
+  "clicked",
+  "replied",
+  "bounced",
+  "unsubscribed",
+] as const;
+export type OutreachStatus = (typeof OUTREACH_STATUSES)[number];
+
+export const COVERAGE_TYPES = [
+  "feature",
+  "mention",
+  "quote",
+  "syndication",
+  "backlink_only",
+] as const;
+export type CoverageType = (typeof COVERAGE_TYPES)[number];
+
+export const JOURNALIST_TIERS = [
+  "tier_1",
+  "tier_2",
+  "tier_3",
+  "skip",
+] as const;
+export type JournalistTier = (typeof JOURNALIST_TIERS)[number];
+
+export const CALENDAR_EVENT_TYPES = [
+  "awareness_day",
+  "awareness_month",
+  "seasonal",
+  "industry",
+  "news_pattern",
+] as const;
+export type CalendarEventType = (typeof CALENDAR_EVENT_TYPES)[number];
+
+export const CLIENT_TYPES = ["business", "thought_leader"] as const;
+export type ClientType = (typeof CLIENT_TYPES)[number];

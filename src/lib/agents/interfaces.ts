@@ -391,3 +391,167 @@ export interface ReviewResponseGeneratorAgent {
   name: string;
   generate(input: ReviewResponseInput): Promise<ReviewResponseResult>;
 }
+
+// --- PressForge Agent Interfaces ---
+
+import type { Client, CalendarEvent, Spokesperson, Journalist, ClientType } from "@/types/database";
+import type { CampaignIdea } from "@/lib/agents/press/prompts/ideation";
+
+export interface VoiceModelResult {
+  voice_profile: string;
+  example_quotes: string[];
+}
+
+export interface PressReleaseResult {
+  title: string;
+  subtitle: string;
+  body_html: string;
+  body_text: string;
+  word_count: number;
+  quality_checks: Record<string, boolean>;
+}
+
+export interface JournalistScoreResult {
+  journalist_index: number;
+  total_score: number;
+  tier: "tier_1" | "tier_2" | "tier_3" | "skip";
+  breakdown: {
+    beat: number;
+    publication: number;
+    region: number;
+    recency: number;
+    engagement: number;
+  };
+  why_selected: string;
+  personalization_hook: string;
+}
+
+export interface DiscoveredJournalist {
+  name: string;
+  email: string | null;
+  publication: string;
+  publication_domain: string | null;
+  region: string | null;
+  beats: string[];
+  beat_summary: string | null;
+  recent_articles: Array<{
+    title: string;
+    url: string;
+    date: string;
+    summary: string;
+  }>;
+}
+
+export interface JournalistDiscoveryResult {
+  db_journalists: Array<Journalist & { score?: JournalistScoreResult }>;
+  discovered_journalists: Array<DiscoveredJournalist & { score?: JournalistScoreResult }>;
+  total_found: number;
+  db_count: number;
+  perplexity_count: number;
+}
+
+export interface PitchEmailResult {
+  subject_lines: string[];
+  body: string;
+}
+
+export interface CoverageItem {
+  title: string;
+  url: string;
+  publication: string;
+  author: string | null;
+  publish_date: string | null;
+  coverage_type: "feature" | "mention" | "quote" | "syndication" | "backlink_only";
+  has_backlink: boolean;
+  backlink_url: string | null;
+  is_dofollow: boolean | null;
+  estimated_domain_authority: number | null;
+  sentiment: "positive" | "neutral" | "negative" | null;
+}
+
+export interface PressVoiceModelerAgent {
+  name: string;
+  model(
+    spokesperson: { name: string; title: string; clientName: string },
+    voiceSamples: string[]
+  ): Promise<VoiceModelResult>;
+}
+
+export interface PressReleaseGeneratorAgent {
+  name: string;
+  generate(input: {
+    headline: string;
+    angle: string;
+    type: "expert_commentary" | "data_driven";
+    client: Client;
+    spokesperson: Spokesperson;
+    region: string;
+    length: "short" | "standard" | "detailed";
+    researchData?: string;
+  }): Promise<PressReleaseResult>;
+}
+
+export interface PressCampaignIdeatorAgent {
+  name: string;
+  ideate(input: {
+    client: Client;
+    clientType?: ClientType;
+    spokespersonName: string;
+    spokespersonTitle: string;
+    month: number;
+    year: number;
+    calendarEvents: CalendarEvent[];
+    pastCampaigns?: Array<{ title: string; angle: string }>;
+    count?: number;
+  }): Promise<CampaignIdea[]>;
+}
+
+export interface PressJournalistScorerAgent {
+  name: string;
+  scoreBatch(
+    journalists: Array<{
+      index: number;
+      name: string;
+      publication: string;
+      region: string;
+      recentArticlesSummary: string;
+    }>,
+    pressRelease: { title: string; body: string; region: string; type: string }
+  ): Promise<JournalistScoreResult[]>;
+}
+
+export interface PressJournalistDiscoveryAgent {
+  name: string;
+  discover(
+    pressRelease: { title: string; body: string; region: string; type: string },
+    agencyId: string,
+    targetCount?: number
+  ): Promise<JournalistDiscoveryResult>;
+}
+
+export interface PressPitchGeneratorAgent {
+  name: string;
+  generate(input: {
+    tier: "tier_1" | "tier_2" | "tier_3";
+    journalistName: string;
+    publication: string;
+    personalizationHook: string;
+    headline: string;
+    summary: string;
+    spokespersonName: string;
+    spokespersonTitle: string;
+    clientName: string;
+    clientType?: ClientType;
+    keyQuote: string;
+    publicUrl?: string;
+  }): Promise<PitchEmailResult>;
+}
+
+export interface PressCoverageScannerAgent {
+  name: string;
+  scan(
+    clientName: string,
+    clientUrl: string,
+    campaignIds?: string[]
+  ): Promise<CoverageItem[]>;
+}

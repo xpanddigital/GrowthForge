@@ -947,6 +947,7 @@ import { monitorFunctions } from "./monitor-functions";
 import { auditFunctions } from "./audit-functions";
 import { entityFunctions } from "./entity-functions";
 import { reviewFunctions } from "./review-functions";
+import { pressFunctions } from "./press-functions";
 
 export const functions = [
   discoveryScan,
@@ -957,4 +958,5 @@ export const functions = [
   ...auditFunctions,
   ...entityFunctions,
   ...reviewFunctions,
+  ...pressFunctions,
 ];

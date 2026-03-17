@@ -1,5 +1,15 @@
 import { z } from "zod";
-import { PLATFORMS, INTENTS, RESPONSE_VARIANTS, RESPONSE_STATUSES } from "@/types/enums";
+import {
+  PLATFORMS,
+  INTENTS,
+  RESPONSE_VARIANTS,
+  RESPONSE_STATUSES,
+  PR_TYPES,
+  PRESS_CAMPAIGN_STATUSES,
+  PRESS_RELEASE_STATUSES,
+  COVERAGE_TYPES,
+  CALENDAR_EVENT_TYPES,
+} from "@/types/enums";
 
 // Client validation
 export const createClientSchema = z.object({
@@ -72,4 +82,155 @@ export const responseVariantSchema = z.object({
   tone_match_score: z.number().int().min(0).max(100),
   mentions_brand: z.boolean(),
   mentions_url: z.boolean(),
+});
+
+// ============================================
+// PressForge validators
+// ============================================
+
+// Campaign validation
+export const createPressCampaignSchema = z.object({
+  client_id: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  headline: z.string().max(300).optional(),
+  angle: z.string().max(1000).optional(),
+  pr_type: z.enum(PR_TYPES).optional().default("expert_commentary"),
+  idea_id: z.string().uuid().optional(),
+  calendar_event_id: z.string().uuid().optional(),
+  target_date: z.string().optional(),
+  target_region: z.string().max(10).optional().default("AU"),
+  target_publications: z.array(z.string().max(200)).max(20).optional().default([]),
+  spokesperson_id: z.string().uuid().optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+export const updatePressCampaignSchema = z.object({
+  name: z.string().min(1).max(200).optional(),
+  headline: z.string().max(300).optional(),
+  angle: z.string().max(1000).optional(),
+  pr_type: z.enum(PR_TYPES).optional(),
+  target_date: z.string().optional(),
+  target_region: z.string().max(10).optional(),
+  target_publications: z.array(z.string().max(200)).max(20).optional(),
+  spokesperson_id: z.string().uuid().nullable().optional(),
+  status: z.enum(PRESS_CAMPAIGN_STATUSES).optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+// Spokesperson validation
+export const createSpokespersonSchema = z.object({
+  client_id: z.string().uuid(),
+  name: z.string().min(1).max(100),
+  title: z.string().min(1).max(200),
+  bio: z.string().max(2000).optional(),
+  email: z.string().email().optional().or(z.literal("")),
+  phone: z.string().max(30).optional(),
+  voice_samples: z
+    .array(
+      z.object({
+        quote: z.string().min(1),
+        context: z.string().min(1),
+        date: z.string(),
+      })
+    )
+    .max(20)
+    .optional()
+    .default([]),
+  photo_url: z.string().url().optional().or(z.literal("")),
+  is_primary: z.boolean().optional().default(false),
+});
+
+export const updateSpokespersonSchema = createSpokespersonSchema
+  .omit({ client_id: true })
+  .partial();
+
+// Press release validation
+export const generatePressReleaseSchema = z.object({
+  campaign_id: z.string().uuid(),
+  length: z.enum(["short", "standard", "detailed"]).optional().default("standard"),
+});
+
+export const approvePressReleaseSchema = z.object({
+  release_id: z.string().uuid(),
+});
+
+// Journalist validation
+export const createJournalistSchema = z.object({
+  name: z.string().min(1).max(200),
+  email: z.string().email().optional().or(z.literal("")),
+  publication: z.string().min(1).max(200),
+  publication_domain: z.string().max(200).optional(),
+  publication_type: z
+    .enum(["online", "print", "broadcast", "podcast", "wire_service"])
+    .optional(),
+  region: z.string().max(10).optional(),
+  sub_regions: z.array(z.string().max(100)).max(10).optional().default([]),
+  beats: z.array(z.string().max(100)).max(20).optional().default([]),
+  notes: z.string().max(2000).optional(),
+  tags: z.array(z.string().max(50)).max(20).optional().default([]),
+});
+
+export const updateJournalistSchema = createJournalistSchema.partial().extend({
+  is_blacklisted: z.boolean().optional(),
+  blacklist_reason: z.string().max(500).optional(),
+});
+
+// Ideation validation
+export const triggerIdeationSchema = z.object({
+  client_id: z.string().uuid(),
+  spokesperson_id: z.string().uuid(),
+  month: z.number().int().min(1).max(12),
+  year: z.number().int().min(2024).max(2030),
+  count: z.number().int().min(1).max(10).optional().default(5),
+});
+
+// Journalist discovery validation
+export const triggerJournalistDiscoverySchema = z.object({
+  campaign_id: z.string().uuid(),
+  target_count: z.number().int().min(10).max(200).optional().default(100),
+});
+
+// Pitch generation validation
+export const triggerPitchGenerationSchema = z.object({
+  campaign_id: z.string().uuid(),
+});
+
+// Outreach validation
+export const sendOutreachSchema = z.object({
+  campaign_id: z.string().uuid(),
+});
+
+// Coverage validation
+export const createCoverageSchema = z.object({
+  client_id: z.string().uuid(),
+  campaign_id: z.string().uuid().optional(),
+  journalist_id: z.string().uuid().optional(),
+  title: z.string().min(1).max(500),
+  url: z.string().url(),
+  publication: z.string().min(1).max(200),
+  author: z.string().max(200).optional(),
+  publish_date: z.string().optional(),
+  coverage_type: z.enum(COVERAGE_TYPES).optional().default("mention"),
+  has_backlink: z.boolean().optional().default(false),
+  backlink_url: z.string().url().optional().or(z.literal("")),
+  is_dofollow: z.boolean().optional(),
+  estimated_domain_authority: z.number().int().min(0).max(100).optional(),
+  sentiment: z.enum(["positive", "neutral", "negative"]).optional(),
+});
+
+// Calendar event validation
+export const createCalendarEventSchema = z.object({
+  month: z.number().int().min(1).max(12),
+  name: z.string().min(1).max(200),
+  event_date: z.string().max(50).optional(),
+  event_type: z.enum(CALENDAR_EVENT_TYPES),
+  regions: z.array(z.string().max(20)).max(10).optional().default(["GLOBAL"]),
+  industries: z.array(z.string().max(50)).max(20).optional().default(["ALL"]),
+  pr_angle_hint: z.string().max(500).optional(),
+  send_by_offset_days: z.number().int().min(1).max(60).optional().default(7),
+});
+
+// Idea approval validation
+export const approveIdeaSchema = z.object({
+  idea_id: z.string().uuid(),
 });

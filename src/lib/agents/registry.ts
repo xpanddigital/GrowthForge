@@ -42,6 +42,15 @@ import { PlatformReviewsAgent } from "./review/platform-reviews.agent";
 import { SentimentAnalyzerAgent } from "./review/sentiment-analyzer.agent";
 import { ReviewResponseAgent } from "./review/response-generator.agent";
 
+// PressForge agents
+import { VoiceModelerAgent } from "./press/voice-modeler.agent";
+import { PressReleaseAgent } from "./press/release-generator.agent";
+import { CampaignIdeatorAgent } from "./press/campaign-ideator.agent";
+import { JournalistScorerAgent } from "./press/journalist-scorer.agent";
+import { JournalistDiscoveryAgent } from "./press/journalist-discovery.agent";
+import { PitchGeneratorAgent } from "./press/pitch-generator.agent";
+import { CoverageScannerAgent } from "./press/coverage-scanner.agent";
+
 import type {
   DiscoveryAgent,
   EnrichmentAgent,
@@ -92,6 +101,17 @@ export const agents = {
     sentiment: new SentimentAnalyzerAgent(),
     responseGenerator: new ReviewResponseAgent(),
   },
+
+  // Phase 2: PressForge agents
+  press: {
+    voiceModeler: new VoiceModelerAgent(),
+    releaseGenerator: new PressReleaseAgent(),
+    campaignIdeator: new CampaignIdeatorAgent(),
+    journalistScorer: new JournalistScorerAgent(),
+    journalistDiscovery: new JournalistDiscoveryAgent(),
+    pitchGenerator: new PitchGeneratorAgent(),
+    coverageScanner: new CoverageScannerAgent(),
+  },
 } as const;
 
 // Usage in Inngest jobs or API routes:
@@ -116,3 +136,12 @@ export const agents = {
 // const platformResult = await agents.review.platform.scan(input);
 // const sentiment = await agents.review.sentiment.analyze(input);
 // const response = await agents.review.responseGenerator.generate(input);
+//
+// PressForge:
+// const voiceProfile = await agents.press.voiceModeler.model(spokesperson, samples);
+// const release = await agents.press.releaseGenerator.generate(input);
+// const ideas = await agents.press.campaignIdeator.ideate(input);
+// const scores = await agents.press.journalistScorer.scoreBatch(journalists, pressRelease);
+// const discovery = await agents.press.journalistDiscovery.discover(pressRelease, agencyId);
+// const pitch = await agents.press.pitchGenerator.generate(input);
+// const coverage = await agents.press.coverageScanner.scan(clientName, clientUrl);

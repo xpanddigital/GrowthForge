@@ -1,0 +1,804 @@
+{
+  "events": [
+    {
+      "month": 1,
+      "name": "New Year's Resolutions / Fresh Start",
+      "event_date": "January 1",
+      "event_type": "seasonal",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "New year trends, predictions, fresh start stories, industry outlook for the year ahead",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 1,
+      "name": "Blue Monday",
+      "event_date": "January 20",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "legal", "finance", "education"],
+      "pr_angle_hint": "Mental health in the workplace, employee wellbeing, financial stress, back-to-work anxiety",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 1,
+      "name": "Australia Day",
+      "event_date": "January 26",
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Australian business achievements, local industry spotlight, community stories",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 1,
+      "name": "Financial Year Planning (AU)",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["finance", "legal", "real_estate"],
+      "pr_angle_hint": "Tax planning tips, financial year preparation, business structuring advice",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 2,
+      "name": "Valentine's Day",
+      "event_date": "February 14",
+      "event_type": "seasonal",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Love and relationships angle for any industry, customer love stories, brand loyalty",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 2,
+      "name": "Safer Internet Day",
+      "event_date": "February 11",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "education", "legal"],
+      "pr_angle_hint": "Online safety, cybersecurity for businesses, digital literacy, children and technology",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 2,
+      "name": "Back to School (AU)",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["AU"],
+      "industries": ["education", "tech", "health"],
+      "pr_angle_hint": "Education technology, student wellbeing, parenting tips, school readiness",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 2,
+      "name": "Grammy Awards Season",
+      "event_date": null,
+      "event_type": "industry",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["music", "entertainment"],
+      "pr_angle_hint": "Music industry commentary, independent artist stories, music business trends",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 3,
+      "name": "International Women's Day",
+      "event_date": "March 8",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Women in leadership, gender pay gap data, female founder stories, diversity initiatives",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 3,
+      "name": "Harmony Week (AU)",
+      "event_date": "March 21",
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Cultural diversity in business, multicultural success stories, inclusion initiatives",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 3,
+      "name": "End of Financial Year Prep (AU)",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["finance", "legal", "real_estate"],
+      "pr_angle_hint": "EOFY tips, tax time preparation, business review and planning, asset depreciation",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 3,
+      "name": "SXSW",
+      "event_date": null,
+      "event_type": "industry",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["tech", "music", "entertainment"],
+      "pr_angle_hint": "Innovation trends, music tech, startup showcases, creative industry futures",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 4,
+      "name": "Easter / School Holidays",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Family-friendly angles, holiday spending data, travel trends, seasonal business impacts",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 4,
+      "name": "World Health Day",
+      "event_date": "April 7",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "legal", "education"],
+      "pr_angle_hint": "Workplace health, mental health awareness, health industry innovation, public health data",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 4,
+      "name": "Stress Awareness Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "legal", "finance", "education"],
+      "pr_angle_hint": "Workplace stress statistics, burnout data, stress management for professionals",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 4,
+      "name": "ANZAC Day",
+      "event_date": "April 25",
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Veteran support, resilience stories, community service, honour and remembrance angles",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 5,
+      "name": "Small Business Month (AU)",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Small business success stories, entrepreneurship data, local business spotlights, support programs",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 5,
+      "name": "Mother's Day",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Working mothers, women in business, family business stories, parenting and career balance",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 5,
+      "name": "Mental Health Awareness Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["health", "legal", "education", "tech"],
+      "pr_angle_hint": "Mental health in the workplace, industry-specific mental health challenges, support initiatives",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 5,
+      "name": "National Reconciliation Week (AU)",
+      "event_date": "May 27",
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Indigenous business, reconciliation action plans, cultural awareness in the workplace",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 6,
+      "name": "End of Financial Year (AU)",
+      "event_date": "June 30",
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["finance", "legal", "real_estate", "ALL"],
+      "pr_angle_hint": "EOFY wrap-up, tax tips, financial year review data, business planning for new FY",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 6,
+      "name": "Pride Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Diversity and inclusion, LGBTQ+ in the workplace, inclusive business practices",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 6,
+      "name": "World Music Day",
+      "event_date": "June 21",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["music", "entertainment", "tech"],
+      "pr_angle_hint": "Music industry trends, independent artist spotlights, music technology innovation",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 6,
+      "name": "Mid-Year Review Season",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Half-year industry data, trend analysis, predictions for H2, performance benchmarks",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 7,
+      "name": "New Financial Year (AU)",
+      "event_date": "July 1",
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["finance", "legal", "real_estate", "ALL"],
+      "pr_angle_hint": "New financial year changes, regulatory updates, business outlook, budget impacts",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 7,
+      "name": "NAIDOC Week (AU)",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Indigenous business and culture, community partnerships, cultural awareness",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 7,
+      "name": "Amazon Prime Day / Mid-Year Sales",
+      "event_date": null,
+      "event_type": "industry",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "finance"],
+      "pr_angle_hint": "Consumer spending data, e-commerce trends, retail industry analysis, deal fatigue",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 8,
+      "name": "National Science Week (AU)",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["tech", "education", "health"],
+      "pr_angle_hint": "Innovation stories, STEM education, technology breakthroughs, research findings",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 8,
+      "name": "International Cat Day / Dog Day",
+      "event_date": "August 8",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Pets in the workplace, pet industry data, lighthearted business stories",
+      "send_by_offset_days": 5
+    },
+    {
+      "month": 8,
+      "name": "Back to School (US/UK)",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["US", "UK"],
+      "industries": ["education", "tech", "health"],
+      "pr_angle_hint": "Education spending, school readiness, EdTech trends, parenting and education",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 9,
+      "name": "R U OK? Day (AU)",
+      "event_date": "September 11",
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Mental health conversations, workplace wellbeing, suicide prevention, checking in culture",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 9,
+      "name": "World Suicide Prevention Day",
+      "event_date": "September 10",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "legal", "education"],
+      "pr_angle_hint": "Mental health data, prevention strategies, industry support programs",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 9,
+      "name": "Spring Cleaning / Fresh Start (AU)",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Business spring cleaning, efficiency tips, decluttering, renewal themes",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 9,
+      "name": "National Safe Work Month prep (AU)",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["legal", "health"],
+      "pr_angle_hint": "Workplace safety data, WHS compliance, injury prevention statistics",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 10,
+      "name": "National Safe Work Month (AU)",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["AU"],
+      "industries": ["legal", "health"],
+      "pr_angle_hint": "Workplace safety statistics, WHS law changes, injury prevention, employer duties",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 10,
+      "name": "Mental Health Week (AU)",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["health", "legal", "education", "ALL"],
+      "pr_angle_hint": "Mental health in specific industries, workplace mental health data, support programs",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 10,
+      "name": "Cybersecurity Awareness Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "finance", "legal"],
+      "pr_angle_hint": "Data breach statistics, cybersecurity tips for businesses, emerging threats, AI and security",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 10,
+      "name": "World Mental Health Day",
+      "event_date": "October 10",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "legal", "education", "ALL"],
+      "pr_angle_hint": "Global mental health data, industry-specific mental health challenges, workplace programs",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 10,
+      "name": "Halloween",
+      "event_date": "October 31",
+      "event_type": "seasonal",
+      "regions": ["US", "UK", "AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Scary statistics, horror stories in the industry, spooky data, frightening trends",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 11,
+      "name": "Black Friday / Cyber Monday",
+      "event_date": null,
+      "event_type": "industry",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "finance", "ALL"],
+      "pr_angle_hint": "Consumer spending predictions, deal analysis, e-commerce data, retail trends",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 11,
+      "name": "Movember",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "ALL"],
+      "pr_angle_hint": "Men's health data, prostate cancer awareness, mental health for men, workplace initiatives",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 11,
+      "name": "National Recycling Week (AU)",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Sustainability initiatives, business environmental responsibility, circular economy",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 11,
+      "name": "Remembrance Day",
+      "event_date": "November 11",
+      "event_type": "awareness_day",
+      "regions": ["AU", "UK"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Veteran support, resilience stories, community service",
+      "send_by_offset_days": 5
+    },
+    {
+      "month": 12,
+      "name": "Christmas / Holiday Season",
+      "event_date": "December 25",
+      "event_type": "seasonal",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Year-end roundups, holiday spending data, seasonal business tips, giving back stories",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 12,
+      "name": "Year in Review / Predictions",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Industry year in review, top trends, predictions for next year, biggest changes",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 12,
+      "name": "International Day of Persons with Disabilities",
+      "event_date": "December 3",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Accessibility in business, disability employment data, inclusive workplace practices",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 12,
+      "name": "Human Rights Day",
+      "event_date": "December 10",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["legal", "ALL"],
+      "pr_angle_hint": "Human rights in business, ethical practices, modern slavery, supply chain transparency",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 1,
+      "name": "Dry January",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["health"],
+      "pr_angle_hint": "Alcohol and workplace productivity, sobriety trends, health and wellness data",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 2,
+      "name": "Heart Health Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["health"],
+      "pr_angle_hint": "Heart disease statistics, workplace health programs, sedentary work risks",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 3,
+      "name": "World Consumer Rights Day",
+      "event_date": "March 15",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["legal", "finance", "tech"],
+      "pr_angle_hint": "Consumer protection, scam data, digital rights, complaint trends",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 4,
+      "name": "Earth Day",
+      "event_date": "April 22",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Sustainability commitments, green business practices, environmental impact data",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 5,
+      "name": "World Press Freedom Day",
+      "event_date": "May 3",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "legal"],
+      "pr_angle_hint": "Media transparency, freedom of information, digital censorship data",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 6,
+      "name": "World Environment Day",
+      "event_date": "June 5",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Corporate environmental responsibility, sustainability metrics, green innovation",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 7,
+      "name": "World Youth Skills Day",
+      "event_date": "July 15",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["education", "tech"],
+      "pr_angle_hint": "Skills gap data, youth employment, apprenticeship programs, future of work",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 8,
+      "name": "Women's Equality Day",
+      "event_date": "August 26",
+      "event_type": "awareness_day",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Gender equality progress, pay gap data, women in leadership statistics",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 9,
+      "name": "International Day of Charity",
+      "event_date": "September 5",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Corporate giving, social responsibility, charitable partnerships, giving data",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 10,
+      "name": "World Teacher's Day",
+      "event_date": "October 5",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["education"],
+      "pr_angle_hint": "Education innovation, teacher appreciation, EdTech impact, learning outcomes",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 11,
+      "name": "International Men's Day",
+      "event_date": "November 19",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "ALL"],
+      "pr_angle_hint": "Men's mental health, male-dominated industry challenges, work-life balance",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 3,
+      "name": "World Sleep Day",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "tech"],
+      "pr_angle_hint": "Sleep deprivation and productivity, workplace fatigue, sleep technology, shift worker health",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 4,
+      "name": "World IP Day",
+      "event_date": "April 26",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["legal", "tech", "music"],
+      "pr_angle_hint": "Intellectual property protection, copyright in the AI age, trademark trends, creator rights",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 5,
+      "name": "Law Week (AU)",
+      "event_date": null,
+      "event_type": "industry",
+      "regions": ["AU"],
+      "industries": ["legal"],
+      "pr_angle_hint": "Access to justice, legal tech innovation, pro bono work, legal industry trends",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 6,
+      "name": "Global Running Day",
+      "event_date": "June 1",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health"],
+      "pr_angle_hint": "Fitness and workplace performance, corporate wellness programs, exercise and mental health",
+      "send_by_offset_days": 5
+    },
+    {
+      "month": 7,
+      "name": "Tax Return Season (AU)",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["finance", "legal"],
+      "pr_angle_hint": "Tax tips, common mistakes, deduction changes, ATO focus areas, small business tax",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 8,
+      "name": "International Youth Day",
+      "event_date": "August 12",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["education", "tech", "music"],
+      "pr_angle_hint": "Young entrepreneurs, Gen Z in the workforce, youth innovation, digital natives",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 9,
+      "name": "International Podcast Day",
+      "event_date": "September 30",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["tech", "music", "entertainment"],
+      "pr_angle_hint": "Podcast industry growth, audio content trends, podcasting as PR channel",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 10,
+      "name": "Global Diversity Awareness Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Workplace diversity data, inclusion programs, cultural awareness, DEI progress metrics",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 11,
+      "name": "Financial Literacy Month (AU)",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["AU"],
+      "industries": ["finance", "education"],
+      "pr_angle_hint": "Financial literacy statistics, money management, superannuation awareness, debt data",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 12,
+      "name": "Schoolies / End of Year (AU)",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["AU"],
+      "industries": ["education", "health", "legal"],
+      "pr_angle_hint": "Youth safety, end-of-year celebrations, transition to work/uni, gap year trends",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 2,
+      "name": "Random Acts of Kindness Day",
+      "event_date": "February 17",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Corporate social responsibility, community engagement, employee volunteering",
+      "send_by_offset_days": 5
+    },
+    {
+      "month": 3,
+      "name": "World Water Day",
+      "event_date": "March 22",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Water conservation, environmental sustainability, resource management",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 5,
+      "name": "World No Tobacco Day",
+      "event_date": "May 31",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["health"],
+      "pr_angle_hint": "Workplace smoking policies, cessation programs, health costs of tobacco, vaping data",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 8,
+      "name": "World Humanitarian Day",
+      "event_date": "August 19",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Corporate humanitarian efforts, disaster response, community support programs",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 9,
+      "name": "International Literacy Day",
+      "event_date": "September 8",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["education", "tech"],
+      "pr_angle_hint": "Digital literacy, AI literacy, workplace learning programs, education access",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 11,
+      "name": "World Kindness Day",
+      "event_date": "November 13",
+      "event_type": "awareness_day",
+      "regions": ["GLOBAL"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Kindness in leadership, employee wellbeing, positive workplace culture",
+      "send_by_offset_days": 5
+    },
+    {
+      "month": 4,
+      "name": "National Workplace Safety (US)",
+      "event_date": "April 28",
+      "event_type": "awareness_day",
+      "regions": ["US", "GLOBAL"],
+      "industries": ["legal", "health"],
+      "pr_angle_hint": "Worker safety data, OSHA trends, workplace injury prevention, employer liability",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 6,
+      "name": "National Safety Month (US)",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["US"],
+      "industries": ["legal", "health"],
+      "pr_angle_hint": "Workplace safety best practices, injury statistics, safety technology innovation",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 7,
+      "name": "Disability Employment (AU focus)",
+      "event_date": null,
+      "event_type": "news_pattern",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Disability employment data, inclusive hiring, accessibility in the workplace",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 8,
+      "name": "Keep Australia Beautiful Week",
+      "event_date": null,
+      "event_type": "awareness_day",
+      "regions": ["AU"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Environmental responsibility, community clean-up, corporate sustainability pledges",
+      "send_by_offset_days": 7
+    },
+    {
+      "month": 10,
+      "name": "Breast Cancer Awareness Month",
+      "event_date": null,
+      "event_type": "awareness_month",
+      "regions": ["GLOBAL"],
+      "industries": ["health", "ALL"],
+      "pr_angle_hint": "Early detection, workplace support for employees with cancer, fundraising initiatives",
+      "send_by_offset_days": 14
+    },
+    {
+      "month": 11,
+      "name": "Thanksgiving (US)",
+      "event_date": null,
+      "event_type": "seasonal",
+      "regions": ["US"],
+      "industries": ["ALL"],
+      "pr_angle_hint": "Gratitude in business, giving back, holiday season economic forecasts, consumer trends",
+      "send_by_offset_days": 7
+    }
+  ]
+}

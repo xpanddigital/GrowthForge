@@ -43,6 +43,13 @@ export interface Client {
   key_differentiators: string | null;
   urls_to_mention: string[];
   response_rules: string | null;
+  // PressForge additions (migration 0013)
+  client_type: string | null;
+  industry: string | null;
+  sub_industry: string | null;
+  location: string | null;
+  description: string | null;
+  target_regions: string[];
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -230,5 +237,221 @@ export interface AgentAction {
   error_message: string | null;
   input_summary: Record<string, unknown>;
   output_summary: Record<string, unknown>;
+  created_at: string;
+}
+
+// ============================================
+// PressForge types (migration 0013)
+// ============================================
+
+export type ClientType = "business" | "thought_leader";
+
+export interface Spokesperson {
+  id: string;
+  client_id: string;
+  name: string;
+  title: string;
+  bio: string | null;
+  email: string | null;
+  phone: string | null;
+  voice_samples: Array<{ quote: string; context: string; date: string }>;
+  voice_profile: string | null;
+  voice_profile_generated_at: string | null;
+  photo_url: string | null;
+  is_primary: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PressCalendarEvent {
+  id: string;
+  agency_id: string;
+  month: number;
+  name: string;
+  event_date: string | null;
+  event_type: string;
+  regions: string[];
+  industries: string[];
+  pr_angle_hint: string | null;
+  send_by_offset_days: number;
+  is_custom: boolean;
+  is_active: boolean;
+  created_at: string;
+}
+
+// Alias used by ported PressForge prompts
+export type CalendarEvent = PressCalendarEvent;
+
+export interface PressCampaignIdea {
+  id: string;
+  client_id: string;
+  headline: string;
+  angle: string;
+  pr_type: string;
+  press_release_brief: string | null;
+  target_date: string | null;
+  relevance_score: number | null;
+  seasonal_hook: string | null;
+  calendar_event_id: string | null;
+  is_approved: boolean;
+  is_rejected: boolean;
+  promoted_to_campaign_id: string | null;
+  generated_at: string;
+  created_at: string;
+}
+
+export interface PressCampaign {
+  id: string;
+  client_id: string;
+  name: string;
+  headline: string | null;
+  angle: string | null;
+  pr_type: string;
+  idea_id: string | null;
+  calendar_event_id: string | null;
+  target_date: string | null;
+  target_region: string;
+  target_publications: string[];
+  status: string;
+  spokesperson_id: string | null;
+  journalists_targeted: number;
+  pitches_sent: number;
+  opens: number;
+  replies: number;
+  coverage_count: number;
+  backlinks_earned: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PressRelease {
+  id: string;
+  campaign_id: string;
+  client_id: string;
+  title: string;
+  subtitle: string | null;
+  body_html: string;
+  body_text: string;
+  pr_type: string | null;
+  target_region: string | null;
+  word_count: number | null;
+  version: number;
+  is_current: boolean;
+  quality_checks: Record<string, unknown>;
+  public_slug: string | null;
+  public_url: string | null;
+  status: string;
+  approved_by: string | null;
+  approved_at: string | null;
+  created_at: string;
+}
+
+export interface Journalist {
+  id: string;
+  agency_id: string;
+  name: string;
+  email: string | null;
+  email_verified: boolean;
+  phone: string | null;
+  publication: string;
+  publication_domain: string | null;
+  publication_type: string | null;
+  secondary_publications: string[];
+  author_page_url: string | null;
+  twitter_url: string | null;
+  linkedin_url: string | null;
+  region: string | null;
+  sub_regions: string[];
+  beats: string[];
+  beat_summary: string | null;
+  preferred_content_type: string | null;
+  typical_article_length: string | null;
+  engages_with_types: string[];
+  recent_articles: Array<Record<string, unknown>>;
+  total_pitched: number;
+  total_opened: number;
+  total_replied: number;
+  total_published: number;
+  response_rate: number | null;
+  publish_rate: number | null;
+  email_bounce_count: number;
+  relationship_score: number | null;
+  last_pitched_at: string | null;
+  cooldown_days: number;
+  discovered_via: string | null;
+  discovered_for_campaign_id: string | null;
+  notes: string | null;
+  tags: string[];
+  is_blacklisted: boolean;
+  blacklist_reason: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PressCampaignJournalistScore {
+  id: string;
+  campaign_id: string;
+  journalist_id: string;
+  total_score: number;
+  tier: string;
+  score_breakdown: Record<string, unknown>;
+  why_selected: string | null;
+  personalization_hook: string | null;
+  source: string;
+  is_selected: boolean;
+  created_at: string;
+}
+
+export interface PressOutreachEmail {
+  id: string;
+  campaign_id: string;
+  journalist_id: string;
+  subject_line: string;
+  body: string;
+  tier: string;
+  instantly_campaign_id: string | null;
+  instantly_lead_id: string | null;
+  status: string;
+  sent_at: string | null;
+  opened_at: string | null;
+  clicked_at: string | null;
+  replied_at: string | null;
+  bounced_at: string | null;
+  created_at: string;
+}
+
+export interface PressCoverage {
+  id: string;
+  client_id: string;
+  campaign_id: string | null;
+  journalist_id: string | null;
+  title: string;
+  url: string;
+  publication: string;
+  author: string | null;
+  publish_date: string | null;
+  coverage_type: string;
+  has_backlink: boolean;
+  backlink_url: string | null;
+  is_dofollow: boolean | null;
+  estimated_domain_authority: number | null;
+  sentiment: string | null;
+  discovered_via: string | null;
+  verified: boolean;
+  verified_at: string | null;
+  created_at: string;
+}
+
+export interface PressTemplate {
+  id: string;
+  agency_id: string;
+  name: string;
+  vertical: string | null;
+  pr_type: string;
+  template_body: string;
+  template_structure: Record<string, unknown>;
+  variables: Record<string, unknown>;
+  is_active: boolean;
   created_at: string;
 }
