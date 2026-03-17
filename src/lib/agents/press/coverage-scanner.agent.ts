@@ -16,7 +16,7 @@ export class CoverageScannerAgent implements PressCoverageScannerAgent {
   async scan(
     clientName: string,
     clientUrl: string,
-    _campaignIds?: string[]
+    _campaignIds?: string[] // eslint-disable-line @typescript-eslint/no-unused-vars
   ): Promise<CoverageItem[]> {
     const clientDomain = extractDomain(clientUrl);
 

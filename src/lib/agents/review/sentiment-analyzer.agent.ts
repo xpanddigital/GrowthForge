@@ -37,7 +37,7 @@ export class SentimentAnalyzerAgent implements ReviewSentimentAgent {
     for (const batch of batches) {
       const reviewsList = batch
         .map(
-          (r, i) =>
+          (r) =>
             `[${r.id}] (${r.platform}, ${r.rating} stars): "${r.reviewText || "(no text)"}"`
         )
         .join("\n\n");

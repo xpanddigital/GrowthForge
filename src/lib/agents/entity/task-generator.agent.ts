@@ -12,8 +12,6 @@ import type {
   EntityTaskInput,
   GeneratedEntityTask,
   EntityConsistencyResult,
-  EntitySchemaAuditResult,
-  EntityCanonical,
 } from "../interfaces";
 import {
   generateOrganizationSchema,
@@ -77,7 +75,7 @@ export class TaskGeneratorAgent implements EntityTaskGeneratorAgent {
       let instructions: string;
       let platformDescription: string | null = null;
       let platformCharLimit: number | null = null;
-      let generatedCode: string | null = null;
+      let generatedCode: string | null = null; // eslint-disable-line prefer-const
 
       switch (issue.field) {
         case "name": {
@@ -176,7 +174,7 @@ export class TaskGeneratorAgent implements EntityTaskGeneratorAgent {
       const isHomepage = pageResult.pageType === "homepage";
 
       for (const missingSchema of pageResult.schemasMissing) {
-        let generatedCode: string | null = null;
+        let generatedCode: string | null = null; // eslint-disable-line prefer-const
         const priorityScore = isHomepage ? 60 : 40;
 
         // Generate the actual JSON-LD code for known schema types

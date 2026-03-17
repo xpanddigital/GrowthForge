@@ -110,7 +110,7 @@ interface ProbeResult {
  */
 export async function probeAIModels(
   keywords: ProbeInput[],
-  brandBrief: string
+  _brandBrief: string // eslint-disable-line @typescript-eslint/no-unused-vars
 ): Promise<ProbeResult> {
   const startTime = Date.now();
   const allThreads: DiscoveredThread[] = [];

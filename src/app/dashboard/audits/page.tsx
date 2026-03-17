@@ -12,6 +12,7 @@ import { useClientContext } from "@/hooks/use-client-context";
 import { createClient } from "@/lib/supabase/client";
 import type { Audit } from "@/types/database";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PILLARS = ["citations", "ai_presence", "entities", "reviews", "press"] as const;
 
 function getStatusBadgeVariant(

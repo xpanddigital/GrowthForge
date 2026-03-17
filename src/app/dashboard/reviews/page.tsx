@@ -8,7 +8,6 @@ import {
   MessageSquare,
   Globe,
   AlertTriangle,
-  ExternalLink,
   Plus,
 } from "lucide-react";
 import Link from "next/link";
@@ -395,7 +394,7 @@ export default function ReviewsPage() {
           <h3 className="text-sm font-medium text-foreground mb-3">Review Velocity Trend</h3>
           <div className="rounded-lg border border-border bg-card p-4">
             <div className="flex items-end gap-1 h-32">
-              {velocityData.map((snap, i) => {
+              {velocityData.map((snap) => {
                 const maxVelocity = Math.max(...velocityData.map((s) => s.velocity_30d), 1);
                 const height = (snap.velocity_30d / maxVelocity) * 100;
                 return (

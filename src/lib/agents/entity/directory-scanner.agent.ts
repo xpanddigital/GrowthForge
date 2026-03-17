@@ -269,6 +269,7 @@ function buildEmptyProfile(platformKey: string): EntityProfileData {
  * Attempts to extract a platform-specific profile ID from the URL.
  * Returns null if extraction is not possible.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function extractProfileId(url: string, _platformKey: string): string | null {
   try {
     const parsed = new URL(url);

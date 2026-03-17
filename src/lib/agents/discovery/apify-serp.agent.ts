@@ -69,6 +69,7 @@ function shouldSkipUrl(url: string): boolean {
 /**
  * Extract subreddit name from a Reddit URL.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function extractSubreddit(url: string): string | undefined {
   const match = url.match(/reddit\.com\/r\/([^/]+)/i);
   return match ? match[1] : undefined;

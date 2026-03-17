@@ -1,4 +1,4 @@
-import type { DiscoveredThread, EnrichedThread } from "@/lib/agents/interfaces";
+import type { EnrichedThread } from "@/lib/agents/interfaces";
 import type { Platform } from "@/types/enums";
 import { runActor } from "@/lib/apify/client";
 import {
@@ -9,7 +9,6 @@ import {
   type QuoraScraperResult,
 } from "@/lib/apify/actors";
 import { parseRedditThread, parseQuoraThread } from "@/lib/apify/parsers";
-import { ApifyActorError } from "@/lib/utils/errors";
 import { withRetry } from "@/lib/utils/retry";
 
 // ============================================

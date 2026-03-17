@@ -300,6 +300,7 @@ export default function TeamPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         {member.avatar_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={member.avatar_url}
                             alt=""

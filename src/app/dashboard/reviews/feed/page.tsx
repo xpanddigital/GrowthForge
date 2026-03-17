@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Star,
   MessageSquare,
-  Filter,
   Flag,
   Sparkles,
   ExternalLink,
@@ -79,6 +78,14 @@ function getSentimentColor(sentiment: string | null): string {
 }
 
 export default function ReviewFeedPage() {
+  return (
+    <Suspense fallback={<div className="space-y-4">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-24 rounded-lg bg-muted animate-pulse" />)}</div>}>
+      <ReviewFeedPageInner />
+    </Suspense>
+  );
+}
+
+function ReviewFeedPageInner() {
   const { selectedClientId, selectedClientName } = useClientContext();
   const searchParams = useSearchParams();
   const [reviews, setReviews] = useState<Review[]>([]);

@@ -3,7 +3,6 @@ import { inngest } from "./client";
 import { createAdminClient, logAgentActionBg } from "./admin-client";
 import { agents } from "@/lib/agents/registry";
 import type { Client, Spokesperson } from "@/types/database";
-import { nanoid } from "nanoid";
 
 // ---------------------------------------------------------------------------
 // press/ideate — Generate campaign ideas for a client + month
@@ -528,7 +527,8 @@ const pressSendOutreach = inngest.createFunction(
   },
   { event: "press/send-outreach" },
   async ({ event, step }) => {
-    const { campaignId, agencyId, emailIds } = event.data;
+    const { campaignId, agencyId: _agencyId, emailIds } = event.data;
+    void _agencyId;
     const supabase = createAdminClient();
 
     await step.run("send-to-instantly", async () => {
@@ -681,7 +681,8 @@ const pressUpdateJournalistStats = inngest.createFunction(
   },
   { event: "press/update-journalist-stats" },
   async ({ event, step }) => {
-    const { journalistId, agencyId, event: eventType } = event.data;
+    const { journalistId, agencyId: _agencyId2, event: eventType } = event.data;
+    void _agencyId2;
     const supabase = createAdminClient();
 
     await step.run("update-stats", async () => {

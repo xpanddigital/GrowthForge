@@ -41,7 +41,7 @@ export class ReviewScanAgent implements AuditAgent {
 
   async scan(
     client: Record<string, unknown>,
-    _keywords: Array<Record<string, unknown>>
+    _keywords: Array<Record<string, unknown>> // eslint-disable-line @typescript-eslint/no-unused-vars
   ): Promise<AuditPillarResult> {
     const c = client as unknown as ReviewClient;
 

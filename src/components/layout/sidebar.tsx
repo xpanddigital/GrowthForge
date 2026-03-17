@@ -99,7 +99,14 @@ const navigation: NavItem[] = [
     name: "PressForge",
     href: "/dashboard/press",
     icon: Newspaper,
-    comingSoon: true,
+    children: [
+      { name: "Campaigns", href: "/dashboard/press", icon: Newspaper },
+      { name: "Ideas", href: "/dashboard/press/ideas", icon: Lightbulb },
+      { name: "Spokespersons", href: "/dashboard/press/spokespersons", icon: Users2 },
+      { name: "Journalists", href: "/dashboard/press/journalists", icon: Users },
+      { name: "Coverage", href: "/dashboard/press/coverage", icon: Trophy },
+      { name: "Calendar", href: "/dashboard/press/calendar", icon: History },
+    ],
   },
   {
     name: "Entity Sync",

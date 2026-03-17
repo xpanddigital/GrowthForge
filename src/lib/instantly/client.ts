@@ -22,7 +22,7 @@ async function instantlyFetch<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const apiKey = getApiKey();
+  getApiKey(); // Validate API key is configured
   const url = `${INSTANTLY_BASE_URL}${path}`;
 
   const response = await fetch(url, {
