@@ -187,6 +187,79 @@ export default function MonitorPage() {
   }
 
   if (!snapshot) {
+    // Keywords enabled but no scan run yet — show ready state
+    if (keywords.length > 0) {
+      return (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">AI Monitor</h2>
+              <p className="text-sm text-muted-foreground">
+                {selectedClientName}&apos;s AI monitoring is set up — run your first scan.
+              </p>
+            </div>
+            <button
+              onClick={handleRunScan}
+              disabled={scanning}
+              className="px-4 py-1.5 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+            >
+              {scanning ? "Scanning..." : "Run First Scan"}
+            </button>
+          </div>
+
+          <div className="rounded-lg border border-border bg-card p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Radar className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-sm font-medium">Ready to scan</h3>
+                <p className="text-xs text-muted-foreground">
+                  {keywords.length} keyword{keywords.length !== 1 ? "s" : ""} enabled with AI-optimized prompts
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {keywords.map((kw) => (
+                <div
+                  key={kw.keywordId}
+                  className="flex items-center justify-between py-2 px-3 rounded-md bg-muted/50 text-sm"
+                >
+                  <span className="font-medium">{kw.keyword}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {kw.totalTests} prompt{kw.totalTests !== 1 ? "s" : ""} generated
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-4">
+              Click &quot;Run First Scan&quot; to test your brand across ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.
+            </p>
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              onClick={() => setShowOnboarding(true)}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              + Add more keywords
+            </button>
+          </div>
+
+          {showOnboarding && (
+            <KeywordOnboarding
+              clientId={selectedClientId}
+              clientName={selectedClientName || ""}
+              keywords={clientKeywords}
+              onEnable={handleEnableKeywords}
+              onClose={() => setShowOnboarding(false)}
+            />
+          )}
+        </div>
+      );
+    }
+
+    // No keywords enabled yet — show onboarding
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
