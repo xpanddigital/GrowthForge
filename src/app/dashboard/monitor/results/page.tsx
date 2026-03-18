@@ -62,7 +62,7 @@ export default function MonitorResultsPage() {
       const res = await fetch(`/api/monitor/results?${params}`);
       if (res.ok) {
         const data = await res.json();
-        setResults(data);
+        setResults(Array.isArray(data) ? data : data.results || []);
       }
     } catch {
       // handle
