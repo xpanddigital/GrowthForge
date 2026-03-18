@@ -75,11 +75,46 @@ export async function GET(req: NextRequest) {
     .from("monitor_competitors")
     .select("*")
     .eq("client_id", clientId)
-    .order("created_at", { ascending: false });
+    .order("is_active", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ competitors: data });
+  // Enrich with SoM from latest snapshot + previous snapshot for trends
+  const { data: snapshots } = await supabase
+    .from("monitor_snapshots")
+    .select("competitor_som, overall_som, snapshot_date")
+    .eq("client_id", clientId)
+    .eq("period_type", "weekly")
+    .order("snapshot_date", { ascending: false })
+    .limit(2);
+
+  const latestSnapshot = snapshots?.[0];
+  const previousSnapshot = snapshots?.[1];
+  const currentSom = (latestSnapshot?.competitor_som as Record<string, number>) || {};
+  const previousSom = (previousSnapshot?.competitor_som as Record<string, number>) || {};
+  const clientSom = latestSnapshot ? Number(latestSnapshot.overall_som) : 0;
+
+  const enriched = (data || []).map((comp: Record<string, unknown>) => {
+    const name = comp.competitor_name as string;
+    const som = currentSom[name] ?? 0;
+    const prevSomValue = previousSom[name] ?? null;
+    const delta = prevSomValue !== null ? som - prevSomValue : null;
+    return {
+      ...comp,
+      som: Math.round(som * 100) / 100,
+      previous_som: prevSomValue !== null ? Math.round(prevSomValue * 100) / 100 : null,
+      som_delta: delta !== null ? Math.round(delta * 100) / 100 : null,
+    };
+  });
+
+  // Sort by SoM descending
+  enriched.sort((a: { som: number }, b: { som: number }) => b.som - a.som);
+
+  return NextResponse.json({
+    competitors: enriched,
+    client_som: Math.round(clientSom * 100) / 100,
+    snapshot_date: latestSnapshot?.snapshot_date || null,
+  });
 }

@@ -6,6 +6,7 @@ import { agents } from "@/lib/agents/registry";
 import { selectPromptsForRun } from "./prompt-rotation";
 import { wrapPromptWithLocation } from "./location-wrapper";
 import { calculateAIVisibilityScore } from "./visibility-score";
+import { extractCompetitorsFromResponses } from "./extract-competitors";
 import type { MonitorTestInput, MonitorTestResult } from "@/lib/agents/interfaces";
 
 const AI_MODELS = [
@@ -162,6 +163,7 @@ export async function runMonitoringForClient(
   const modelStats: Record<string, { mentioned: number; total: number }> = {};
   const keywordStats: Record<string, { mentioned: number; total: number }> = {};
   const competitorMentionCounts: Record<string, number> = {};
+  const collectedResponses: string[] = [];
 
   for (const promptEntry of promptsToTest) {
     for (const modelName of promptEntry.models) {
@@ -278,6 +280,11 @@ export async function runMonitoringForClient(
               (competitorMentionCounts[comp.name] || 0) + 1;
           }
         }
+
+        // Collect response text for post-scan competitor auto-discovery
+        if (result.fullResponse) {
+          collectedResponses.push(result.fullResponse);
+        }
       } catch (error) {
         console.error(
           `Monitor test failed for ${modelName}:`,
@@ -288,7 +295,74 @@ export async function runMonitoringForClient(
     }
   }
 
-  // 7. Calculate SoM and create snapshot
+  // 7. Auto-discover competitors from collected responses
+  if (collectedResponses.length > 0) {
+    try {
+      const existingNames = competitorList.map((c) => c.name);
+      const discovered = await extractCompetitorsFromResponses(
+        collectedResponses,
+        client.name as string,
+        [],
+        existingNames
+      );
+
+      if (discovered.length > 0) {
+        console.log(
+          `[monitor] Auto-discovered ${discovered.length} competitors for ${client.name}`
+        );
+
+        // Upsert new competitors into monitor_competitors
+        for (const comp of discovered) {
+          await supabase.from("monitor_competitors").upsert(
+            {
+              client_id: clientId,
+              competitor_name: comp.name,
+              competitor_aliases: [],
+              is_active: true,
+              discovered_via: "auto_scan",
+              mention_count: comp.mentionCount,
+              last_seen_at: new Date().toISOString(),
+            },
+            { onConflict: "client_id,competitor_name" }
+          );
+        }
+
+        // Re-scan responses for newly discovered competitor names (simple string match)
+        // to build accurate SoM counts for competitors not in the original list
+        for (const comp of discovered) {
+          if (competitorMentionCounts[comp.name]) continue; // already counted by analyzer
+          let count = 0;
+          for (const response of collectedResponses) {
+            if (response.toLowerCase().includes(comp.name.toLowerCase())) {
+              count++;
+            }
+          }
+          if (count > 0) {
+            competitorMentionCounts[comp.name] = count;
+          }
+        }
+
+        // Update last_seen_at for all mentioned competitors
+        for (const name of Object.keys(competitorMentionCounts)) {
+          await supabase
+            .from("monitor_competitors")
+            .update({
+              last_seen_at: new Date().toISOString(),
+            })
+            .eq("client_id", clientId)
+            .eq("competitor_name", name);
+        }
+      }
+    } catch (error) {
+      console.error(
+        "[monitor] Competitor auto-discovery failed (non-fatal):",
+        error instanceof Error ? error.message : error
+      );
+      // Non-fatal — continue with snapshot creation
+    }
+  }
+
+  // 8. Calculate SoM and create snapshot
   const overallSom =
     totalTests > 0 ? (totalMentions / totalTests) * 100 : 0;
   const avgProminence =
