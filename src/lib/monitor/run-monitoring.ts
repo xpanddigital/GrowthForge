@@ -1,5 +1,5 @@
-// Core monitoring function — orchestrates the full monitoring pipeline for a client.
-// Loads keyword configs → selects rotated prompts → runs tests → generates snapshot.
+// Core monitoring functions — split into composable steps for Inngest.
+// Each exported function runs within Vercel's timeout limit (~60s).
 
 import { createAdminClient, logAgentActionBg } from "@/lib/inngest/admin-client";
 import { agents } from "@/lib/agents/registry";
@@ -19,7 +19,30 @@ const AI_MODELS = [
 
 type AIModel = (typeof AI_MODELS)[number];
 
-interface MonitoringRunResult {
+// Types for data passed between steps
+export interface PromptToTest {
+  promptText: string;
+  keywordId: string | null;
+  promptId: string | null;
+  models: string[];
+  location?: { countryCode: string; locationString?: string };
+}
+
+export interface TestResultAccumulator {
+  totalTests: number;
+  totalMentions: number;
+  totalRecommendations: number;
+  totalLinks: number;
+  totalProminence: number;
+  prominenceCount: number;
+  responseChanges: number;
+  modelStats: Record<string, { mentioned: number; total: number }>;
+  keywordStats: Record<string, { mentioned: number; total: number }>;
+  competitorMentionCounts: Record<string, number>;
+  collectedResponses: string[];
+}
+
+export interface MonitoringRunResult {
   clientId: string;
   totalTests: number;
   totalMentions: number;
@@ -27,17 +50,17 @@ interface MonitoringRunResult {
   aiVisibilityScore: number;
 }
 
-/**
- * Run monitoring for a single client. Called by Inngest jobs.
- */
-export async function runMonitoringForClient(
-  clientId: string,
-  agencyId: string,
-  trigger: string
-): Promise<MonitoringRunResult> {
+// ---------------------------------------------------------------------------
+// Step 1: Load client data and build prompt list
+// ---------------------------------------------------------------------------
+
+export async function loadPromptsForClient(clientId: string): Promise<{
+  client: Record<string, unknown>;
+  competitorList: Array<{ name: string; aliases: string[]; url?: string }>;
+  promptsToTest: PromptToTest[];
+}> {
   const supabase = createAdminClient();
 
-  // 1. Load client data
   const { data: client } = await supabase
     .from("clients")
     .select("*")
@@ -46,7 +69,6 @@ export async function runMonitoringForClient(
 
   if (!client) throw new Error(`Client ${clientId} not found`);
 
-  // 2. Load competitors
   const { data: competitors } = await supabase
     .from("monitor_competitors")
     .select("*")
@@ -63,30 +85,20 @@ export async function runMonitoringForClient(
     url: c.competitor_url || undefined,
   }));
 
-  // 3. Load keyword configs with active monitoring
   const { data: keywordConfigs } = await supabase
     .from("monitor_keyword_config")
     .select("*, keywords!inner(*)")
     .eq("client_id", clientId)
     .eq("is_monitored", true);
 
-  // 4. Load custom prompts
   const { data: customPrompts } = await supabase
     .from("monitor_prompts")
     .select("*")
     .eq("client_id", clientId)
     .eq("is_active", true);
 
-  // 5. Build prompt list: keyword-based + custom
-  const promptsToTest: Array<{
-    promptText: string;
-    keywordId: string | null;
-    promptId: string | null;
-    models: string[];
-    location?: { countryCode: string; locationString?: string };
-  }> = [];
+  const promptsToTest: PromptToTest[] = [];
 
-  // Keyword-based prompts with rotation
   for (const config of keywordConfigs || []) {
     const kw = config.keywords as { id: string; keyword: string };
     const generatedPrompts = (config.generated_prompts as Array<{
@@ -114,7 +126,6 @@ export async function runMonitoringForClient(
       });
     }
 
-    // Update last_used_at for selected prompts
     const updatedPrompts = generatedPrompts.map((p) => {
       const wasSelected = selected.some((s) => s.text === p.text);
       return wasSelected
@@ -131,7 +142,6 @@ export async function runMonitoringForClient(
       .eq("id", config.id);
   }
 
-  // Custom prompts
   for (const prompt of customPrompts || []) {
     promptsToTest.push({
       promptText: prompt.prompt_text as string,
@@ -141,166 +151,235 @@ export async function runMonitoringForClient(
     });
   }
 
-  if (promptsToTest.length === 0) {
-    return {
-      clientId,
-      totalTests: 0,
-      totalMentions: 0,
-      snapshotId: null,
-      aiVisibilityScore: 0,
+  return { client, competitorList, promptsToTest };
+}
+
+// ---------------------------------------------------------------------------
+// Step 2: Run a batch of tests (called per model to stay within timeout)
+// ---------------------------------------------------------------------------
+
+export async function runTestBatch(
+  promptEntries: PromptToTest[],
+  modelName: string,
+  client: Record<string, unknown>,
+  clientId: string,
+  agencyId: string,
+  competitorList: Array<{ name: string; aliases: string[]; url?: string }>,
+  trigger: string
+): Promise<TestResultAccumulator> {
+  const supabase = createAdminClient();
+
+  const acc: TestResultAccumulator = {
+    totalTests: 0,
+    totalMentions: 0,
+    totalRecommendations: 0,
+    totalLinks: 0,
+    totalProminence: 0,
+    prominenceCount: 0,
+    responseChanges: 0,
+    modelStats: {},
+    keywordStats: {},
+    competitorMentionCounts: {},
+    collectedResponses: [],
+  };
+
+  if (!AI_MODELS.includes(modelName as AIModel)) return acc;
+
+  const agentKey = modelName as AIModel;
+  const agent = agents.monitor[agentKey];
+  if (!agent || !("test" in agent)) return acc;
+
+  for (const promptEntry of promptEntries) {
+    if (!promptEntry.models.includes(modelName)) continue;
+
+    const testInput: MonitorTestInput = {
+      promptText: wrapPromptWithLocation(
+        promptEntry.promptText,
+        promptEntry.location,
+        modelName
+      ),
+      clientName: client.name as string,
+      clientAliases: [],
+      clientUrls: (client.urls_to_mention as string[]) || [],
+      competitors: competitorList,
+      location: promptEntry.location,
     };
-  }
 
-  // 6. Run tests for each prompt × model combination
-  let totalTests = 0;
-  let totalMentions = 0;
-  let totalRecommendations = 0;
-  let totalLinks = 0;
-  let totalProminence = 0;
-  let prominenceCount = 0;
-  let responseChanges = 0;
-
-  const modelStats: Record<string, { mentioned: number; total: number }> = {};
-  const keywordStats: Record<string, { mentioned: number; total: number }> = {};
-  const competitorMentionCounts: Record<string, number> = {};
-  const collectedResponses: string[] = [];
-
-  for (const promptEntry of promptsToTest) {
-    for (const modelName of promptEntry.models) {
-      if (!AI_MODELS.includes(modelName as AIModel)) continue;
-
-      const agentKey = modelName as AIModel;
-      const agent = agents.monitor[agentKey];
-      if (!agent || !("test" in agent)) continue;
-
-      const testInput: MonitorTestInput = {
-        promptText: wrapPromptWithLocation(
-          promptEntry.promptText,
-          promptEntry.location,
-          modelName
-        ),
-        clientName: client.name as string,
-        clientAliases: [],
-        clientUrls: (client.urls_to_mention as string[]) || [],
-        competitors: competitorList,
-        location: promptEntry.location,
-      };
-
-      try {
-        const result: MonitorTestResult = await logAgentActionBg(
-          {
-            agencyId,
-            clientId,
-            agentType: `monitor_${modelName}`,
-            agentName: agent.name,
-            trigger,
-            inputSummary: {
-              prompt: promptEntry.promptText.substring(0, 100),
-              model: modelName,
-            },
+    try {
+      const result: MonitorTestResult = await logAgentActionBg(
+        {
+          agencyId,
+          clientId,
+          agentType: `monitor_${modelName}`,
+          agentName: agent.name,
+          trigger,
+          inputSummary: {
+            prompt: promptEntry.promptText.substring(0, 100),
+            model: modelName,
           },
-          () => agent.test(testInput)
-        );
+        },
+        () => agent.test(testInput)
+      );
 
-        // Check for response hash changes (drift detection)
-        if (promptEntry.promptId) {
-          const { data: prevResult } = await supabase
-            .from("monitor_results")
-            .select("response_hash")
-            .eq("prompt_id", promptEntry.promptId)
-            .eq("ai_model", modelName)
-            .order("tested_at", { ascending: false })
-            .limit(1)
-            .single();
+      if (promptEntry.promptId) {
+        const { data: prevResult } = await supabase
+          .from("monitor_results")
+          .select("response_hash")
+          .eq("prompt_id", promptEntry.promptId)
+          .eq("ai_model", modelName)
+          .order("tested_at", { ascending: false })
+          .limit(1)
+          .single();
 
-          if (
-            prevResult?.response_hash &&
-            prevResult.response_hash !== result.responseHash
-          ) {
-            responseChanges++;
-          }
+        if (
+          prevResult?.response_hash &&
+          prevResult.response_hash !== result.responseHash
+        ) {
+          acc.responseChanges++;
         }
-
-        // Insert result into monitor_results
-        await supabase.from("monitor_results").insert({
-          prompt_id: promptEntry.promptId,
-          client_id: clientId,
-          keyword_id: promptEntry.keywordId,
-          ai_model: modelName,
-          brand_mentioned: result.brandMentioned,
-          brand_linked: result.brandLinked,
-          brand_recommended: result.brandRecommended,
-          brand_source_urls: result.brandSourceUrls,
-          mention_context: result.mentionContext,
-          mention_position: result.mentionPosition,
-          competitor_mentions: result.competitorDetails
-            .filter((c) => c.mentioned)
-            .map((c) => c.name),
-          competitor_details: result.competitorDetails,
-          sources_cited: result.sourcesCited,
-          full_response: result.fullResponse,
-          response_hash: result.responseHash,
-          sentiment: result.sentiment,
-          prominence_score: result.prominenceScore,
-          tested_at: new Date().toISOString(),
-        });
-
-        // Accumulate stats
-        totalTests++;
-        if (result.brandMentioned) totalMentions++;
-        if (result.brandRecommended) totalRecommendations++;
-        if (result.brandLinked) totalLinks++;
-        if (result.prominenceScore > 0) {
-          totalProminence += result.prominenceScore;
-          prominenceCount++;
-        }
-
-        // Model stats
-        if (!modelStats[modelName]) {
-          modelStats[modelName] = { mentioned: 0, total: 0 };
-        }
-        modelStats[modelName].total++;
-        if (result.brandMentioned) modelStats[modelName].mentioned++;
-
-        // Keyword stats
-        if (promptEntry.keywordId) {
-          if (!keywordStats[promptEntry.keywordId]) {
-            keywordStats[promptEntry.keywordId] = { mentioned: 0, total: 0 };
-          }
-          keywordStats[promptEntry.keywordId].total++;
-          if (result.brandMentioned) {
-            keywordStats[promptEntry.keywordId].mentioned++;
-          }
-        }
-
-        // Competitor stats
-        for (const comp of result.competitorDetails) {
-          if (comp.mentioned) {
-            competitorMentionCounts[comp.name] =
-              (competitorMentionCounts[comp.name] || 0) + 1;
-          }
-        }
-
-        // Collect response text for post-scan competitor auto-discovery
-        if (result.fullResponse) {
-          collectedResponses.push(result.fullResponse);
-        }
-      } catch (error) {
-        console.error(
-          `Monitor test failed for ${modelName}:`,
-          error instanceof Error ? error.message : error
-        );
-        // Continue with other tests — don't fail the whole run
       }
+
+      await supabase.from("monitor_results").insert({
+        prompt_id: promptEntry.promptId,
+        client_id: clientId,
+        keyword_id: promptEntry.keywordId,
+        ai_model: modelName,
+        brand_mentioned: result.brandMentioned,
+        brand_linked: result.brandLinked,
+        brand_recommended: result.brandRecommended,
+        brand_source_urls: result.brandSourceUrls,
+        mention_context: result.mentionContext,
+        mention_position: result.mentionPosition,
+        competitor_mentions: result.competitorDetails
+          .filter((c) => c.mentioned)
+          .map((c) => c.name),
+        competitor_details: result.competitorDetails,
+        sources_cited: result.sourcesCited,
+        full_response: result.fullResponse,
+        response_hash: result.responseHash,
+        sentiment: result.sentiment,
+        prominence_score: result.prominenceScore,
+        tested_at: new Date().toISOString(),
+      });
+
+      acc.totalTests++;
+      if (result.brandMentioned) acc.totalMentions++;
+      if (result.brandRecommended) acc.totalRecommendations++;
+      if (result.brandLinked) acc.totalLinks++;
+      if (result.prominenceScore > 0) {
+        acc.totalProminence += result.prominenceScore;
+        acc.prominenceCount++;
+      }
+
+      if (!acc.modelStats[modelName]) {
+        acc.modelStats[modelName] = { mentioned: 0, total: 0 };
+      }
+      acc.modelStats[modelName].total++;
+      if (result.brandMentioned) acc.modelStats[modelName].mentioned++;
+
+      if (promptEntry.keywordId) {
+        if (!acc.keywordStats[promptEntry.keywordId]) {
+          acc.keywordStats[promptEntry.keywordId] = { mentioned: 0, total: 0 };
+        }
+        acc.keywordStats[promptEntry.keywordId].total++;
+        if (result.brandMentioned) {
+          acc.keywordStats[promptEntry.keywordId].mentioned++;
+        }
+      }
+
+      for (const comp of result.competitorDetails) {
+        if (comp.mentioned) {
+          acc.competitorMentionCounts[comp.name] =
+            (acc.competitorMentionCounts[comp.name] || 0) + 1;
+        }
+      }
+
+      if (result.fullResponse) {
+        acc.collectedResponses.push(result.fullResponse);
+      }
+    } catch (error) {
+      console.error(
+        `Monitor test failed for ${modelName}:`,
+        error instanceof Error ? error.message : error
+      );
     }
   }
 
-  // 7. Auto-discover competitors from collected responses
-  if (collectedResponses.length > 0) {
+  return acc;
+}
+
+// ---------------------------------------------------------------------------
+// Helper: merge multiple TestResultAccumulator objects
+// ---------------------------------------------------------------------------
+
+export function mergeAccumulators(accumulators: TestResultAccumulator[]): TestResultAccumulator {
+  const merged: TestResultAccumulator = {
+    totalTests: 0,
+    totalMentions: 0,
+    totalRecommendations: 0,
+    totalLinks: 0,
+    totalProminence: 0,
+    prominenceCount: 0,
+    responseChanges: 0,
+    modelStats: {},
+    keywordStats: {},
+    competitorMentionCounts: {},
+    collectedResponses: [],
+  };
+
+  for (const acc of accumulators) {
+    merged.totalTests += acc.totalTests;
+    merged.totalMentions += acc.totalMentions;
+    merged.totalRecommendations += acc.totalRecommendations;
+    merged.totalLinks += acc.totalLinks;
+    merged.totalProminence += acc.totalProminence;
+    merged.prominenceCount += acc.prominenceCount;
+    merged.responseChanges += acc.responseChanges;
+    merged.collectedResponses.push(...acc.collectedResponses);
+
+    for (const [model, stats] of Object.entries(acc.modelStats)) {
+      if (!merged.modelStats[model]) {
+        merged.modelStats[model] = { mentioned: 0, total: 0 };
+      }
+      merged.modelStats[model].mentioned += stats.mentioned;
+      merged.modelStats[model].total += stats.total;
+    }
+
+    for (const [kwId, stats] of Object.entries(acc.keywordStats)) {
+      if (!merged.keywordStats[kwId]) {
+        merged.keywordStats[kwId] = { mentioned: 0, total: 0 };
+      }
+      merged.keywordStats[kwId].mentioned += stats.mentioned;
+      merged.keywordStats[kwId].total += stats.total;
+    }
+
+    for (const [name, count] of Object.entries(acc.competitorMentionCounts)) {
+      merged.competitorMentionCounts[name] =
+        (merged.competitorMentionCounts[name] || 0) + count;
+    }
+  }
+
+  return merged;
+}
+
+// ---------------------------------------------------------------------------
+// Step 3: Auto-discover competitors + create snapshot
+// ---------------------------------------------------------------------------
+
+export async function finalizeMonitoringRun(
+  clientId: string,
+  client: Record<string, unknown>,
+  competitorList: Array<{ name: string; aliases: string[] }>,
+  acc: TestResultAccumulator
+): Promise<MonitoringRunResult> {
+  const supabase = createAdminClient();
+
+  // Auto-discover competitors
+  if (acc.collectedResponses.length > 0) {
     try {
       const existingNames = competitorList.map((c) => c.name);
       const discovered = await extractCompetitorsFromResponses(
-        collectedResponses,
+        acc.collectedResponses,
         client.name as string,
         [],
         existingNames
@@ -311,7 +390,6 @@ export async function runMonitoringForClient(
           `[monitor] Auto-discovered ${discovered.length} competitors for ${client.name}`
         );
 
-        // Upsert new competitors into monitor_competitors
         for (const comp of discovered) {
           await supabase.from("monitor_competitors").upsert(
             {
@@ -327,28 +405,23 @@ export async function runMonitoringForClient(
           );
         }
 
-        // Re-scan responses for newly discovered competitor names (simple string match)
-        // to build accurate SoM counts for competitors not in the original list
         for (const comp of discovered) {
-          if (competitorMentionCounts[comp.name]) continue; // already counted by analyzer
+          if (acc.competitorMentionCounts[comp.name]) continue;
           let count = 0;
-          for (const response of collectedResponses) {
+          for (const response of acc.collectedResponses) {
             if (response.toLowerCase().includes(comp.name.toLowerCase())) {
               count++;
             }
           }
           if (count > 0) {
-            competitorMentionCounts[comp.name] = count;
+            acc.competitorMentionCounts[comp.name] = count;
           }
         }
 
-        // Update last_seen_at for all mentioned competitors
-        for (const name of Object.keys(competitorMentionCounts)) {
+        for (const name of Object.keys(acc.competitorMentionCounts)) {
           await supabase
             .from("monitor_competitors")
-            .update({
-              last_seen_at: new Date().toISOString(),
-            })
+            .update({ last_seen_at: new Date().toISOString() })
             .eq("client_id", clientId)
             .eq("competitor_name", name);
         }
@@ -358,17 +431,15 @@ export async function runMonitoringForClient(
         "[monitor] Competitor auto-discovery failed (non-fatal):",
         error instanceof Error ? error.message : error
       );
-      // Non-fatal — continue with snapshot creation
     }
   }
 
-  // 8. Calculate SoM and create snapshot
+  // Calculate SoM and create snapshot
   const overallSom =
-    totalTests > 0 ? (totalMentions / totalTests) * 100 : 0;
+    acc.totalTests > 0 ? (acc.totalMentions / acc.totalTests) * 100 : 0;
   const avgProminence =
-    prominenceCount > 0 ? totalProminence / prominenceCount : 0;
+    acc.prominenceCount > 0 ? acc.totalProminence / acc.prominenceCount : 0;
 
-  // Get previous snapshot for delta calculation
   const { data: prevSnapshot } = await supabase
     .from("monitor_snapshots")
     .select("overall_som")
@@ -382,38 +453,28 @@ export async function runMonitoringForClient(
     ? overallSom - Number(prevSnapshot.overall_som)
     : null;
 
-  // Model breakdown as percentages
-  const modelBreakdown: Record<
-    string,
-    { mentioned: number; total: number; som: number }
-  > = {};
-  for (const [model, stats] of Object.entries(modelStats)) {
+  const modelBreakdown: Record<string, { mentioned: number; total: number; som: number }> = {};
+  for (const [model, stats] of Object.entries(acc.modelStats)) {
     modelBreakdown[model] = {
       ...stats,
       som: stats.total > 0 ? (stats.mentioned / stats.total) * 100 : 0,
     };
   }
 
-  // Keyword breakdown
-  const keywordBreakdown: Record<
-    string,
-    { mentioned: number; total: number; som: number }
-  > = {};
-  for (const [kwId, stats] of Object.entries(keywordStats)) {
+  const keywordBreakdown: Record<string, { mentioned: number; total: number; som: number }> = {};
+  for (const [kwId, stats] of Object.entries(acc.keywordStats)) {
     keywordBreakdown[kwId] = {
       ...stats,
       som: stats.total > 0 ? (stats.mentioned / stats.total) * 100 : 0,
     };
   }
 
-  // Competitor SoM
   const competitorSom: Record<string, number> = {};
-  for (const [name, count] of Object.entries(competitorMentionCounts)) {
+  for (const [name, count] of Object.entries(acc.competitorMentionCounts)) {
     competitorSom[name] =
-      totalTests > 0 ? (count / totalTests) * 100 : 0;
+      acc.totalTests > 0 ? (count / acc.totalTests) * 100 : 0;
   }
 
-  // Top competitor
   let topCompetitorName: string | null = null;
   let topCompetitorSom = 0;
   for (const [name, som] of Object.entries(competitorSom)) {
@@ -423,17 +484,15 @@ export async function runMonitoringForClient(
     }
   }
 
-  // Calculate AI Visibility Score
   const aiVisibilityScore = calculateAIVisibilityScore({
     overall_som: overallSom,
-    total_brand_mentions: totalMentions,
-    total_brand_recommendations: totalRecommendations,
+    total_brand_mentions: acc.totalMentions,
+    total_brand_recommendations: acc.totalRecommendations,
     avg_prominence: avgProminence,
-    model_breakdown: modelStats,
+    model_breakdown: acc.modelStats,
     som_delta: somDelta,
   });
 
-  // Insert snapshot
   const today = new Date().toISOString().split("T")[0];
   const { data: snapshot } = await supabase
     .from("monitor_snapshots")
@@ -448,11 +507,11 @@ export async function runMonitoringForClient(
         keyword_breakdown: keywordBreakdown,
         competitor_som: competitorSom,
         som_delta: somDelta,
-        total_tests_run: totalTests,
-        total_brand_mentions: totalMentions,
-        total_brand_recommendations: totalRecommendations,
-        total_brand_links: totalLinks,
-        response_changes_detected: responseChanges,
+        total_tests_run: acc.totalTests,
+        total_brand_mentions: acc.totalMentions,
+        total_brand_recommendations: acc.totalRecommendations,
+        total_brand_links: acc.totalLinks,
+        response_changes_detected: acc.responseChanges,
         avg_prominence: avgProminence,
         top_competitor_name: topCompetitorName,
         top_competitor_som: topCompetitorSom,
@@ -464,9 +523,36 @@ export async function runMonitoringForClient(
 
   return {
     clientId,
-    totalTests,
-    totalMentions,
+    totalTests: acc.totalTests,
+    totalMentions: acc.totalMentions,
     snapshotId: snapshot?.id || null,
     aiVisibilityScore,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Legacy wrapper (kept for weekly cron compatibility)
+// ---------------------------------------------------------------------------
+
+export async function runMonitoringForClient(
+  clientId: string,
+  agencyId: string,
+  trigger: string
+): Promise<MonitoringRunResult> {
+  const { client, competitorList, promptsToTest } = await loadPromptsForClient(clientId);
+
+  if (promptsToTest.length === 0) {
+    return { clientId, totalTests: 0, totalMentions: 0, snapshotId: null, aiVisibilityScore: 0 };
+  }
+
+  const accumulators: TestResultAccumulator[] = [];
+  for (const modelName of AI_MODELS) {
+    const acc = await runTestBatch(
+      promptsToTest, modelName, client, clientId, agencyId, competitorList, trigger
+    );
+    accumulators.push(acc);
+  }
+
+  const merged = mergeAccumulators(accumulators);
+  return finalizeMonitoringRun(clientId, client, competitorList, merged);
 }

@@ -4,12 +4,22 @@
 import { NonRetriableError } from "inngest";
 import { inngest } from "./client";
 import { createAdminClient } from "./admin-client";
-import { runMonitoringForClient } from "@/lib/monitor/run-monitoring";
+import {
+  loadPromptsForClient,
+  runTestBatch,
+  mergeAccumulators,
+  finalizeMonitoringRun,
+  runMonitoringForClient,
+} from "@/lib/monitor/run-monitoring";
+import type { TestResultAccumulator } from "@/lib/monitor/run-monitoring";
 import { updateCorrelationTimeline } from "@/lib/monitor/correlation-analyzer";
 import { analyzeContentGaps } from "@/lib/monitor/content-gaps";
 
+const AI_MODELS = ["chatgpt", "perplexity", "gemini", "claude", "google_ai_overview"] as const;
+
 // ===========================================================================
 // FUNCTION: monitor/run (manual trigger for a single client)
+// Split into per-model steps so each stays within Vercel's timeout limit.
 // ===========================================================================
 
 const monitorRun = inngest.createFunction(
@@ -24,7 +34,7 @@ const monitorRun = inngest.createFunction(
     const { clientId, runContentGaps } = event.data;
     const supabase = createAdminClient();
 
-    // Load agency ID for the client
+    // Step 1: Load agency ID
     const agencyId = await step.run("load-agency", async () => {
       const { data, error } = await supabase
         .from("clients")
@@ -38,17 +48,54 @@ const monitorRun = inngest.createFunction(
       return data.agency_id as string;
     });
 
-    // Run monitoring
-    const result = await step.run("run-monitoring", async () => {
-      return runMonitoringForClient(clientId, agencyId, "manual");
+    // Step 2: Load client data and build prompt list
+    const { client, competitorList, promptsToTest } = await step.run(
+      "load-prompts",
+      async () => {
+        return loadPromptsForClient(clientId);
+      }
+    );
+
+    if (promptsToTest.length === 0) {
+      return {
+        status: "completed",
+        totalTests: 0,
+        totalMentions: 0,
+        aiVisibilityScore: 0,
+        message: "No prompts to test",
+      };
+    }
+
+    // Step 3: Run tests per model (each is a separate step within timeout)
+    const accumulators: TestResultAccumulator[] = [];
+
+    for (const modelName of AI_MODELS) {
+      const acc = await step.run(`test-${modelName}`, async () => {
+        return runTestBatch(
+          promptsToTest,
+          modelName,
+          client,
+          clientId,
+          agencyId,
+          competitorList,
+          "manual"
+        );
+      });
+      accumulators.push(acc);
+    }
+
+    // Step 4: Merge results and create snapshot (includes competitor auto-discovery)
+    const result = await step.run("finalize", async () => {
+      const merged = mergeAccumulators(accumulators);
+      return finalizeMonitoringRun(clientId, client, competitorList, merged);
     });
 
-    // Update correlation timeline
+    // Step 5: Update correlation timeline
     await step.run("update-correlation", async () => {
       await updateCorrelationTimeline(clientId);
     });
 
-    // Run content gap analysis if requested
+    // Step 6: Content gap analysis (if requested)
     if (runContentGaps) {
       await step.run("content-gaps", async () => {
         await analyzeContentGaps(clientId, result.snapshotId || undefined);
@@ -78,15 +125,12 @@ const monitorRunWeekly = inngest.createFunction(
   async ({ step }) => {
     const supabase = createAdminClient();
 
-    // Get all clients with active monitoring (have keyword configs or custom prompts)
     const clientIds = await step.run("get-active-clients", async () => {
-      // Clients with keyword monitoring
       const { data: kwClients } = await supabase
         .from("monitor_keyword_config")
         .select("client_id")
         .eq("is_monitored", true);
 
-      // Clients with custom prompts
       const { data: promptClients } = await supabase
         .from("monitor_prompts")
         .select("client_id")
@@ -104,16 +148,11 @@ const monitorRunWeekly = inngest.createFunction(
     });
 
     if (clientIds.length === 0) {
-      return {
-        status: "completed",
-        message: "No clients with active monitoring",
-      };
+      return { status: "completed", message: "No clients with active monitoring" };
     }
 
-    // Check if this is the first week of the month (for content gap analysis)
     const isFirstWeekOfMonth = new Date().getDate() <= 7;
 
-    // Queue individual runs for each client
     const results: Array<{
       clientId: string;
       totalTests: number;
@@ -121,39 +160,31 @@ const monitorRunWeekly = inngest.createFunction(
       aiVisibilityScore: number;
     }> = [];
 
-    for (const clientId of clientIds) {
-      const result = await step.run(
-        `monitor-client-${clientId}`,
-        async () => {
-          // Get agency ID
-          const { data } = await supabase
-            .from("clients")
-            .select("agency_id")
-            .eq("id", clientId)
-            .single();
+    for (const cid of clientIds) {
+      // Each client gets its own step to avoid timeout
+      const result = await step.run(`monitor-client-${cid}`, async () => {
+        const { data } = await supabase
+          .from("clients")
+          .select("agency_id")
+          .eq("id", cid)
+          .single();
 
-          if (!data) return null;
+        if (!data) return null;
 
-          const monitorResult = await runMonitoringForClient(
-            clientId,
-            data.agency_id as string,
-            "cron"
-          );
+        const monitorResult = await runMonitoringForClient(
+          cid,
+          data.agency_id as string,
+          "cron"
+        );
 
-          // Update correlation timeline
-          await updateCorrelationTimeline(clientId);
+        await updateCorrelationTimeline(cid);
 
-          // Monthly content gap analysis
-          if (isFirstWeekOfMonth) {
-            await analyzeContentGaps(
-              clientId,
-              monitorResult.snapshotId || undefined
-            );
-          }
-
-          return monitorResult;
+        if (isFirstWeekOfMonth) {
+          await analyzeContentGaps(cid, monitorResult.snapshotId || undefined);
         }
-      );
+
+        return monitorResult;
+      });
 
       if (result) {
         results.push(result);
