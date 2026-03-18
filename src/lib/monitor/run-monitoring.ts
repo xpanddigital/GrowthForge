@@ -183,14 +183,25 @@ export async function runTestBatch(
     collectedResponses: [],
   };
 
-  if (!AI_MODELS.includes(modelName as AIModel)) return acc;
+  if (!AI_MODELS.includes(modelName as AIModel)) {
+    console.error(`[monitor] Model "${modelName}" not in AI_MODELS list`);
+    return acc;
+  }
 
   const agentKey = modelName as AIModel;
   const agent = agents.monitor[agentKey];
-  if (!agent || !("test" in agent)) return acc;
+  if (!agent || !("test" in agent)) {
+    console.error(`[monitor] No agent found for model "${modelName}", agent exists: ${!!agent}, has test: ${"test" in (agent || {})}`);
+    return acc;
+  }
+
+  console.log(`[monitor] Starting batch for ${modelName} with ${promptEntries.length} prompts`);
 
   for (const promptEntry of promptEntries) {
-    if (!promptEntry.models.includes(modelName)) continue;
+    if (!promptEntry.models.includes(modelName)) {
+      console.log(`[monitor] Skipping prompt — models=${JSON.stringify(promptEntry.models)} doesn't include ${modelName}`);
+      continue;
+    }
 
     const testInput: MonitorTestInput = {
       promptText: wrapPromptWithLocation(
@@ -206,6 +217,7 @@ export async function runTestBatch(
     };
 
     try {
+      console.log(`[monitor] Testing prompt on ${modelName}: "${promptEntry.promptText.substring(0, 60)}..."`);
       const result: MonitorTestResult = await logAgentActionBg(
         {
           agencyId,
@@ -297,9 +309,10 @@ export async function runTestBatch(
       if (result.fullResponse) {
         acc.collectedResponses.push(result.fullResponse);
       }
+      console.log(`[monitor] ✓ ${modelName} result: mentioned=${result.brandMentioned}, prominence=${result.prominenceScore}`);
     } catch (error) {
       console.error(
-        `Monitor test failed for ${modelName}:`,
+        `[monitor] ✗ Test FAILED for ${modelName}:`,
         error instanceof Error ? error.message : error
       );
     }
