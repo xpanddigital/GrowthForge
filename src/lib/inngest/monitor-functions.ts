@@ -66,22 +66,31 @@ const monitorRun = inngest.createFunction(
       };
     }
 
-    // Step 3: Run tests per model (each is a separate step within timeout)
+    // Step 3: Run tests per model × batch (small batches to stay within timeout)
+    const BATCH_SIZE = 5; // 5 prompts per step ≈ 50-90 seconds
     const accumulators: TestResultAccumulator[] = [];
 
     for (const modelName of AI_MODELS) {
-      const acc = await step.run(`test-${modelName}`, async () => {
-        return runTestBatch(
-          promptsToTest,
-          modelName,
-          client,
-          clientId,
-          agencyId,
-          competitorList,
-          "manual"
-        );
-      });
-      accumulators.push(acc);
+      // Split prompts that include this model into batches
+      const modelPrompts = promptsToTest.filter((p) => p.models.includes(modelName));
+
+      for (let i = 0; i < modelPrompts.length; i += BATCH_SIZE) {
+        const batch = modelPrompts.slice(i, i + BATCH_SIZE);
+        const batchNum = Math.floor(i / BATCH_SIZE);
+
+        const acc = await step.run(`test-${modelName}-batch-${batchNum}`, async () => {
+          return runTestBatch(
+            batch,
+            modelName,
+            client,
+            clientId,
+            agencyId,
+            competitorList,
+            "manual"
+          );
+        });
+        accumulators.push(acc);
+      }
     }
 
     // Step 4: Merge results and create snapshot (includes competitor auto-discovery)
