@@ -17,6 +17,9 @@ import {
   formatThreadContextBlock,
 } from "@/lib/ai/prompts/shared-context";
 
+const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models";
+
 /**
  * The full system prompt for response generation.
  * Copied EXACTLY from the CLAUDE.md specification.
@@ -145,10 +148,78 @@ function validateAllVariants(
 }
 
 /**
+ * Call Gemini as a fallback for response generation.
+ * Used when Claude Opus is unavailable (credit issues, rate limits, etc).
+ */
+async function callGeminiFallback(
+  systemPrompt: string,
+  userPrompt: string
+): Promise<string> {
+  const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new AIGenerationError(
+      "gemini-fallback",
+      "GOOGLE_GEMINI_API_KEY not set — cannot fall back to Gemini"
+    );
+  }
+
+  const url = `${GEMINI_API_URL}/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: systemPrompt }] },
+      contents: [{ parts: [{ text: userPrompt }] }],
+      generationConfig: {
+        temperature: 0.8,
+        maxOutputTokens: 8192,
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new AIGenerationError(
+      "gemini-fallback",
+      `Gemini API error (${res.status}): ${text.substring(0, 200)}`
+    );
+  }
+
+  const data = await res.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) {
+    throw new AIGenerationError(
+      "gemini-fallback",
+      "No text content in Gemini response"
+    );
+  }
+  return text;
+}
+
+/**
+ * Check if an error is a billing/credit issue that warrants fallback.
+ */
+function isBillingError(error: unknown): boolean {
+  if (error instanceof AIGenerationError) {
+    const msg = error.message.toLowerCase();
+    return (
+      msg.includes("credit balance") ||
+      msg.includes("billing") ||
+      msg.includes("payment") ||
+      msg.includes("insufficient") ||
+      (error.details as Record<string, unknown>)?.status === 400 ||
+      (error.details as Record<string, unknown>)?.status === 402
+    );
+  }
+  return false;
+}
+
+/**
  * Generate 3 response variants (casual, expert, story) for a thread.
  *
  * This is the core value-generating function of GrowthForge.
  * Uses Claude Opus 4 for highest quality output.
+ * Falls back to Gemini if Claude is unavailable (billing, rate limits).
  * All 3 variants are requested in a single API call for coherent context.
  *
  * @param thread - The enriched thread with body_text and top_comments
@@ -173,24 +244,49 @@ The expert variant should have the highest quality_score.
 All three should reference specific details from the thread.
 Remember: You are a USER, not the company. Earn the brand mention through value.`;
 
-  const result = await callOpus(userPrompt, {
-    systemPrompt: RESPONSE_GENERATION_SYSTEM_PROMPT,
-    maxTokens: 8192,
-    temperature: 0.8, // Higher temperature for creative, varied responses
-  });
+  let responseText: string;
+  let usedFallback = false;
 
-  const parsed = parseClaudeJson<ResponseGenerationApiResponse>(result.text);
+  try {
+    const result = await callOpus(userPrompt, {
+      systemPrompt: RESPONSE_GENERATION_SYSTEM_PROMPT,
+      maxTokens: 8192,
+      temperature: 0.8,
+    });
+    responseText = result.text;
+  } catch (opusError) {
+    // If it's a billing/credit error, try Gemini as fallback
+    if (isBillingError(opusError)) {
+      console.warn(
+        "[generate-responses] Claude Opus billing error, falling back to Gemini:",
+        opusError instanceof Error ? opusError.message : opusError
+      );
+      responseText = await callGeminiFallback(
+        RESPONSE_GENERATION_SYSTEM_PROMPT,
+        userPrompt
+      );
+      usedFallback = true;
+    } else {
+      throw opusError;
+    }
+  }
+
+  const parsed = parseClaudeJson<ResponseGenerationApiResponse>(responseText);
 
   if (!parsed.variants || !Array.isArray(parsed.variants)) {
     throw new AIGenerationError(
-      "claude-opus",
+      usedFallback ? "gemini-fallback" : "claude-opus",
       "Response generation output missing 'variants' array",
-      { rawResponse: result.text.substring(0, 500) }
+      { rawResponse: responseText.substring(0, 500) }
     );
   }
 
   // Normalize and validate each variant
   const normalized = parsed.variants.map(normalizeResponse);
+
+  if (usedFallback) {
+    console.log("[generate-responses] Successfully generated responses via Gemini fallback");
+  }
 
   // Ensure all 3 variants are present and return in canonical order
   return validateAllVariants(normalized);
