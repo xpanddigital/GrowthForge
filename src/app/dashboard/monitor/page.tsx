@@ -10,6 +10,7 @@ import { CompetitorComparison } from "@/components/monitor/competitor-comparison
 import { SomTrendChart } from "@/components/monitor/som-trend-chart";
 import { KeywordTable } from "@/components/monitor/keyword-table";
 import { CorrelationTimeline } from "@/components/monitor/correlation-timeline";
+import { FocusCompetitorSelector } from "@/components/monitor/focus-competitor-selector";
 import { KeywordOnboarding } from "@/components/monitor/keyword-onboarding";
 
 interface Snapshot {
@@ -56,16 +57,25 @@ export default function MonitorPage() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [clientKeywords, setClientKeywords] = useState<Array<{ id: string; keyword: string; tags: string[]; is_active: boolean }>>([]);
   const [scanning, setScanning] = useState(false);
+  const [competitors, setCompetitors] = useState<Array<{
+    id: string;
+    competitor_name: string;
+    is_focus: boolean;
+    is_active: boolean;
+    som: number;
+    discovered_via?: string;
+  }>>([]);
 
   const loadData = useCallback(async () => {
     if (!selectedClientId) return;
     setLoading(true);
     try {
-      const [snapshotsRes, timelineRes, keywordsRes, clientKwRes] = await Promise.all([
+      const [snapshotsRes, timelineRes, keywordsRes, clientKwRes, competitorsRes] = await Promise.all([
         fetch(`/api/monitor/snapshots?clientId=${selectedClientId}&limit=12`),
         fetch(`/api/monitor/timeline?clientId=${selectedClientId}`),
         fetch(`/api/monitor/keywords?clientId=${selectedClientId}`),
         fetch(`/api/keywords?client_id=${selectedClientId}`),
+        fetch(`/api/monitor/competitors?clientId=${selectedClientId}`),
       ]);
 
       if (snapshotsRes.ok) {
@@ -113,6 +123,20 @@ export default function MonitorPage() {
       if (clientKwRes.ok) {
         const result = await clientKwRes.json();
         setClientKeywords(result.data || []);
+      }
+
+      if (competitorsRes.ok) {
+        const result = await competitorsRes.json();
+        setCompetitors(
+          (result.competitors || []).map((c: Record<string, unknown>) => ({
+            id: c.id as string,
+            competitor_name: c.competitor_name as string,
+            is_focus: (c.is_focus as boolean) || false,
+            is_active: (c.is_active as boolean) || true,
+            som: (c.som as number) || 0,
+            discovered_via: c.discovered_via as string | undefined,
+          }))
+        );
       }
     } catch {
       // silently fail
@@ -164,6 +188,25 @@ export default function MonitorPage() {
       body: JSON.stringify({ clientId: selectedClientId, keywordIds }),
     });
     await loadData();
+  };
+
+  const handleToggleFocus = async (competitorId: string, isFocus: boolean) => {
+    // Optimistic update
+    setCompetitors((prev) =>
+      prev.map((c) => (c.id === competitorId ? { ...c, is_focus: isFocus } : c))
+    );
+    try {
+      await fetch("/api/monitor/competitors", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ competitorId, is_focus: isFocus }),
+      });
+    } catch {
+      // Revert on failure
+      setCompetitors((prev) =>
+        prev.map((c) => (c.id === competitorId ? { ...c, is_focus: !isFocus } : c))
+      );
+    }
   };
 
   if (!selectedClientId) {
@@ -370,13 +413,18 @@ export default function MonitorPage() {
         </div>
       </div>
 
-      {/* Trend + Competitor */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Trend + Competitor + Focus Selector */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <SomTrendChart data={trendData} />
         <CompetitorComparison
           clientName={selectedClientName || "You"}
           clientSom={snapshot.overall_som}
           competitors={snapshot.competitor_som || {}}
+          focusCompetitors={new Set(competitors.filter((c) => c.is_focus).map((c) => c.competitor_name))}
+        />
+        <FocusCompetitorSelector
+          competitors={competitors.filter((c) => c.is_active)}
+          onToggleFocus={handleToggleFocus}
         />
       </div>
 

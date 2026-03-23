@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Star } from "lucide-react";
 
 interface CompetitorComparisonProps {
   clientName: string;
@@ -9,6 +9,7 @@ interface CompetitorComparisonProps {
   competitors: Record<string, number>;
   previousCompetitors?: Record<string, number>;
   previousClientSom?: number;
+  focusCompetitors?: Set<string>;
 }
 
 export function CompetitorComparison({
@@ -17,9 +18,15 @@ export function CompetitorComparison({
   competitors,
   previousCompetitors,
   previousClientSom,
+  focusCompetitors,
 }: CompetitorComparisonProps) {
   // Sort competitors by SoM descending
   const sorted = Object.entries(competitors).sort(([, a], [, b]) => b - a);
+
+  // If focus competitors are set, filter to only show them (plus client)
+  const filteredSorted = focusCompetitors && focusCompetitors.size > 0
+    ? sorted.filter(([name]) => focusCompetitors.has(name))
+    : sorted;
 
   // All entries (client + competitors) for display
   const allEntries = [
@@ -27,12 +34,14 @@ export function CompetitorComparison({
       name: clientName,
       som: clientSom,
       isClient: true,
+      isFocus: false,
       delta: previousClientSom !== undefined ? clientSom - previousClientSom : null,
     },
-    ...sorted.map(([name, som]) => ({
+    ...filteredSorted.map(([name, som]) => ({
       name,
       som,
       isClient: false,
+      isFocus: focusCompetitors?.has(name) || false,
       delta: previousCompetitors?.[name] !== undefined
         ? som - previousCompetitors[name]
         : null,
@@ -43,9 +52,17 @@ export function CompetitorComparison({
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="text-sm font-medium text-muted-foreground mb-4">
-        Share of Model — AI Visibility Ranking
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-medium text-muted-foreground">
+          Share of Model — AI Visibility Ranking
+        </h3>
+        {focusCompetitors && focusCompetitors.size > 0 && (
+          <span className="text-[10px] text-amber-400 flex items-center gap-1">
+            <Star className="h-2.5 w-2.5 fill-amber-400" />
+            Showing focus competitors
+          </span>
+        )}
+      </div>
       {allEntries.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           Competitors will be auto-discovered after your first scan.
@@ -59,10 +76,15 @@ export function CompetitorComparison({
                   className={cn(
                     entry.isClient
                       ? "text-primary font-medium"
-                      : "text-foreground"
+                      : entry.isFocus
+                        ? "text-foreground font-medium"
+                        : "text-foreground"
                   )}
                 >
                   {entry.isClient ? `You (${entry.name})` : entry.name}
+                  {entry.isFocus && (
+                    <Star className="h-3 w-3 inline ml-1.5 text-amber-400 fill-amber-400 -mt-0.5" />
+                  )}
                 </span>
                 <div className="flex items-center gap-2">
                   {entry.delta !== null && Math.abs(entry.delta) > 1 && (
@@ -90,7 +112,11 @@ export function CompetitorComparison({
                 <div
                   className={cn(
                     "h-full rounded-full transition-all duration-500",
-                    entry.isClient ? "bg-primary" : "bg-muted-foreground/50"
+                    entry.isClient
+                      ? "bg-primary"
+                      : entry.isFocus
+                        ? "bg-amber-500"
+                        : "bg-muted-foreground/50"
                   )}
                   style={{
                     width: `${(entry.som / maxSom) * 100}%`,

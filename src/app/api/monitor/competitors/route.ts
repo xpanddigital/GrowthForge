@@ -51,6 +51,55 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ competitor: data }, { status: 201 });
 }
 
+// PATCH /api/monitor/competitors — update competitor (toggle focus, active, etc.)
+export async function PATCH(req: NextRequest) {
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json();
+  const { competitorId, is_focus, is_active } = body as {
+    competitorId: string;
+    is_focus?: boolean;
+    is_active?: boolean;
+  };
+
+  if (!competitorId) {
+    return NextResponse.json(
+      { error: "competitorId is required" },
+      { status: 400 }
+    );
+  }
+
+  const updates: Record<string, unknown> = {};
+  if (is_focus !== undefined) updates.is_focus = is_focus;
+  if (is_active !== undefined) updates.is_active = is_active;
+
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json(
+      { error: "No fields to update" },
+      { status: 400 }
+    );
+  }
+
+  const { data, error } = await supabase
+    .from("monitor_competitors")
+    .update(updates)
+    .eq("id", competitorId)
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ competitor: data });
+}
+
 // GET /api/monitor/competitors — list competitors for a client
 export async function GET(req: NextRequest) {
   const supabase = await createServerClient();
