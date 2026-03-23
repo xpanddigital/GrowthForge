@@ -17,6 +17,7 @@ interface Snapshot {
   ai_visibility_score: number;
   overall_som: number;
   som_by_model: Record<string, number>;
+  model_breakdown: Record<string, { mentioned: number; total: number; som: number }>;
   som_delta: number | null;
   total_tests: number;
   total_mentions: number;
@@ -79,7 +80,7 @@ export default function MonitorPage() {
             const s = stats as { som?: number; mentioned?: number; total?: number };
             somByModel[model] = s.som ?? (s.total ? ((s.mentioned ?? 0) / s.total) * 100 : 0);
           }
-          setSnapshot({ ...latest, som_by_model: somByModel });
+          setSnapshot({ ...latest, som_by_model: somByModel, model_breakdown: breakdown });
           setTrendData(
             [...snapshots].reverse().map((s: Snapshot) => ({
               date: s.week_start || s.created_at,
@@ -364,12 +365,7 @@ export default function MonitorPage() {
         />
         <div className="lg:col-span-2">
           <ModelBreakdown
-            breakdown={Object.fromEntries(
-              Object.entries(snapshot.som_by_model || {}).map(([model, som]) => [
-                model,
-                { mentioned: 0, total: 0, som: som as number },
-              ])
-            )}
+            breakdown={snapshot.model_breakdown || {}}
           />
         </div>
       </div>
