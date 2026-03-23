@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useClientContext } from "@/hooks/use-client-context";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PromptTable } from "@/components/monitor/prompt-table";
 import { TemplatePicker } from "@/components/monitor/template-picker";
-import { MessageSquare, X, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { MessageSquare, X, CheckCircle2, XCircle, Clock, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PromptRow {
@@ -67,6 +67,7 @@ export default function MonitorPromptsPage() {
   const [testDuration, setTestDuration] = useState<number | null>(null);
   const [testPromptText, setTestPromptText] = useState<string>("");
   const [testModel, setTestModel] = useState<string>("");
+  const resultPanelRef = useRef<HTMLDivElement>(null);
 
   const loadData = useCallback(async () => {
     if (!selectedClientId) return;
@@ -124,6 +125,13 @@ export default function MonitorPromptsPage() {
     }
   };
 
+  const scrollToResult = useCallback(() => {
+    // Small delay to let React render the panel first
+    setTimeout(() => {
+      resultPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
+
   const handleQuickTest = async (promptText: string, model: string) => {
     if (!selectedClientId) return;
 
@@ -143,17 +151,36 @@ export default function MonitorPromptsPage() {
         body: JSON.stringify({ clientId: selectedClientId, promptText, model }),
       });
 
+      // Handle non-JSON responses (e.g. Vercel timeout returns HTML)
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        setTestError(
+          res.status === 504
+            ? "Request timed out — the AI model took too long to respond. Try again."
+            : `Server error (${res.status}). Check Vercel function logs.`
+        );
+        scrollToResult();
+        return;
+      }
+
       const data = await res.json();
 
       if (!res.ok) {
-        setTestError(data.error || "Test failed");
+        setTestError(data.details ? `${data.error}: ${data.details}` : data.error || "Test failed");
+        scrollToResult();
         return;
       }
 
       setTestResult(data.result);
       setTestDuration(data.durationMs);
+      scrollToResult();
     } catch (err) {
-      setTestError(err instanceof Error ? err.message : "Test failed");
+      setTestError(
+        err instanceof Error
+          ? `Request failed: ${err.message}`
+          : "Test failed — check browser console for details"
+      );
+      scrollToResult();
     } finally {
       setTestingPromptId(null);
     }
@@ -249,21 +276,6 @@ export default function MonitorPromptsPage() {
         </div>
       )}
 
-      {/* Quick Test Result Panel */}
-      {(testResult || testError) && (
-        <QuickTestPanel
-          result={testResult}
-          error={testError}
-          durationMs={testDuration}
-          promptText={testPromptText}
-          model={testModel}
-          onClose={() => {
-            setTestResult(null);
-            setTestError(null);
-          }}
-        />
-      )}
-
       {loading ? (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
@@ -278,6 +290,38 @@ export default function MonitorPromptsPage() {
           onQuickTest={handleQuickTest}
           testingPromptId={testingPromptId}
         />
+      )}
+
+      {/* Loading indicator while test is running */}
+      {testingPromptId && (
+        <div ref={resultPanelRef} className="rounded-lg border border-primary/30 bg-card p-6 flex items-center gap-3">
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              Testing on {MODEL_LABELS[testModel] || testModel}...
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              This usually takes 10-30 seconds. The AI model is generating a response.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Test Result Panel — renders after the table so it's always visible */}
+      {!testingPromptId && (testResult || testError) && (
+        <div ref={resultPanelRef}>
+          <QuickTestPanel
+            result={testResult}
+            error={testError}
+            durationMs={testDuration}
+            promptText={testPromptText}
+            model={testModel}
+            onClose={() => {
+              setTestResult(null);
+              setTestError(null);
+            }}
+          />
+        </div>
       )}
 
       {showTemplatePicker && (
