@@ -62,33 +62,31 @@ export async function POST(request: Request) {
     }
 
     // Check thread is in a valid state for response generation
-    const validStatuses = ["classified", "queued"];
-    if (!validStatuses.includes(thread.status)) {
-      // Allow re-generation for 'responded' threads, but not for 'generating', 'posted', etc.
-      if (thread.status === "responded") {
-        // Delete existing draft responses before regenerating
-        await supabase
-          .from("responses")
-          .delete()
-          .eq("thread_id", validated.thread_id)
-          .eq("status", "draft");
-      } else if (thread.status !== "responded") {
+    // Allow generation from most statuses — the thread has at least a title/snippet from SERP
+    const blockedStatuses = ["generating", "posted"];
+    if (blockedStatuses.includes(thread.status)) {
+      if (thread.status === "generating") {
         return NextResponse.json(
-          {
-            error: `Thread is in '${thread.status}' status. Must be 'classified', 'queued', or 'responded' to generate responses.`,
-          },
-          { status: 400 }
+          { error: "Responses are already being generated for this thread" },
+          { status: 409 }
         );
       }
+      return NextResponse.json(
+        { error: `Thread is in '${thread.status}' status and cannot be regenerated.` },
+        { status: 400 }
+        );
     }
 
-    // Check if responses are already being generated
-    if (thread.status === "generating") {
-      return NextResponse.json(
-        { error: "Responses are already being generated for this thread" },
-        { status: 409 }
-      );
+    // If re-generating for a 'responded' thread, clear existing drafts
+    if (thread.status === "responded") {
+      await supabase
+        .from("responses")
+        .delete()
+        .eq("thread_id", validated.thread_id)
+        .eq("status", "draft");
     }
+
+
 
     // Check existing non-draft responses to avoid duplicates
     const { count: existingResponses } = await supabase
