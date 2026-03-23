@@ -8,7 +8,7 @@ import { Building2, ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ClientSelector() {
-  const { selectedClientId, selectedClientName, setSelectedClient } =
+  const { selectedClientId, selectedClientName, setSelectedClient, _hasHydrated } =
     useClientContext();
   const [clients, setClients] = useState<Client[]>([]);
   const [open, setOpen] = useState(false);
@@ -16,6 +16,7 @@ export function ClientSelector() {
   const supabase = createClient();
 
   useEffect(() => {
+    if (!_hasHydrated) return; // Wait for localStorage to load before deciding
     async function fetchClients() {
       const { data } = await supabase
         .from("clients")
@@ -25,7 +26,7 @@ export function ClientSelector() {
 
       if (data) {
         setClients(data);
-        // Auto-select first client if none selected
+        // Auto-select first client only if nothing was persisted
         if (!selectedClientId && data.length > 0) {
           setSelectedClient(data[0].id, data[0].name);
         }
@@ -34,7 +35,7 @@ export function ClientSelector() {
     }
     fetchClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [_hasHydrated]);
 
   if (loading) {
     return (
