@@ -6,10 +6,10 @@ import { runActor } from "@/lib/apify/client";
 import type { EnrichmentAgent, EnrichedThread } from "../interfaces";
 import { ApifyActorError } from "@/lib/utils/errors";
 
-// Apify actors per platform
+// Apify actors per platform (community actors, not apify/ namespace)
 const ACTORS = {
-  reddit: "apify/reddit-scraper",
-  quora: "apify/quora-scraper",
+  reddit: "trudax/reddit-scraper",
+  quora: "crawlerbros/quora-scraper",
   facebook_groups: "apify/facebook-posts-scraper",
 } as const;
 
