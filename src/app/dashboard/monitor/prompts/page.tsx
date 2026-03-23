@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useClientContext } from "@/hooks/use-client-context";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PromptTable } from "@/components/monitor/prompt-table";
 import { TemplatePicker } from "@/components/monitor/template-picker";
-import { MessageSquare, X, CheckCircle2, XCircle, Clock, Loader2 } from "lucide-react";
+import { MessageSquare, X, CheckCircle2, XCircle, Clock, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PromptRow {
@@ -60,14 +60,15 @@ export default function MonitorPromptsPage() {
   const [newPromptText, setNewPromptText] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Quick test state
+  // Quick test modal state
+  const [showTestModal, setShowTestModal] = useState(false);
   const [testingPromptId, setTestingPromptId] = useState<string | null>(null);
+  const [testLoading, setTestLoading] = useState(false);
   const [testResult, setTestResult] = useState<QuickTestResult | null>(null);
   const [testError, setTestError] = useState<string | null>(null);
   const [testDuration, setTestDuration] = useState<number | null>(null);
   const [testPromptText, setTestPromptText] = useState<string>("");
   const [testModel, setTestModel] = useState<string>("");
-  const resultPanelRef = useRef<HTMLDivElement>(null);
 
   const loadData = useCallback(async () => {
     if (!selectedClientId) return;
@@ -125,24 +126,21 @@ export default function MonitorPromptsPage() {
     }
   };
 
-  const scrollToResult = useCallback(() => {
-    // Small delay to let React render the panel first
-    setTimeout(() => {
-      resultPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  }, []);
-
   const handleQuickTest = async (promptText: string, model: string) => {
     if (!selectedClientId) return;
 
-    // Find the prompt row to set loading state
+    // Find the prompt row to set loading state on the table
     const prompt = prompts.find((p) => p.prompt_text === promptText);
     setTestingPromptId(prompt?.id || "custom");
+
+    // Open modal immediately with loading state
     setTestResult(null);
     setTestError(null);
     setTestDuration(null);
     setTestPromptText(promptText);
     setTestModel(model);
+    setTestLoading(true);
+    setShowTestModal(true);
 
     try {
       const res = await fetch("/api/monitor/test", {
@@ -159,7 +157,6 @@ export default function MonitorPromptsPage() {
             ? "Request timed out — the AI model took too long to respond. Try again."
             : `Server error (${res.status}). Check Vercel function logs.`
         );
-        scrollToResult();
         return;
       }
 
@@ -167,23 +164,28 @@ export default function MonitorPromptsPage() {
 
       if (!res.ok) {
         setTestError(data.details ? `${data.error}: ${data.details}` : data.error || "Test failed");
-        scrollToResult();
         return;
       }
 
       setTestResult(data.result);
       setTestDuration(data.durationMs);
-      scrollToResult();
     } catch (err) {
       setTestError(
         err instanceof Error
           ? `Request failed: ${err.message}`
           : "Test failed — check browser console for details"
       );
-      scrollToResult();
     } finally {
+      setTestLoading(false);
       setTestingPromptId(null);
     }
+  };
+
+  const closeTestModal = () => {
+    setShowTestModal(false);
+    setTestResult(null);
+    setTestError(null);
+    setTestLoading(false);
   };
 
   const handleSelectTemplate = async (template: PromptTemplate) => {
@@ -229,7 +231,7 @@ export default function MonitorPromptsPage() {
           <h2 className="text-lg font-semibold">Custom Prompts</h2>
           <p className="text-sm text-muted-foreground">
             Manage prompt variations for {selectedClientName}&apos;s AI monitoring.
-            Click any model badge to quick-test a prompt.
+            Click any model badge or the Test button to quick-test a prompt.
           </p>
         </div>
         <div className="flex gap-2">
@@ -292,38 +294,6 @@ export default function MonitorPromptsPage() {
         />
       )}
 
-      {/* Loading indicator while test is running */}
-      {testingPromptId && (
-        <div ref={resultPanelRef} className="rounded-lg border border-primary/30 bg-card p-6 flex items-center gap-3">
-          <Loader2 className="h-5 w-5 animate-spin text-primary" />
-          <div>
-            <p className="text-sm font-medium text-foreground">
-              Testing on {MODEL_LABELS[testModel] || testModel}...
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              This usually takes 10-30 seconds. The AI model is generating a response.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Quick Test Result Panel — renders after the table so it's always visible */}
-      {!testingPromptId && (testResult || testError) && (
-        <div ref={resultPanelRef}>
-          <QuickTestPanel
-            result={testResult}
-            error={testError}
-            durationMs={testDuration}
-            promptText={testPromptText}
-            model={testModel}
-            onClose={() => {
-              setTestResult(null);
-              setTestError(null);
-            }}
-          />
-        </div>
-      )}
-
       {showTemplatePicker && (
         <TemplatePicker
           templates={templates}
@@ -331,13 +301,29 @@ export default function MonitorPromptsPage() {
           onClose={() => setShowTemplatePicker(false)}
         />
       )}
+
+      {/* ---- Quick Test Modal ---- */}
+      {showTestModal && (
+        <QuickTestModal
+          loading={testLoading}
+          result={testResult}
+          error={testError}
+          durationMs={testDuration}
+          promptText={testPromptText}
+          model={testModel}
+          onClose={closeTestModal}
+        />
+      )}
     </div>
   );
 }
 
-// ---- Quick Test Result Panel ----
+// ============================================================
+// Quick Test Modal — full-screen overlay, impossible to miss
+// ============================================================
 
-function QuickTestPanel({
+function QuickTestModal({
+  loading,
   result,
   error,
   durationMs,
@@ -345,6 +331,7 @@ function QuickTestPanel({
   model,
   onClose,
 }: {
+  loading: boolean;
   result: QuickTestResult | null;
   error: string | null;
   durationMs: number | null;
@@ -353,128 +340,198 @@ function QuickTestPanel({
   onClose: () => void;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-muted/20 border-b border-border">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium">Quick Test Result</span>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-            {MODEL_LABELS[model] || model}
-          </span>
-          {durationMs && (
-            <span className="text-xs text-muted-foreground flex items-center gap-1">
-              <Clock className="h-3 w-3" />
-              {(durationMs / 1000).toFixed(1)}s
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={loading ? undefined : onClose} />
+
+      {/* Modal */}
+      <div className="relative w-full max-w-2xl max-h-[85vh] mx-4 rounded-xl border border-border bg-card shadow-2xl overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20 shrink-0">
+          <div className="flex items-center gap-3">
+            <span className="text-base font-semibold">Quick Test Result</span>
+            <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">
+              {MODEL_LABELS[model] || model}
             </span>
-          )}
-        </div>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-          <X className="h-4 w-4" />
-        </button>
-      </div>
-
-      {/* Prompt */}
-      <div className="px-4 py-2 bg-muted/10 border-b border-border">
-        <p className="text-xs text-muted-foreground">Prompt:</p>
-        <p className="text-sm text-foreground">{promptText}</p>
-      </div>
-
-      {error ? (
-        <div className="px-4 py-4">
-          <p className="text-sm text-red-400">{error}</p>
-        </div>
-      ) : result ? (
-        <div className="divide-y divide-border">
-          {/* Key metrics */}
-          <div className="px-4 py-3 flex flex-wrap gap-4">
-            <MetricBadge
-              label="Brand Mentioned"
-              value={result.brandMentioned}
-              icon={result.brandMentioned ? CheckCircle2 : XCircle}
-            />
-            <MetricBadge
-              label="Recommended"
-              value={result.brandRecommended}
-              icon={result.brandRecommended ? CheckCircle2 : XCircle}
-            />
-            <MetricBadge
-              label="Linked"
-              value={result.brandLinked}
-              icon={result.brandLinked ? CheckCircle2 : XCircle}
-            />
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-muted-foreground">Prominence:</span>
-              <span className={cn(
-                "text-sm font-medium",
-                result.prominenceScore >= 70 ? "text-emerald-400" :
-                result.prominenceScore >= 40 ? "text-amber-400" : "text-red-400"
-              )}>
-                {result.prominenceScore}/100
+            {durationMs && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {(durationMs / 1000).toFixed(1)}s
               </span>
-            </div>
-            {result.sentiment && (
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">Sentiment:</span>
-                <span className={cn(
-                  "text-sm font-medium",
-                  result.sentiment === "positive" ? "text-emerald-400" :
-                  result.sentiment === "negative" ? "text-red-400" : "text-muted-foreground"
-                )}>
-                  {result.sentiment}
-                </span>
-              </div>
             )}
           </div>
-
-          {/* Mention context */}
-          {result.mentionContext && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-muted-foreground mb-1">Mention Context:</p>
-              <p className="text-sm text-foreground bg-muted/10 rounded p-2 italic">
-                &ldquo;{result.mentionContext}&rdquo;
-              </p>
-            </div>
+          {!loading && (
+            <button onClick={onClose} className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted/30">
+              <X className="h-5 w-5" />
+            </button>
           )}
-
-          {/* Competitors mentioned */}
-          {result.competitorsMentioned.length > 0 && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-muted-foreground mb-1">Competitors Mentioned:</p>
-              <div className="flex flex-wrap gap-1.5">
-                {result.competitorsMentioned.map((c) => (
-                  <span key={c} className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400">
-                    {c}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Sources cited */}
-          {result.sourcesCited.length > 0 && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-muted-foreground mb-1">Sources Cited ({result.sourcesCited.length}):</p>
-              <div className="space-y-0.5 max-h-24 overflow-y-auto">
-                {result.sourcesCited.map((url, i) => (
-                  <p key={i} className="text-xs text-blue-400 truncate font-mono">{url}</p>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Full response (collapsible) */}
-          <details className="group">
-            <summary className="px-4 py-3 text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
-              Full AI Response (click to expand)
-            </summary>
-            <div className="px-4 pb-4">
-              <div className="text-sm text-foreground/80 bg-muted/10 rounded p-3 max-h-64 overflow-y-auto whitespace-pre-wrap font-mono text-xs leading-relaxed">
-                {result.fullResponse}
-              </div>
-            </div>
-          </details>
         </div>
-      ) : null}
+
+        {/* Prompt */}
+        <div className="px-6 py-3 bg-muted/10 border-b border-border shrink-0">
+          <p className="text-xs text-muted-foreground">Prompt:</p>
+          <p className="text-sm text-foreground">{promptText}</p>
+        </div>
+
+        {/* Body — scrollable */}
+        <div className="overflow-y-auto flex-1">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-4">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+              <div className="text-center">
+                <p className="text-sm font-medium text-foreground">
+                  Testing on {MODEL_LABELS[model] || model}...
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  This usually takes 10-30 seconds
+                </p>
+              </div>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-4">
+              <AlertTriangle className="h-10 w-10 text-red-400" />
+              <div className="text-center max-w-md">
+                <p className="text-sm font-medium text-red-400">Test Failed</p>
+                <p className="text-sm text-muted-foreground mt-2">{error}</p>
+              </div>
+            </div>
+          ) : result ? (
+            <div className="divide-y divide-border">
+              {/* Big verdict banner */}
+              <div className={cn(
+                "px-6 py-5",
+                result.brandMentioned ? "bg-emerald-500/5" : "bg-red-500/5"
+              )}>
+                <div className="flex items-center gap-3">
+                  {result.brandMentioned ? (
+                    <CheckCircle2 className="h-8 w-8 text-emerald-400 shrink-0" />
+                  ) : (
+                    <XCircle className="h-8 w-8 text-red-400 shrink-0" />
+                  )}
+                  <div>
+                    <p className={cn(
+                      "text-lg font-semibold",
+                      result.brandMentioned ? "text-emerald-400" : "text-red-400"
+                    )}>
+                      {result.brandMentioned
+                        ? "Brand Found in Response"
+                        : "Brand Not Found in Response"}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {result.brandMentioned
+                        ? result.brandRecommended
+                          ? "Your brand was mentioned AND recommended by the AI model."
+                          : "Your brand was mentioned but not explicitly recommended."
+                        : "The AI model did not mention your brand for this prompt."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Metrics row */}
+              <div className="px-6 py-4 flex flex-wrap gap-6">
+                <MetricBadge
+                  label="Mentioned"
+                  value={result.brandMentioned}
+                  icon={result.brandMentioned ? CheckCircle2 : XCircle}
+                />
+                <MetricBadge
+                  label="Recommended"
+                  value={result.brandRecommended}
+                  icon={result.brandRecommended ? CheckCircle2 : XCircle}
+                />
+                <MetricBadge
+                  label="Linked"
+                  value={result.brandLinked}
+                  icon={result.brandLinked ? CheckCircle2 : XCircle}
+                />
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-muted-foreground">Prominence:</span>
+                  <span className={cn(
+                    "text-sm font-semibold",
+                    result.prominenceScore >= 70 ? "text-emerald-400" :
+                    result.prominenceScore >= 40 ? "text-amber-400" : "text-red-400"
+                  )}>
+                    {result.prominenceScore}/100
+                  </span>
+                </div>
+                {result.sentiment && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-muted-foreground">Sentiment:</span>
+                    <span className={cn(
+                      "text-sm font-semibold",
+                      result.sentiment === "positive" ? "text-emerald-400" :
+                      result.sentiment === "negative" ? "text-red-400" : "text-muted-foreground"
+                    )}>
+                      {result.sentiment}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Mention context */}
+              {result.mentionContext && (
+                <div className="px-6 py-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">How your brand was mentioned:</p>
+                  <p className="text-sm text-foreground bg-muted/10 rounded-lg p-3 italic border border-border">
+                    &ldquo;{result.mentionContext}&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* Competitors mentioned */}
+              {result.competitorsMentioned.length > 0 && (
+                <div className="px-6 py-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    Competitors mentioned ({result.competitorsMentioned.length}):
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.competitorsMentioned.map((c) => (
+                      <span key={c} className="text-xs px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 font-medium">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sources cited */}
+              {result.sourcesCited.length > 0 && (
+                <div className="px-6 py-4">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">
+                    Sources cited ({result.sourcesCited.length}):
+                  </p>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {result.sourcesCited.map((url, i) => (
+                      <p key={i} className="text-xs text-blue-400 truncate font-mono">{url}</p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Full response */}
+              <div className="px-6 py-4">
+                <p className="text-xs font-medium text-muted-foreground mb-2">Full AI Response:</p>
+                <div className="text-foreground/80 bg-muted/10 rounded-lg p-4 max-h-64 overflow-y-auto whitespace-pre-wrap font-mono text-xs leading-relaxed border border-border">
+                  {result.fullResponse}
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </div>
+
+        {/* Footer */}
+        {!loading && (
+          <div className="px-6 py-3 border-t border-border bg-muted/10 shrink-0 flex justify-end">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -491,7 +548,7 @@ function MetricBadge({
   return (
     <div className="flex items-center gap-1.5">
       <Icon className={cn("h-4 w-4", value ? "text-emerald-400" : "text-red-400")} />
-      <span className={cn("text-sm", value ? "text-emerald-400" : "text-red-400")}>
+      <span className={cn("text-sm font-medium", value ? "text-emerald-400" : "text-red-400")}>
         {label}
       </span>
     </div>
