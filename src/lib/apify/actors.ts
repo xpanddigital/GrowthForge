@@ -13,7 +13,7 @@ export const ACTOR_IDS = {
   REDDIT_SCRAPER: "apify/reddit-scraper",
 
   /** Quora Scraper — scrapes Quora questions and answers */
-  QUORA_SCRAPER: "trudax/quora-scraper",
+  QUORA_SCRAPER: "crawlerbros/quora-scraper",
 } as const;
 
 // ============================================
@@ -140,7 +140,7 @@ export function buildRedditInput(urls: string[]): RedditScraperInput {
  */
 export function buildQuoraInput(urls: string[]): QuoraScraperInput {
   return {
-    startUrls: urls.map((url) => ({ url })),
+    directUrls: urls,
     maxAnswers: 10,
     maxItems: urls.length,
     proxy: {
@@ -197,7 +197,7 @@ export interface RedditScraperInput {
 }
 
 export interface QuoraScraperInput {
-  startUrls: Array<{ url: string }>;
+  directUrls: string[];
   maxAnswers: number;
   maxItems: number;
   proxy: {

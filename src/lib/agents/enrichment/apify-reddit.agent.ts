@@ -77,7 +77,7 @@ export class ApifyRedditAgent implements EnrichmentAgent {
     const result = await runActor(
       ACTORS.quora,
       {
-        startUrls: [{ url: threadUrl }],
+        directUrls: [threadUrl],
         maxAnswers: 10,
         proxy: { useApifyProxy: true },
       },
