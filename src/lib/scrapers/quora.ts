@@ -99,7 +99,7 @@ Extract up to 5 top answers. If the page is inaccessible, return the JSON with e
       thread_date: parsed.date || new Date().toISOString(),
       top_comments: topComments,
     };
-  } catch (parseErr) {
+  } catch {
     // If JSON parsing fails, use the raw text as body
     return {
       body_text: content.substring(0, 2000),
