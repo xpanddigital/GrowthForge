@@ -318,7 +318,7 @@ const discoveryScan = inngest.createFunction(
     // -----------------------------------------------------------------------
     // Step 4 & 5: Dedup and insert new threads
     // -----------------------------------------------------------------------
-    const { insertedCount, skippedCount, newThreadIds } = await step.run(
+    const { insertedCount, skippedCount } = await step.run(
       "dedup-and-insert",
       async () => {
         if (allDiscovered.length === 0) {
