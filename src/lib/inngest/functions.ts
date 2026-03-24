@@ -253,21 +253,28 @@ const discoveryScan = inngest.createFunction(
 
     // -----------------------------------------------------------------------
     // Step 2 & 3: Run SERP scanner and AI prober in parallel
+    // Both are wrapped in try/catch — if SERP fails, we still enrich
+    // existing un-enriched threads. The pipeline never fully stops.
     // -----------------------------------------------------------------------
-    const serpResults = await step.run("serp-scan", async () => {
-      return logAgentActionBg(
-        {
-          agencyId,
-          clientId,
-          agentType: "discovery",
-          agentName: agents.discovery.name,
-          trigger: "inngest_job",
-          triggerReferenceId: runId,
-          inputSummary: { keywordCount: keywords.length },
-        },
-        () => agents.discovery.discover(clientId, keywords)
-      );
-    });
+    let serpResults: DiscoveredThread[] = [];
+    try {
+      serpResults = await step.run("serp-scan", async () => {
+        return logAgentActionBg(
+          {
+            agencyId,
+            clientId,
+            agentType: "discovery",
+            agentName: agents.discovery.name,
+            trigger: "inngest_job",
+            triggerReferenceId: runId,
+            inputSummary: { keywordCount: keywords.length },
+          },
+          () => agents.discovery.discover(clientId, keywords)
+        );
+      });
+    } catch (serpError) {
+      console.error("[discovery] SERP scan failed, will still try to enrich existing threads:", serpError);
+    }
 
     // AI probing runs as a separate step (effectively parallel at Inngest level)
     let aiProbeResults: DiscoveredThread[] = [];
@@ -431,20 +438,32 @@ const discoveryScan = inngest.createFunction(
     });
 
     // -----------------------------------------------------------------------
-    // Step 7: Trigger enrichment for newly inserted threads
+    // Step 7: Trigger enrichment — include both new threads AND any existing
+    // un-enriched threads (e.g. from previous failed enrichment runs).
+    // This ensures the pipeline recovers from partial failures.
     // -----------------------------------------------------------------------
-    if (newThreadIds.length > 0) {
-      await step.run("trigger-enrichment", async () => {
+    await step.run("trigger-enrichment", async () => {
+      // Find ALL un-enriched threads for this client, not just new ones
+      const { data: unenriched } = await supabase
+        .from("threads")
+        .select("id")
+        .eq("client_id", clientId)
+        .eq("is_enriched", false)
+        .in("status", ["new", "enriching"]);
+
+      const allThreadIds = (unenriched || []).map((t: { id: string }) => t.id);
+
+      if (allThreadIds.length > 0) {
         await inngest.send({
           name: "discovery/enrich",
           data: {
             clientId,
-            threadIds: newThreadIds,
+            threadIds: allThreadIds,
             runId,
           },
         });
-      });
-    }
+      }
+    });
 
     return {
       status: "completed",
@@ -524,6 +543,7 @@ const discoveryEnrich = inngest.createFunction(
         .update({
           status: "enriching",
           status_changed_at: new Date().toISOString(),
+          enrichment_error: null, // Clear old errors for retry
         })
         .in("id", ids);
     });
