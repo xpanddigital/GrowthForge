@@ -46,8 +46,43 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get user's agency for limit check
+    const { data: user } = await supabase
+      .from("users")
+      .select("agency_id")
+      .eq("id", authUser.user.id)
+      .single();
+
     const body = await request.json();
     const validated = createKeywordsSchema.parse(body);
+
+    // Check keyword limit per client
+    if (user) {
+      const { data: agency } = await supabase
+        .from("agencies")
+        .select("max_keywords_per_client")
+        .eq("id", user.agency_id)
+        .single();
+
+      if (agency) {
+        const { count: currentCount } = await supabase
+          .from("keywords")
+          .select("id", { count: "exact", head: true })
+          .eq("client_id", validated.client_id)
+          .eq("is_active", true);
+
+        const newTotal = (currentCount || 0) + validated.keywords.length;
+        if (newTotal > agency.max_keywords_per_client) {
+          return NextResponse.json(
+            {
+              error: `Keyword limit reached. You can have up to ${agency.max_keywords_per_client} keywords per client. Currently: ${currentCount}, trying to add: ${validated.keywords.length}.`,
+              code: "KEYWORD_LIMIT_REACHED",
+            },
+            { status: 403 }
+          );
+        }
+      }
+    }
 
     const records = validated.keywords.map((kw) => ({
       client_id: validated.client_id,

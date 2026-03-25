@@ -51,8 +51,8 @@ export default function SignupPage() {
           }),
         });
 
-        // Redirect to dashboard
-        window.location.href = "/dashboard";
+        // Redirect to onboarding for new users
+        window.location.href = "/dashboard/onboarding";
         return;
       }
 

@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { inngest } from "@/lib/inngest/client";
 import { rateLimit } from "@/lib/utils/rate-limit";
 import { RateLimitError } from "@/lib/utils/errors";
+import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
 // POST /api/monitor/run — trigger manual monitoring scan
 export async function POST(req: NextRequest) {
@@ -49,6 +51,27 @@ export async function POST(req: NextRequest) {
 
     if (error || !client) {
       return NextResponse.json({ error: "Client not found" }, { status: 404 });
+    }
+
+    // Check credits (estimate: 4 models × 3 credits each = 12 credits minimum)
+    if (userData) {
+      const monitorCost = CREDIT_COSTS.monitor_test * 4;
+      try {
+        await checkCredits(userData.agency_id, monitorCost);
+      } catch (err) {
+        if (err instanceof InsufficientCreditsError) {
+          return NextResponse.json(
+            {
+              error: `Insufficient credits. Monitor scan requires ~${monitorCost} credits. You have ${err.available}.`,
+              code: "INSUFFICIENT_CREDITS",
+              required: monitorCost,
+              available: err.available,
+            },
+            { status: 402 }
+          );
+        }
+        throw err;
+      }
     }
 
     // Queue the monitoring run

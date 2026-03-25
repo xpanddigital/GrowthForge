@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { rateLimit } from "@/lib/utils/rate-limit";
+import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { CREDIT_COSTS } from "@/lib/billing/stripe";
 import { z } from "zod";
 
 const triggerAuditSchema = z.object({
@@ -64,6 +66,25 @@ export async function POST(request: Request) {
         { error: "Client not found or does not belong to your agency" },
         { status: 404 }
       );
+    }
+
+    // Check credits
+    const creditCost = validated.audit_type === "full" ? CREDIT_COSTS.full_audit : CREDIT_COSTS.quick_audit;
+    try {
+      await checkCredits(user.agency_id, creditCost);
+    } catch (err) {
+      if (err instanceof InsufficientCreditsError) {
+        return NextResponse.json(
+          {
+            error: `Insufficient credits. This audit requires ${creditCost} credits. You have ${err.available}.`,
+            code: "INSUFFICIENT_CREDITS",
+            required: creditCost,
+            available: err.available,
+          },
+          { status: 402 }
+        );
+      }
+      throw err;
     }
 
     // Create the main audit record
