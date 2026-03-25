@@ -170,7 +170,7 @@ function scoreCitationBlock(text: string): CitabilityDimension {
 
 function scoreHeadingStructure(
   headings: Array<{ level: number; text: string }>,
-  html: string
+  _html: string
 ): CitabilityDimension {
   let score = 0;
 

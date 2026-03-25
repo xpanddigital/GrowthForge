@@ -9,10 +9,7 @@ import type {
   TechnicalGeoScanResult,
 } from "../interfaces";
 import { auditRobotsTxt } from "@/lib/technical-geo/robots-auditor";
-import {
-  scanContentFreshness,
-  type FreshnessResult,
-} from "@/lib/technical-geo/freshness-tracker";
+import { scanContentFreshness } from "@/lib/technical-geo/freshness-tracker";
 import { scoreContentCitability } from "@/lib/technical-geo/citability-scorer";
 import { checkSchemaSSR } from "@/lib/technical-geo/schema-ssr-checker";
 
