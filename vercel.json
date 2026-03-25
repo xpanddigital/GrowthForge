@@ -1,0 +1,24 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/discovery",
+      "schedule": "0 6 * * 2,5"
+    },
+    {
+      "path": "/api/cron/monitor",
+      "schedule": "0 7 * * 1"
+    },
+    {
+      "path": "/api/cron/entity",
+      "schedule": "0 8 * * 3"
+    },
+    {
+      "path": "/api/cron/reviews",
+      "schedule": "0 9 * * 4"
+    },
+    {
+      "path": "/api/cron/press-coverage",
+      "schedule": "0 10 * * 5"
+    }
+  ]
+}

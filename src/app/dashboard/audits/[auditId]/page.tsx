@@ -223,10 +223,23 @@ export default function AuditDetailPage() {
           </div>
 
           {isCompleted && (
-            <Button variant="outline" onClick={handleRerunAudit}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Re-run Audit
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() =>
+                  window.open(
+                    `/dashboard/audits/${auditId}/report`,
+                    "_blank"
+                  )
+                }
+              >
+                Download Report
+              </Button>
+              <Button variant="outline" onClick={handleRerunAudit}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Re-run Audit
+              </Button>
+            </div>
           )}
         </div>
       </div>

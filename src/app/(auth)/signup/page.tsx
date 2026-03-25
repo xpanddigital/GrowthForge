@@ -6,31 +6,78 @@ import Link from "next/link";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [agencyName, setAgencyName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [usePassword, setUsePassword] = useState(true);
   const supabase = createClient();
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setIsError(false);
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/callback`,
-        data: {
-          full_name: fullName,
+    if (usePassword) {
+      // Password signup
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            agency_name: agencyName || undefined,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      setMessage(error.message);
+      if (error) {
+        setMessage(error.message);
+        setIsError(true);
+        setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // Create agency + user row
+        await fetch("/api/auth/ensure-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agency_name: agencyName || undefined,
+          }),
+        });
+
+        // Redirect to dashboard
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      setMessage("Check your email to verify your account.");
     } else {
-      setMessage("Check your email for the magic link!");
+      // Magic link signup
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/callback`,
+          data: {
+            full_name: fullName,
+            agency_name: agencyName || undefined,
+          },
+        },
+      });
+
+      if (error) {
+        setMessage(error.message);
+        setIsError(true);
+      } else {
+        setMessage("Check your email for the magic link!");
+      }
     }
+
     setLoading(false);
   }
 
@@ -42,7 +89,7 @@ export default function SignupPage() {
             <span className="text-primary">Growth</span>Forge
           </h1>
           <p className="text-sm text-muted-foreground">
-            Create your account
+            Create your agency account
           </p>
         </div>
 
@@ -67,6 +114,26 @@ export default function SignupPage() {
 
           <div className="space-y-2">
             <label
+              htmlFor="agencyName"
+              className="text-sm font-medium leading-none"
+            >
+              Agency Name
+            </label>
+            <input
+              id="agencyName"
+              type="text"
+              placeholder="Your Agency"
+              value={agencyName}
+              onChange={(e) => setAgencyName(e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+            <p className="text-xs text-muted-foreground">
+              Optional — we&apos;ll create one from your name if left blank.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <label
               htmlFor="email"
               className="text-sm font-medium leading-none"
             >
@@ -83,17 +150,58 @@ export default function SignupPage() {
             />
           </div>
 
+          {usePassword && (
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium leading-none"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required={usePassword}
+                minLength={8}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={loading}
             className="inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {loading ? "Sending magic link..." : "Get Started"}
+            {loading
+              ? usePassword
+                ? "Creating account..."
+                : "Sending magic link..."
+              : "Get Started — Free"}
           </button>
         </form>
 
+        <button
+          type="button"
+          onClick={() => setUsePassword(!usePassword)}
+          className="block w-full text-center text-sm text-muted-foreground hover:text-foreground"
+        >
+          {usePassword
+            ? "Use magic link instead"
+            : "Use password instead"}
+        </button>
+
         {message && (
-          <p className="text-center text-sm text-muted-foreground">{message}</p>
+          <p
+            className={`text-center text-sm ${
+              isError ? "text-destructive" : "text-muted-foreground"
+            }`}
+          >
+            {message}
+          </p>
         )}
 
         <p className="text-center text-sm text-muted-foreground">
@@ -101,6 +209,10 @@ export default function SignupPage() {
           <Link href="/login" className="text-primary hover:underline">
             Sign in
           </Link>
+        </p>
+
+        <p className="text-center text-xs text-muted-foreground">
+          Start with 100 free credits. No credit card required.
         </p>
       </div>
     </div>
