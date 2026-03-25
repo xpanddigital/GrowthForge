@@ -968,6 +968,10 @@ import { auditFunctions } from "./audit-functions";
 import { entityFunctions } from "./entity-functions";
 import { reviewFunctions } from "./review-functions";
 import { pressFunctions } from "./press-functions";
+import { technicalGeoFunctions } from "./technical-geo-functions";
+import { mentionFunctions } from "./mention-functions";
+import { youtubeGeoFunctions } from "./youtube-geo-functions";
+import { journalistQueryFunctions } from "./journalist-query-functions";
 
 export const functions = [
   discoveryScan,
@@ -979,4 +983,8 @@ export const functions = [
   ...entityFunctions,
   ...reviewFunctions,
   ...pressFunctions,
+  ...technicalGeoFunctions,
+  ...mentionFunctions,
+  ...youtubeGeoFunctions,
+  ...journalistQueryFunctions,
 ];

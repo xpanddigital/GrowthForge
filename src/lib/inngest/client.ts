@@ -154,6 +154,58 @@ type Events = {
       event: "open" | "reply" | "bounce" | "click";
     };
   };
+  // Technical GEO events
+  "technical-geo/scan": {
+    data: {
+      scanId: string;
+      clientId: string;
+      agencyId: string;
+      scanType: "full" | "robots_only" | "freshness_only" | "citability_only" | "schema_ssr_only";
+    };
+  };
+  // Mention Gap Analyzer events
+  "mentions/scan": {
+    data: {
+      clientId: string;
+      agencyId: string;
+      scanId?: string;
+    };
+  };
+  "mentions/analyze-gaps": {
+    data: {
+      clientId: string;
+      agencyId: string;
+    };
+  };
+  // YouTube GEO events
+  "youtube-geo/scan": {
+    data: {
+      clientId: string;
+      agencyId: string;
+      scanId?: string;
+    };
+  };
+  // Analytics events
+  "analytics/pull-traffic": {
+    data: {
+      clientId: string;
+      propertyId: string;
+    };
+  };
+  // Journalist Query events
+  "journalist-queries/scan": {
+    data: {
+      clientId: string;
+      agencyId: string;
+    };
+  };
+  // Report events
+  "reports/generate-competitor": {
+    data: {
+      clientId: string;
+      agencyId: string;
+    };
+  };
 };
 
 export const inngest = new Inngest({

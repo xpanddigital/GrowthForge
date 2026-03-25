@@ -106,6 +106,7 @@ const navigation: NavItem[] = [
       { name: "Journalists", href: "/dashboard/press/journalists", icon: Users },
       { name: "Coverage", href: "/dashboard/press/coverage", icon: Trophy },
       { name: "Calendar", href: "/dashboard/press/calendar", icon: History },
+      { name: "Newsroom", href: "/dashboard/press/newsroom", icon: Globe },
     ],
   },
   {
@@ -134,12 +135,44 @@ const navigation: NavItem[] = [
       { name: "Templates", href: "/dashboard/reviews/templates", icon: Sparkles },
     ],
   },
+  {
+    name: "Technical GEO",
+    href: "/dashboard/technical-geo",
+    icon: Globe,
+    children: [
+      { name: "Overview", href: "/dashboard/technical-geo", icon: Globe },
+      { name: "Freshness", href: "/dashboard/technical-geo/freshness", icon: Activity },
+      { name: "Citability", href: "/dashboard/technical-geo/citability", icon: BarChart3 },
+    ],
+  },
+  {
+    name: "YouTube GEO",
+    href: "/dashboard/youtube",
+    icon: Activity,
+    children: [
+      { name: "Overview", href: "/dashboard/youtube", icon: Activity },
+      { name: "Briefs", href: "/dashboard/youtube/briefs", icon: FileText },
+    ],
+  },
+  {
+    name: "Mentions",
+    href: "/dashboard/mentions",
+    icon: Search,
+    children: [
+      { name: "Overview", href: "/dashboard/mentions", icon: Search },
+      { name: "Gaps", href: "/dashboard/mentions/gaps", icon: Lightbulb },
+    ],
+  },
   { name: "Audits", href: "/dashboard/audits", icon: ClipboardCheck },
+  { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
   {
     name: "Reports",
     href: "/dashboard/reports",
     icon: BarChart3,
-    comingSoon: true,
+    children: [
+      { name: "Overview", href: "/dashboard/reports", icon: BarChart3 },
+      { name: "Competitor", href: "/dashboard/reports/competitor", icon: Users2 },
+    ],
   },
   { name: "Team", href: "/dashboard/team", icon: Users },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },

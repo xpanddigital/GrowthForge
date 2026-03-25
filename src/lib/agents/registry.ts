@@ -51,6 +51,17 @@ import { JournalistDiscoveryAgent } from "./press/journalist-discovery.agent";
 import { PitchGeneratorAgent } from "./press/pitch-generator.agent";
 import { CoverageScannerAgent } from "./press/coverage-scanner.agent";
 
+// Technical GEO agents
+import { TechnicalGeoScanAgent } from "./technical-geo/technical-geo.agent";
+
+// Mention Gap Analyzer agents
+import { LinkedInScannerAgent } from "./mentions/linkedin-scanner.agent";
+import { YouTubeScannerAgent } from "./mentions/youtube-scanner.agent";
+import { ReviewSiteScannerAgent } from "./mentions/review-site-scanner.agent";
+
+// YouTube GEO agents
+import { YouTubeGeoScanAgent } from "./youtube-geo/youtube-geo.agent";
+
 import type {
   DiscoveryAgent,
   EnrichmentAgent,
@@ -100,6 +111,19 @@ export const agents = {
     platform: new PlatformReviewsAgent(),
     sentiment: new SentimentAnalyzerAgent(),
     responseGenerator: new ReviewResponseAgent(),
+  },
+
+  // Technical GEO agents
+  technicalGeo: new TechnicalGeoScanAgent(),
+
+  // YouTube GEO agents
+  youtubeGeo: new YouTubeGeoScanAgent(),
+
+  // Mention Gap Analyzer agents
+  mentions: {
+    linkedin: new LinkedInScannerAgent(),
+    youtube: new YouTubeScannerAgent(),
+    reviewSites: new ReviewSiteScannerAgent(),
   },
 
   // Phase 2: PressForge agents

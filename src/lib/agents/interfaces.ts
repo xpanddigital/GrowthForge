@@ -555,3 +555,93 @@ export interface PressCoverageScannerAgent {
     campaignIds?: string[]
   ): Promise<CoverageItem[]>;
 }
+
+// --- Technical GEO Agent Interfaces ---
+
+import type { RobotsAuditResult } from "@/lib/technical-geo/robots-auditor";
+import type { FreshnessResult } from "@/lib/technical-geo/freshness-tracker";
+import type { CitabilityResult } from "@/lib/technical-geo/citability-scorer";
+import type { SchemaSSRResult } from "@/lib/technical-geo/schema-ssr-checker";
+
+export interface TechnicalGeoScanResult {
+  robotsResult: RobotsAuditResult | null;
+  freshnessResult: FreshnessResult | null;
+  citabilityResult: CitabilityResult | null;
+  schemaSSRResult: SchemaSSRResult | null;
+  compositeScore: number;
+  recommendations: Array<{
+    action: string;
+    impact: "high" | "medium" | "low";
+    effort: "high" | "medium" | "low";
+    module: string;
+  }>;
+}
+
+export interface TechnicalGeoAgent {
+  name: string;
+  scan(
+    websiteUrl: string,
+    scanType: "full" | "robots_only" | "freshness_only" | "citability_only" | "schema_ssr_only",
+    aiCitations?: Record<string, string[]>
+  ): Promise<TechnicalGeoScanResult>;
+}
+
+// --- Mention Gap Analyzer Agent Interfaces ---
+
+export interface MentionScanResult {
+  platform: string;
+  sources: Array<{
+    url: string;
+    title: string;
+    mentionType: "brand" | "competitor" | "both" | "neither";
+    mentionedEntity: string | null;
+    contextSnippet: string | null;
+    authorityEstimate: "high" | "medium" | "low";
+  }>;
+  profileExists: boolean;
+  profileUrl: string | null;
+  reviewCount?: number;
+  averageRating?: number;
+}
+
+export interface MentionScanAgent {
+  name: string;
+  platform: string;
+  scan(
+    brandName: string,
+    brandUrl: string,
+    keywords: string[],
+    competitors: string[]
+  ): Promise<MentionScanResult>;
+}
+
+// --- YouTube GEO Agent Interfaces ---
+
+export interface YouTubeGeoResult {
+  topics: Array<{
+    topic: string;
+    hasClientVideo: boolean;
+    clientVideoUrl: string | null;
+    clientVideoTitle: string | null;
+    competitorVideos: Array<{
+      competitor: string;
+      title: string;
+      url: string;
+      views: number;
+    }>;
+    opportunityScore: number;
+    videoBrief: string | null;
+  }>;
+  overallScore: number;
+  presenceCoverage: number;
+}
+
+export interface YouTubeGeoAgent {
+  name: string;
+  scan(
+    brandName: string,
+    brandUrl: string,
+    keywords: string[],
+    competitors: string[]
+  ): Promise<YouTubeGeoResult>;
+}
