@@ -678,7 +678,7 @@ export default function HomePage() {
                 <ul className="mt-6 mb-8 flex-1 space-y-2">
                   {features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <svg className="h-4 w-4 text-[#00D2D3] flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <svg width="16" height="16" className="text-[#00D2D3] flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       {f}
