@@ -141,6 +141,7 @@ export default function HomePage() {
                 <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
                 <a href="#geo-tracker" className="text-sm text-muted-foreground hover:text-foreground transition-colors">GEO Tracker</a>
                 <a href="#results" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Results</a>
+                <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -608,6 +609,105 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── Pricing ─── */}
+      <section id="pricing" className="scroll-mt-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-medium text-[#00D2D3] uppercase tracking-widest">Pricing</span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mt-3 mb-4">
+              Simple, Credit-Based Pricing
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Start with a free AI Visibility Audit. Pick a plan when you&apos;re ready to run campaigns.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                name: "Starter",
+                price: "$99",
+                credits: "500",
+                clients: "5 clients",
+                keywords: "50 keywords",
+                features: ["Citation Engine", "AI Monitor", "Email Support"],
+                cta: "Get Started",
+                highlighted: false,
+              },
+              {
+                name: "Growth",
+                price: "$249",
+                credits: "2,000",
+                clients: "15 clients",
+                keywords: "200 keywords",
+                features: ["Everything in Starter", "Entity Sync", "Review Engine", "Priority Support"],
+                cta: "Get Started",
+                highlighted: true,
+              },
+              {
+                name: "Agency Pro",
+                price: "$499",
+                credits: "10,000",
+                clients: "50 clients",
+                keywords: "500 keywords",
+                features: ["Everything in Growth", "PressForge", "Full Audit Suite", "Dedicated Support"],
+                cta: "Get Started",
+                highlighted: false,
+              },
+            ].map(({ name, price, credits, clients, keywords, features, cta, highlighted }) => (
+              <div
+                key={name}
+                className={`relative rounded-xl border p-8 flex flex-col ${
+                  highlighted
+                    ? "border-[#6C5CE7]/50 bg-[#6C5CE7]/5 ring-1 ring-[#6C5CE7]/20"
+                    : "border-white/10 bg-white/[0.02]"
+                }`}
+              >
+                {highlighted && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#6C5CE7] px-3 py-0.5 text-xs font-semibold text-white">
+                    Most Popular
+                  </span>
+                )}
+                <h3 className="text-lg font-semibold">{name}</h3>
+                <div className="mt-4 mb-6">
+                  <span className="text-4xl font-bold">{price}</span>
+                  <span className="text-muted-foreground">/mo</span>
+                </div>
+                <p className="text-sm text-muted-foreground mb-1">{credits} credits/mo</p>
+                <p className="text-sm text-muted-foreground mb-1">{clients} &middot; {keywords}</p>
+                <ul className="mt-6 mb-8 flex-1 space-y-2">
+                  {features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <svg className="h-4 w-4 text-[#00D2D3] flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/signup"
+                  className={`inline-flex h-11 items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
+                    highlighted
+                      ? "gradient-bg text-white hover:opacity-90"
+                      : "border border-white/10 bg-white/5 hover:bg-white/10"
+                  }`}
+                >
+                  {cta}
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            Enterprise plans with custom limits available.{" "}
+            <a href="mailto:joel@xpanddigital.com" className="text-[#6C5CE7] hover:underline">
+              Contact us
+            </a>
+          </p>
+        </div>
+      </section>
+
       {/* ─── Final CTA ─── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -661,6 +761,7 @@ export default function HomePage() {
               <a href="#features" className="hover:text-foreground transition-colors">Features</a>
               <a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a>
               <a href="#geo-tracker" className="hover:text-foreground transition-colors">GEO Tracker</a>
+              <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
               <Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link>
             </div>
           </div>

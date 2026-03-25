@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { triggerScanSchema } from "@/lib/utils/validators";
-import { handleApiError } from "@/lib/utils/errors";
+import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
+import { rateLimit } from "@/lib/utils/rate-limit";
 
 // POST /api/discovery/scan — Trigger a manual discovery scan
 export async function POST(request: Request) {
@@ -33,6 +34,9 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
+
+    // Rate limit: max 5 scans per hour per agency
+    rateLimit(`discovery:${user.agency_id}`, { maxRequests: 5, windowMs: 3_600_000 });
 
     // Parse and validate request body
     const body = await request.json();

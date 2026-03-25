@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
-import { handleApiError } from "@/lib/utils/errors";
+import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
+import { rateLimit } from "@/lib/utils/rate-limit";
 import { z } from "zod";
 
 const triggerAuditSchema = z.object({
@@ -41,6 +42,9 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
+
+    // Rate limit: max 3 audits per hour per agency
+    rateLimit(`audits:${user.agency_id}`, { maxRequests: 3, windowMs: 3_600_000 });
 
     // Parse and validate
     const body = await request.json();

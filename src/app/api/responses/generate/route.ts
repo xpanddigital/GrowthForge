@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { generateResponsesSchema } from "@/lib/utils/validators";
-import { handleApiError } from "@/lib/utils/errors";
+import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
+import { rateLimit } from "@/lib/utils/rate-limit";
 
 // POST /api/responses/generate — Generate 3 response variants for a thread
 export async function POST(request: Request) {
@@ -35,6 +36,9 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
+
+    // Rate limit: max 10 response generations per minute per agency
+    rateLimit(`responses:${user.agency_id}`, { maxRequests: 10, windowMs: 60_000 });
 
     // Parse and validate request body
     const body = await request.json();
