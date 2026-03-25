@@ -80,7 +80,7 @@ export async function scoreContentCitability(
   // Heuristic scoring pass
   const dimensions: CitabilityDimension[] = [
     scoreCitationBlock(textContent),
-    scoreHeadingStructure(headings, html),
+    scoreHeadingStructure(headings),
     scoreStatDensity(textContent),
     scoreSectionLength(sections),
     scoreFaqPresence(html, textContent),
@@ -169,8 +169,7 @@ function scoreCitationBlock(text: string): CitabilityDimension {
 }
 
 function scoreHeadingStructure(
-  headings: Array<{ level: number; text: string }>,
-  _html: string
+  headings: Array<{ level: number; text: string }>
 ): CitabilityDimension {
   let score = 0;
 
