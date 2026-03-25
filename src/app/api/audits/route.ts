@@ -3,9 +3,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const triggerAuditSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   audit_type: z
     .enum(["full", "citation_only", "ai_presence_only", "quick"])
     .default("full"),

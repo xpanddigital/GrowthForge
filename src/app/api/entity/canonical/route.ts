@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const createCanonicalSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   canonical_name: z.string().min(1, "canonical_name is required"),
   canonical_description: z.string().min(1, "canonical_description is required"),
   canonical_category: z.string().min(1, "canonical_category is required"),

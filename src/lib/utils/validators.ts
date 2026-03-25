@@ -10,6 +10,13 @@ import {
   CALENDAR_EVENT_TYPES,
 } from "@/types/enums";
 
+// Custom UUID validation that accepts any hex UUID format (including seed data IDs)
+// Zod's built-in .uuid() enforces RFC 4122 version bits which rejects our seed UUIDs
+export const uuidLike = z.string().regex(
+  /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+  "Invalid UUID format"
+);
+
 // Client validation
 export const createClientSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -31,7 +38,7 @@ export const updateClientSchema = createClientSchema.partial().extend({
 
 // Keyword validation
 export const createKeywordsSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   keywords: z
     .array(
       z.object({
@@ -58,13 +65,13 @@ export const updateKeywordSchema = z.object({
 
 // Thread validation
 export const triggerScanSchema = z.object({
-  client_id: z.string().uuid(),
-  keyword_ids: z.array(z.string().uuid()).optional(),
+  client_id: uuidLike,
+  keyword_ids: z.array(uuidLike).optional(),
 });
 
 // Response validation
 export const generateResponsesSchema = z.object({
-  thread_id: z.string().uuid(),
+  thread_id: uuidLike,
 });
 
 export const updateResponseSchema = z.object({
@@ -89,17 +96,17 @@ export const responseVariantSchema = z.object({
 
 // Campaign validation
 export const createPressCampaignSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   name: z.string().min(1).max(200),
   headline: z.string().max(300).optional(),
   angle: z.string().max(1000).optional(),
   pr_type: z.enum(PR_TYPES).optional().default("expert_commentary"),
-  idea_id: z.string().uuid().optional(),
-  calendar_event_id: z.string().uuid().optional(),
+  idea_id: uuidLike.optional(),
+  calendar_event_id: uuidLike.optional(),
   target_date: z.string().optional(),
   target_region: z.string().max(10).optional().default("AU"),
   target_publications: z.array(z.string().max(200)).max(20).optional().default([]),
-  spokesperson_id: z.string().uuid().optional(),
+  spokesperson_id: uuidLike.optional(),
   notes: z.string().max(2000).optional(),
 });
 
@@ -111,14 +118,14 @@ export const updatePressCampaignSchema = z.object({
   target_date: z.string().optional(),
   target_region: z.string().max(10).optional(),
   target_publications: z.array(z.string().max(200)).max(20).optional(),
-  spokesperson_id: z.string().uuid().nullable().optional(),
+  spokesperson_id: uuidLike.nullable().optional(),
   status: z.enum(PRESS_CAMPAIGN_STATUSES).optional(),
   notes: z.string().max(2000).optional(),
 });
 
 // Spokesperson validation
 export const createSpokespersonSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   name: z.string().min(1).max(100),
   title: z.string().min(1).max(200),
   bio: z.string().max(2000).optional(),
@@ -145,12 +152,12 @@ export const updateSpokespersonSchema = createSpokespersonSchema
 
 // Press release validation
 export const generatePressReleaseSchema = z.object({
-  campaign_id: z.string().uuid(),
+  campaign_id: uuidLike,
   length: z.enum(["short", "standard", "detailed"]).optional().default("standard"),
 });
 
 export const approvePressReleaseSchema = z.object({
-  release_id: z.string().uuid(),
+  release_id: uuidLike,
 });
 
 // Journalist validation
@@ -176,8 +183,8 @@ export const updateJournalistSchema = createJournalistSchema.partial().extend({
 
 // Ideation validation
 export const triggerIdeationSchema = z.object({
-  client_id: z.string().uuid(),
-  spokesperson_id: z.string().uuid(),
+  client_id: uuidLike,
+  spokesperson_id: uuidLike,
   month: z.number().int().min(1).max(12),
   year: z.number().int().min(2024).max(2030),
   count: z.number().int().min(1).max(10).optional().default(5),
@@ -185,25 +192,25 @@ export const triggerIdeationSchema = z.object({
 
 // Journalist discovery validation
 export const triggerJournalistDiscoverySchema = z.object({
-  campaign_id: z.string().uuid(),
+  campaign_id: uuidLike,
   target_count: z.number().int().min(10).max(200).optional().default(100),
 });
 
 // Pitch generation validation
 export const triggerPitchGenerationSchema = z.object({
-  campaign_id: z.string().uuid(),
+  campaign_id: uuidLike,
 });
 
 // Outreach validation
 export const sendOutreachSchema = z.object({
-  campaign_id: z.string().uuid(),
+  campaign_id: uuidLike,
 });
 
 // Coverage validation
 export const createCoverageSchema = z.object({
-  client_id: z.string().uuid(),
-  campaign_id: z.string().uuid().optional(),
-  journalist_id: z.string().uuid().optional(),
+  client_id: uuidLike,
+  campaign_id: uuidLike.optional(),
+  journalist_id: uuidLike.optional(),
   title: z.string().min(1).max(500),
   url: z.string().url(),
   publication: z.string().min(1).max(200),
@@ -231,5 +238,5 @@ export const createCalendarEventSchema = z.object({
 
 // Idea approval validation
 export const approveIdeaSchema = z.object({
-  idea_id: z.string().uuid(),
+  idea_id: uuidLike,
 });

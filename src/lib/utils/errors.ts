@@ -88,7 +88,12 @@ export function handleApiError(error: unknown): { message: string; status: numbe
   if (error instanceof GrowthForgeError) {
     return { message: error.message, status: error.statusCode };
   }
+  // Zod validation errors should return 400, not 500
+  if (error instanceof Error && error.name === "ZodError") {
+    return { message: error.message, status: 400 };
+  }
   if (error instanceof Error) {
+    console.error("[handleApiError] Unhandled error:", error);
     return { message: error.message, status: 500 };
   }
   return { message: "An unexpected error occurred", status: 500 };

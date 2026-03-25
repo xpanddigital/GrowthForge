@@ -3,11 +3,12 @@ import { z } from "zod";
 import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
+import { uuidLike } from "@/lib/utils/validators";
 
 const enrichRequestSchema = z.object({
-  client_id: z.string().uuid(),
+  client_id: uuidLike,
   thread_ids: z
-    .array(z.string().uuid())
+    .array(uuidLike)
     .min(1, "At least one thread ID is required")
     .max(200, "Cannot enrich more than 200 threads at once"),
 });

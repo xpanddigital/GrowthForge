@@ -3,9 +3,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const triggerScanSchema = z.object({
-  clientId: z.string().uuid(),
+  clientId: uuidLike,
   scanType: z
     .enum(["full", "quick", "single", "schema_only"])
     .default("full"),

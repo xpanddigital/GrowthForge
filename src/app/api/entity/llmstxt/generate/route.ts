@@ -3,9 +3,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { generateLlmsTxt } from "@/lib/entity/llmstxt-generator";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const generateLlmsTxtBody = z.object({
-  clientId: z.string().uuid(),
+  clientId: uuidLike,
 });
 
 // POST /api/entity/llmstxt/generate — Generate llms.txt content

@@ -17,11 +17,13 @@ export async function GET(request: Request) {
 
     let query = supabase
       .from("press_campaign_ideas")
-      .select("*, spokespersons(name, title)")
+      .select("*")
       .order("created_at", { ascending: false });
 
     if (clientId) query = query.eq("client_id", clientId);
-    if (status) query = query.eq("status", status);
+    if (status === "approved") query = query.eq("is_approved", true);
+    else if (status === "rejected") query = query.eq("is_rejected", true);
+    else if (status === "pending") query = query.eq("is_approved", false).eq("is_rejected", false);
 
     const { data, error } = await query;
     if (error) throw error;
@@ -66,9 +68,9 @@ export async function PATCH(request: Request) {
         .from("press_campaigns")
         .insert({
           client_id: i.client_id,
-          spokesperson_id: i.spokesperson_id,
           idea_id: ideaId,
-          headline: i.title,
+          name: (i.headline as string) || "Untitled Campaign",
+          headline: i.headline,
           angle: i.angle,
           pr_type: i.pr_type ?? "expert_commentary",
           status: "draft",
@@ -78,10 +80,10 @@ export async function PATCH(request: Request) {
 
       if (campError) throw campError;
 
-      // Mark idea as approved
+      // Mark idea as approved and link to campaign
       await supabase
         .from("press_campaign_ideas")
-        .update({ status: "approved" })
+        .update({ is_approved: true, promoted_to_campaign_id: campaign.id })
         .eq("id", ideaId);
 
       return NextResponse.json({ data: campaign }, { status: 201 });
@@ -90,7 +92,7 @@ export async function PATCH(request: Request) {
     // Reject
     await supabase
       .from("press_campaign_ideas")
-      .update({ status: "rejected" })
+      .update({ is_rejected: true })
       .eq("id", ideaId);
 
     return NextResponse.json({ ok: true });

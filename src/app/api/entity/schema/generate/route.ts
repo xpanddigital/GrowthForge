@@ -10,9 +10,10 @@ import {
   generateBreadcrumbSchema,
 } from "@/lib/entity/schema-generator";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const generateSchemaBody = z.object({
-  clientId: z.string().uuid(),
+  clientId: uuidLike,
   schemaType: z.enum([
     "Organization",
     "LocalBusiness",

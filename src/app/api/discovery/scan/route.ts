@@ -114,6 +114,7 @@ export async function POST(request: Request) {
       { status: 202 }
     );
   } catch (error) {
+    console.error("[discovery/scan] Error:", error);
     const { message, status } = handleApiError(error);
     return NextResponse.json({ error: message }, { status });
   }

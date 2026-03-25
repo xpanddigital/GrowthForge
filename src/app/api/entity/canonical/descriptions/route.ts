@@ -5,9 +5,10 @@ import { generatePlatformDescriptions } from "@/lib/entity/platform-descriptions
 import { getPlatformsForVertical } from "@/lib/entity/platform-config";
 import type { Vertical } from "@/lib/entity/platform-config";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const descriptionsSchema = z.object({
-  clientId: z.string().uuid(),
+  clientId: uuidLike,
 });
 
 // POST /api/entity/canonical/descriptions — Regenerate platform-adapted descriptions

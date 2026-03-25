@@ -3,9 +3,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { generateAutoCanonical } from "@/lib/entity/auto-canonical";
 import { z } from "zod";
+import { uuidLike } from "@/lib/utils/validators";
 
 const generateCanonicalSchema = z.object({
-  clientId: z.string().uuid(),
+  clientId: uuidLike,
 });
 
 // POST /api/entity/canonical/generate — Auto-generate canonical from brand brief
