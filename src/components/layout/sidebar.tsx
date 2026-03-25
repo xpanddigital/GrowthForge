@@ -33,6 +33,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState, useEffect, createContext, useContext } from "react";
+import { OnboardingChecklist } from "@/components/onboarding/onboarding-checklist";
 
 // Sidebar context for mobile toggle from header
 const SidebarContext = createContext<{
@@ -293,6 +294,9 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* Onboarding checklist */}
+      {!collapsed && <OnboardingChecklist />}
 
       {/* Collapse toggle — desktop only */}
       <div className="hidden border-t border-border p-2 md:block">

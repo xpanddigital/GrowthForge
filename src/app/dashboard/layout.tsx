@@ -2,6 +2,8 @@
 
 import { Sidebar, SidebarProvider } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
+import { WelcomeGuide } from "@/components/onboarding/welcome-guide";
+import { HelpWidget } from "@/components/help/help-widget";
 
 export default function DashboardLayout({
   children,
@@ -19,6 +21,8 @@ export default function DashboardLayout({
           </main>
         </div>
       </div>
+      <WelcomeGuide />
+      <HelpWidget />
     </SidebarProvider>
   );
 }
