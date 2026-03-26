@@ -175,6 +175,36 @@ Content strings use template literals (backticks). **All apostrophes in content 
 
 ---
 
+## Cover Images (Auto-Generated OG Images)
+
+### How It Works
+Cover images are **automatically generated** — no manual image creation needed per article. The route `src/app/api/og/route.tsx` dynamically creates branded 1200x630 images from the article's title and category using Next.js `ImageResponse` (edge runtime).
+
+### What Gets Generated
+Each image includes:
+- **Category badge** (color-coded: blue for Fundamentals, green for Strategy, amber for Technical, purple for Industry, pink for Tools)
+- **Article title** in large white text on dark background
+- **Joel House byline** with "JH" avatar circle and "Founder, MentionLayer"
+- **MentionLayer brand mark** in bottom-right
+- **Color accent line** at top matching category color → GrowthForge purple gradient
+
+### Where Images Appear
+1. **Blog listing page** — both featured post and grid cards show the generated image
+2. **OpenGraph meta tags** — every blog post includes `og:image` and `twitter:image` for social sharing previews (LinkedIn, Twitter, Discord, Slack, etc.)
+3. **Article JSON-LD schema** — `image` field references the OG image for search engine rich results
+
+### Image URL Pattern
+Images are generated on-the-fly via query params:
+```
+/api/og?title={encodeURIComponent(post.title)}&category={post.category}
+```
+No field in the `BlogPost` type is needed — the URL is computed from existing `title` and `category` fields. Writers do NOT need to add any image-related data to articles.
+
+### For Writing Sessions
+**No action required.** Cover images generate automatically from the article title and category. Just write the article content as normal.
+
+---
+
 ## TypeScript Interface
 
 Every article must conform to this type (defined in `src/lib/blog/types.ts`):

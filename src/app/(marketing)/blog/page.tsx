@@ -12,6 +12,16 @@ export const metadata: Metadata = {
     "Learn how to get your brand recommended by AI. Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and more.",
 };
 
+function getOgImageUrl(post: { title: string; category: string }) {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
+  const params = new URLSearchParams({
+    title: post.title,
+    category: post.category,
+  });
+  return `${base}/api/og?${params.toString()}`;
+}
+
 function getPublishedPosts() {
   const now = new Date();
   return [...blogPosts]
@@ -52,30 +62,40 @@ export default function BlogIndexPage() {
       {featured && (
         <Link
           href={`/blog/${featured.slug}`}
-          className="group mb-12 block rounded-xl border border-border bg-card p-6 transition-colors hover:border-[#6C5CE7]/50 sm:p-8"
+          className="group mb-12 block overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-[#6C5CE7]/50"
         >
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="rounded bg-[#6C5CE7]/10 px-2 py-0.5 font-medium text-[#6C5CE7]">
-              {categoryLabels[featured.category]}
-            </span>
-            <span>{featured.estimatedReadTime} min read</span>
-            <span>
-              {new Date(featured.publishedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={getOgImageUrl(featured)}
+            alt={featured.title}
+            width={1200}
+            height={630}
+            className="w-full"
+          />
+          <div className="p-6 sm:p-8">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="rounded bg-[#6C5CE7]/10 px-2 py-0.5 font-medium text-[#6C5CE7]">
+                {categoryLabels[featured.category]}
+              </span>
+              <span>{featured.estimatedReadTime} min read</span>
+              <span>
+                {new Date(featured.publishedAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+            <h2 className="mt-3 text-xl font-bold text-foreground group-hover:text-[#6C5CE7] sm:text-2xl">
+              {featured.title}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              {featured.summary}
+            </p>
+            <span className="mt-4 inline-block text-sm font-medium text-[#6C5CE7]">
+              Read article →
             </span>
           </div>
-          <h2 className="mt-3 text-xl font-bold text-foreground group-hover:text-[#6C5CE7] sm:text-2xl">
-            {featured.title}
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {featured.summary}
-          </p>
-          <span className="mt-4 inline-block text-sm font-medium text-[#6C5CE7]">
-            Read article →
-          </span>
         </Link>
       )}
 
@@ -101,26 +121,37 @@ export default function BlogIndexPage() {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex flex-col rounded-lg border border-border bg-card p-5 transition-colors hover:border-[#6C5CE7]/50"
+            className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-[#6C5CE7]/50"
           >
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="rounded bg-[#6C5CE7]/10 px-1.5 py-0.5 font-medium text-[#6C5CE7]">
-                {categoryLabels[post.category]}
-              </span>
-              <span>{post.estimatedReadTime} min</span>
-            </div>
-            <h3 className="mt-2 flex-1 text-sm font-semibold text-foreground group-hover:text-[#6C5CE7]">
-              {post.title}
-            </h3>
-            <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">
-              {post.summary}
-            </p>
-            <div className="mt-3 text-xs text-muted-foreground">
-              {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={getOgImageUrl(post)}
+              alt={post.title}
+              width={1200}
+              height={630}
+              className="w-full"
+              loading="lazy"
+            />
+            <div className="flex flex-1 flex-col p-5">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className="rounded bg-[#6C5CE7]/10 px-1.5 py-0.5 font-medium text-[#6C5CE7]">
+                  {categoryLabels[post.category]}
+                </span>
+                <span>{post.estimatedReadTime} min</span>
+              </div>
+              <h3 className="mt-2 flex-1 text-sm font-semibold text-foreground group-hover:text-[#6C5CE7]">
+                {post.title}
+              </h3>
+              <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">
+                {post.summary}
+              </p>
+              <div className="mt-3 text-xs text-muted-foreground">
+                {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </div>
             </div>
           </Link>
         ))}
