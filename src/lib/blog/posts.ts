@@ -10,6 +10,8 @@ import { posts41to45 } from "./posts-41-45";
 import { posts46to50 } from "./posts-46-50";
 import { posts51to55 } from "./posts-51-55";
 import { posts56to60 } from "./posts-56-60";
+import { posts61to65 } from "./posts-61-65";
+import { posts66to70 } from "./posts-66-70";
 
 export const blogPosts = [
   ...posts1to5,
@@ -24,4 +26,6 @@ export const blogPosts = [
   ...posts46to50,
   ...posts51to55,
   ...posts56to60,
+  ...posts61to65,
+  ...posts66to70,
 ];
