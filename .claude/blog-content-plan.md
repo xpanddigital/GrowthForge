@@ -26,19 +26,129 @@
 
 ---
 
-## Brand Voice & Style Guide
+## Author Entity Strategy
 
-### Author
-All articles are authored by:
+### Why This Matters
+Joel House publishes across three properties: growthforge.io, xpanddigital.com, and joelhouse.com. This **compounds** entity authority — Google and AI models triangulate a single expert entity from multiple sources. The key structural requirement: joelhouse.com/about is the **Entity Home** — the canonical reference page that all author bios link back to.
+
+### Author for All Articles
 ```
 author: { name: "Joel House", role: "Founder, GrowthForge" }
 ```
+
+### Author Schema (Already Implemented)
+The blog post template (`src/app/(marketing)/blog/[slug]/page.tsx`) renders structured Person schema on every article with:
+- `url: "https://joelhouse.com/about"` (Entity Home)
+- `sameAs` links to LinkedIn, Xpand Digital, GrowthForge
+- `worksFor` → GrowthForge organization
+- Full author bio description mentioning "AI for Revenue" book
+
+### Content Lane Separation (Prevent Cross-Site Cannibalization)
+| Site | Content Focus | Never Publish Here |
+|------|--------------|-------------------|
+| **growthforge.io** | Product-led GEO: audits, benchmarks, platform tutorials, tactical playbooks | Agency case studies, personal opinion pieces |
+| **xpanddigital.com** | Agency-led: "why hire us," client case studies, service pages | Platform tutorials, product comparisons |
+| **joelhouse.com** | Thought leadership: opinion, book excerpts, speaking topics, future-of-search | Step-by-step product tutorials, agency pitches |
+
+### Joel House Quotes (REQUIRED in Every Article)
+Research shows **attributed expert quotes increase AI citation rates by 28%** (Princeton GEO study). Every article must include **2-3 Joel House quotes** using this format:
+
+```
+According to Joel House, founder of GrowthForge and author of AI for Revenue, "[original insight about the topic]."
+```
+
+Or the first-person variant:
+```
+"In our experience running AI visibility campaigns at GrowthForge, we\\'ve found that [specific observation with data]," says Joel House.
+```
+
+**Quote placement rules:**
+- One quote in the first third of the article (where 44% of AI citations come from)
+- One quote in the expert perspective section
+- Optional third quote in the conclusion
+- Quotes must contain ORIGINAL insights — not restatements of statistics found elsewhere
+- Quotes should reference GrowthForge platform experience, client campaign data, or forward-looking predictions
+
+---
+
+## GEO-Optimized Article Framework
+
+### Why This Framework Exists
+The Princeton/Georgia Tech GEO study and Kevin Indig's 1.2M ChatGPT citation study prove that article structure directly affects whether AI models cite your content. This framework is engineered to maximize AI citations, not just Google rankings.
+
+### The "First 30%" Rule
+**44.2% of all AI citations come from the first 30% of content** (Kevin Indig study of 1.2M ChatGPT responses). The opening of every article is the most valuable real estate. Front-load your direct answer, primary statistic, and first Joel House quote.
+
+### Optimal Section Structure
+Each section should be **120-180 words** between headings. This range gets 70% more ChatGPT citations than shorter, fragmented sections. Use clear H2/H3 hierarchy — content with proper heading structure gets cited **65% more** frequently.
+
+### The Blueprint (Follow This for Every Article)
+
+```
+## Section 1: Direct Answer (First 200 words — CRITICAL)
+- Open with a 1-2 sentence direct answer to the article's core question
+- Include the primary statistic or data point
+- Include first Joel House quote: "According to Joel House..."
+- This section is where 44% of AI citations will come from
+- Do NOT waste this space on background or context
+
+## Section 2: Core Concept / Definition
+- Explain the core idea in clear, structured prose
+- 120-180 words
+- Include 1-2 statistics with sources
+- Use "according to [source]" attribution style
+
+## Section 3: Detailed Analysis / How-To
+- Break into H3 subsections where needed
+- Each H3 targets a specific sub-question
+- Include original data, benchmarks, or first-person experience
+- Second Joel House quote placed here
+
+## Section 4: Expert Perspective / Original Insight
+- First-person commentary from Joel House
+- Original data from GrowthForge platform (if available)
+- Contrarian or forward-looking position
+- "In our experience at GrowthForge, we\\'ve found that..."
+
+## Section 5: Comparison / Practical Application (where relevant)
+- Tables comparing options (AI models love extracting tables)
+- Structured lists with clear differentiators
+- Actionable takeaways
+
+## Section 6: Frequently Asked Questions
+- 4-6 Q&A pairs
+- Each answer: 50-80 words, self-contained
+- FAQPage schema renders automatically
+- Target long-tail queries
+```
+
+### What Makes Content Get Cited (Ranked by Impact)
+1. **Statistics** — adding stats improves AI visibility by **40.9%** (largest gain of any technique)
+2. **Expert attribution** — "According to [Name]..." format improves citations by **28%**
+3. **Named author with credentials** — bylined content with verifiable expertise outperforms anonymous
+4. **Self-contained sections** — 120-180 words per section, each answerable in isolation
+5. **FAQ schema** — pages with FAQPage schema are **3.2x more likely** to appear in AI Overviews
+6. **Tables** — AI models preferentially extract structured tabular data
+7. **Freshness** — 76.4% of ChatGPT's cited pages were updated within 30 days
+8. **Information density** — 5+ facts per 100 words outperforms padded content
+
+### Platform-Specific Citation Preferences
+| AI Platform | What It Prefers | Key Optimization |
+|-------------|----------------|------------------|
+| **ChatGPT** | Encyclopedic, factual; Wikipedia is #1 at 7.8% of citations | Direct definitions, structured facts, entity references |
+| **Perplexity** | Expert sources, reviews; Reddit at 6.6% of citations | Expert quotes, attributed data, original research |
+| **Gemini** | Brand-owned websites (52% of citations from brand domains) | Schema markup, structured pages, consistent subdomains |
+| **AI Overviews** | Well-structured intent-matching content | FAQ schema, H2/H3 hierarchy, direct answers |
+
+---
+
+## Brand Voice & Style Guide
 
 ### Tone
 - **Direct and specific.** Lead with data, not fluff. "Reddit appears in 68% of AI answers" not "Reddit is very important."
 - **Practitioner voice.** Write as someone who runs AI visibility campaigns daily, not as a journalist covering them.
 - **Confident but honest.** Make strong claims backed by data. Acknowledge uncertainty where it exists.
-- **Zero filler phrases.** Never use: "In today's digital landscape," "Let's dive in," "In the ever-evolving world of," "It's no secret that," "At the end of the day."
+- **Zero filler phrases.** Never use: "In today's digital landscape," "Let's dive in," "In the ever-evolving world of," "It's no secret that," "At the end of the day," "game-changer," "revolutionary," "paradigm shift."
 - **Short paragraphs.** 2-4 sentences max. One idea per paragraph.
 - **Use numbers.** "3.2x more citations" not "significantly more citations."
 
@@ -48,14 +158,17 @@ author: { name: "Joel House", role: "Founder, GrowthForge" }
 - Bullet points for lists of 3+ items
 - Bold key phrases within paragraphs for scannability
 - Every article starts with a "Key Takeaway" (the `keyTakeaway` field) — 1-2 sentence TL;DR
+- Include markdown tables wherever comparisons or structured data exists
 
 ### Content Rules
-- **First 200 words must contain a direct answer.** AI models extract from the top of content.
+- **First 200 words must contain a direct answer + statistic + Joel House quote.** This is the AI citation zone.
+- **Include 2-3 Joel House quotes per article** using the attribution format above
 - **Include at least one original insight** per article — proprietary data, a framework, a specific example from campaign experience
 - **All statistics must be specific and sourced** (in the content text, not footnotes)
 - **Minimum 4 internal links per article**, spread across multiple sections
 - **Include 3-5 FAQs** at the end of every article (these render with FAQ schema)
 - **Never duplicate another article's core topic.** Overlap is fine; duplication is not.
+- **Sections should be 120-180 words each** for optimal AI extraction
 
 ### Apostrophe Escaping
 Content strings use template literals (backticks). **All apostrophes in content must be escaped as `\\'`** to avoid breaking the template literal. This is critical — every `it's`, `don't`, `you're`, `brand's` must be `it\\'s`, `don\\'t`, `you\\'re`, `brand\\'s`.
@@ -172,22 +285,41 @@ These are already published and should be linked TO from new articles wherever r
 
 Before marking an article done, verify:
 
+### GEO Optimization (AI Citation Maximization)
+- [ ] First 200 words contain: direct answer + key statistic + first Joel House quote
+- [ ] Contains 2-3 Joel House quotes using "According to Joel House..." format
+- [ ] Quotes contain ORIGINAL insights (not restatements of existing data)
+- [ ] Sections are 120-180 words each (optimal for AI extraction)
+- [ ] At least one markdown table (where relevant — AI models extract tables preferentially)
+- [ ] Information density: 5+ facts per 100 words (no padding or filler)
+
+### Content Quality
 - [ ] `keyTakeaway` is a clear 1-2 sentence TL;DR
-- [ ] First 200 words contain a direct answer to the search intent
 - [ ] Contains at least one original insight, framework, or data point
-- [ ] All statistics include specific numbers (not "many" or "significantly")
+- [ ] All statistics include specific numbers with source context
+- [ ] 3-5 FAQs with specific, self-contained answers (50-80 words each)
+- [ ] No filler phrases (checked against banned list above)
+- [ ] Answers the search intent completely within the article
+
+### Internal Linking & SEO
 - [ ] Minimum 4 internal links spread across multiple sections
 - [ ] Links to at least 1 product page where natural
 - [ ] Links to at least 2 related blog articles
-- [ ] First occurrence of glossary terms are linked
-- [ ] 3-5 FAQs with specific, useful answers
-- [ ] `relatedSlugs` has 3-5 entries
+- [ ] First occurrence of glossary terms are linked to their glossary page
+- [ ] `relatedSlugs` has 3-5 entries from same cluster + cross-cluster
 - [ ] `metaTitle` under 60 characters
 - [ ] `metaDescription` under 155 characters
+
+### Keyword Deduplication
+- [ ] Primary keyword (`targetKeyword`) is unique — not assigned to any other article
+- [ ] Search intent is different from any existing article on a similar topic
+- [ ] Checked against KEYWORD-DEDUP-MAP.md before writing
+
+### Technical
 - [ ] All apostrophes escaped as `\\'`
-- [ ] No filler phrases (checked against banned list above)
 - [ ] `publishedAt` matches the calendar date
 - [ ] Category and buyingStage are correct
+- [ ] Author set to `{ name: "Joel House", role: "Founder, GrowthForge" }`
 
 ---
 

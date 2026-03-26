@@ -68,10 +68,24 @@ export default async function BlogPostPage({ params }: PageProps) {
       "@type": "Person",
       name: post.author.name,
       jobTitle: post.author.role,
+      url: "https://joelhouse.com/about",
+      sameAs: [
+        "https://joelhouse.com/about",
+        "https://www.linkedin.com/in/joelhouse",
+        "https://xpanddigital.com",
+        "https://growthforge.io",
+      ],
+      worksFor: {
+        "@type": "Organization",
+        name: "GrowthForge",
+        url: "https://growthforge.io",
+      },
+      description: "AI marketing expert, author of AI for Revenue, and founder of GrowthForge. Joel House helps brands get recommended by AI through Generative Engine Optimization.",
     },
     publisher: {
       "@type": "Organization",
       name: "GrowthForge by Xpand Digital",
+      url: "https://growthforge.io",
     },
   };
 
@@ -311,6 +325,32 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
           </section>
         )}
+
+        {/* Author Bio */}
+        <div className="mb-10 rounded-lg border border-border bg-card p-5">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#6C5CE7]/10 text-lg font-bold text-[#6C5CE7]">
+              JH
+            </div>
+            <div>
+              <a
+                href="https://joelhouse.com/about"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-foreground hover:text-[#6C5CE7]"
+              >
+                {post.author.name}
+              </a>
+              <p className="text-xs text-muted-foreground">{post.author.role}</p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                Joel House is an AI marketing expert, author of{" "}
+                <em>AI for Revenue</em>, and founder of GrowthForge and Xpand
+                Digital. He helps brands and agencies get recommended by AI
+                through Generative Engine Optimization.
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* CTA */}
         <div className="mb-10 rounded-xl border border-[#6C5CE7]/30 bg-[#6C5CE7]/5 p-6 text-center">
