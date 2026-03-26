@@ -305,8 +305,8 @@ export class TaskGeneratorAgent implements EntityTaskGeneratorAgent {
         taskType,
         description,
         instructions: llmsTxtResult.exists
-          ? `Your llms.txt file at ${llmsTxtResult.pageUrl} scored ${llmsTxtResult.score}/100.${issuesList} Update it to include a clear business description, key services, target audience, and differentiators. The llms.txt content can be generated via the GrowthForge API.`
-          : `Create an llms.txt file at the root of your website (${llmsTxtResult.pageUrl}). This file helps AI language models understand your business context and improves how they represent your brand. The llms.txt content can be generated via the GrowthForge API.`,
+          ? `Your llms.txt file at ${llmsTxtResult.pageUrl} scored ${llmsTxtResult.score}/100.${issuesList} Update it to include a clear business description, key services, target audience, and differentiators. The llms.txt content can be generated via the MentionLayer API.`
+          : `Create an llms.txt file at the root of your website (${llmsTxtResult.pageUrl}). This file helps AI language models understand your business context and improves how they represent your brand. The llms.txt content can be generated via the MentionLayer API.`,
         generatedCode: null, // Content generated on-demand via API
         platformDescription: null,
         platformCharLimit: null,

@@ -1,4 +1,4 @@
-// Anthropic SDK wrapper for GrowthForge.
+// Anthropic SDK wrapper for MentionLayer.
 // Provides callClaude (generic), callSonnet (classification), and callOpus (generation).
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -48,7 +48,7 @@ export interface CallClaudeResult {
 
 /**
  * Generic wrapper for calling Claude with retry logic and structured error handling.
- * All AI calls in GrowthForge should flow through this function.
+ * All AI calls in MentionLayer should flow through this function.
  */
 export async function callClaude(
   params: CallClaudeParams

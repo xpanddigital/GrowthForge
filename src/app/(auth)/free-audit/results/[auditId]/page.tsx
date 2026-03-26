@@ -143,7 +143,7 @@ export default function FreeAuditResultsPage() {
       <div className="border-b border-border">
         <div className="mx-auto max-w-3xl px-4 py-4 flex items-center justify-between">
           <h1 className="text-xl font-bold tracking-tight">
-            <span className="text-primary">Growth</span>Forge
+            <span className="text-primary">Mention</span>Layer
           </h1>
           <span className="text-sm text-muted-foreground">AI Visibility Audit</span>
         </div>
@@ -233,7 +233,7 @@ export default function FreeAuditResultsPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground pb-8">
-          Powered by GrowthForge — The AI SEO Platform by Xpand Digital
+          MentionLayer. All rights reserved.
         </p>
       </div>
     </div>

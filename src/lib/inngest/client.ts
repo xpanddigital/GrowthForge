@@ -218,6 +218,6 @@ type Events = {
 };
 
 export const inngest = new Inngest({
-  id: "growthforge",
+  id: "mentionlayer",
   schemas: new EventSchemas().fromRecord<Events>(),
 });

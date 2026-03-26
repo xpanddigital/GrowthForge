@@ -10,12 +10,12 @@ export const posts1to5: BlogPost[] = [
     summary:
       "37% of consumers now start searches with AI instead of Google. Most brands score 0% visibility. Here\u2019s a 60-second test to check yours.",
     metaTitle:
-      "Your Brand Is Invisible to AI — Check in 60 Seconds | GrowthForge",
+      "Your Brand Is Invisible to AI — Check in 60 Seconds | MentionLayer",
     metaDescription:
       "37% of consumers start searches with AI. Most brands are invisible. Run this 60-second test across ChatGPT, Perplexity, Gemini, and Claude to check your AI visibility.",
     targetKeyword: "check brand AI visibility",
     publishedAt: "2026-03-25",
-    author: { name: "Joel House", role: "Founder, GrowthForge" },
+    author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
     estimatedReadTime: 6,
@@ -93,12 +93,12 @@ export const posts1to5: BlogPost[] = [
     summary:
       "SEO isn\u2019t dead \u2014 but the game now has two courts. Traditional SEO ranks you on Google. GEO gets you recommended by AI. Here\u2019s what shifted and what stayed the same.",
     metaTitle:
-      "AI SEO vs Traditional SEO: What Changed in 2026 | GrowthForge",
+      "AI SEO vs Traditional SEO: What Changed in 2026 | MentionLayer",
     metaDescription:
       "Traditional SEO gets you ranked. GEO gets you recommended by ChatGPT, Perplexity, Gemini. Brand mentions now correlate 3x more with AI visibility than backlinks. Here\u2019s what changed.",
     targetKeyword: "AI SEO vs traditional SEO",
     publishedAt: "2026-03-24",
-    author: { name: "Joel House", role: "Founder, GrowthForge" },
+    author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
     estimatedReadTime: 10,
@@ -183,7 +183,7 @@ export const posts1to5: BlogPost[] = [
       "GEO optimizes your brand for AI recommendations across ChatGPT, Perplexity, Gemini, and Claude. Complete guide covering the 5-pillar framework, strategy, and execution for 2026.",
     targetKeyword: "generative engine optimization",
     publishedAt: "2026-03-23",
-    author: { name: "Joel House", role: "Founder, GrowthForge" },
+    author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
     estimatedReadTime: 16,
@@ -281,12 +281,12 @@ export const posts1to5: BlogPost[] = [
     summary:
       "Share of model measures what percentage of relevant AI prompts result in your brand being mentioned. Here\u2019s how to measure, benchmark, and improve it.",
     metaTitle:
-      "Share of Model: The AI Marketing Metric You Must Track | GrowthForge",
+      "Share of Model: The AI Marketing Metric You Must Track | MentionLayer",
     metaDescription:
       "Share of model measures what % of AI prompts mention your brand. Learn how to measure it across ChatGPT, Perplexity, Gemini, and Claude with benchmarks and improvement tactics.",
     targetKeyword: "share of model AI marketing",
     publishedAt: "2026-03-22",
-    author: { name: "Joel House", role: "Founder, GrowthForge" },
+    author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
     estimatedReadTime: 8,
@@ -366,12 +366,12 @@ export const posts1to5: BlogPost[] = [
     summary:
       "Perplexity averages 21.87 citations per answer vs ChatGPT\u2019s 7.92. Reddit accounts for 46.7% of Perplexity\u2019s top citations. Here\u2019s the complete citation source breakdown.",
     metaTitle:
-      "AI Citation Index: Where ChatGPT, Perplexity, Gemini Get Data | GrowthForge",
+      "AI Citation Index: Where ChatGPT, Perplexity, Gemini Get Data | MentionLayer",
     metaDescription:
       "Perplexity cites 21.87 sources per answer. Reddit is 46.7% of its top citations. YouTube has overtaken Reddit as #1 social source. Complete citation data for all major AI platforms.",
     targetKeyword: "AI citation sources ChatGPT Perplexity",
     publishedAt: "2026-03-21",
-    author: { name: "Joel House", role: "Founder, GrowthForge" },
+    author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
     estimatedReadTime: 12,
@@ -419,7 +419,7 @@ export const posts1to5: BlogPost[] = [
         id: "actionable-takeaways",
         title: "Actionable Takeaways: Where to Focus Your Effort",
         content:
-          "Let me synthesize the citation data into a concrete action framework. Here\u2019s where each citation source maps to a GEO tactic:\n\n| Citation Source | AI Platform Weight | GEO Tactic | GrowthForge Module |\n|---|---|---|---|\n| Reddit threads | Perplexity (46.7%), ChatGPT (8-12% for recs), Gemini (6.6%) | Citation seeding in high-authority threads | Citation Engine |\n| Wikipedia | ChatGPT (47.9%), Claude (high) | Wikipedia mention strategy, entity accuracy | Entity Sync |\n| News publications | All platforms (authority signal) | Press campaigns, thought leadership | PressForge |\n| Review platforms | All platforms (trust signal) | Multi-platform review building | Review Engine |\n| YouTube | Perplexity (high), Gemini (high) | YouTube GEO, video content optimization | YouTube GEO |\n| Google Business | Gemini/AI Overviews (dominant for local) | GBP optimization, review management | Entity Sync |\n| Schema markup | Gemini (highest impact), all platforms | Organization, Product, FAQ, Review schema | Technical GEO |\n| Brand website | All platforms (10% of citations) | First-person content, regular updates | Content optimization |\n\n**If you can only do one thing:** Focus on Reddit citation seeding. Reddit is the single highest-leverage source because it\u2019s weighted heavily by Perplexity (46.7% of citations), increasingly referenced by ChatGPT for recommendation queries, included in Gemini\u2019s AI Overviews, and present in Claude\u2019s training data. No other source gives you cross-platform coverage like Reddit does.\n\n**If you can do three things:** Add entity consistency (particularly Wikipedia and Google Business Profile) and review volume building (particularly Google Reviews and industry-specific platforms). These two additions cover the Wikipedia-heavy ChatGPT channel and the GBP-heavy Gemini channel, giving you broad AI platform coverage.\n\n**If you\u2019re going all-in:** Layer in press campaigns targeting the publications each AI model cites for your category (use Perplexity\u2019s visible sources to identify them), YouTube content optimization for Perplexity and Gemini visibility, and comprehensive schema markup for Gemini\u2019s AI Overviews. The brands running all five pillars simultaneously create a citation moat that\u2019s extremely difficult for competitors to breach.\n\nThe data is clear: AI models have specific, measurable source preferences, and those preferences vary by platform. A targeted strategy that aligns your efforts to each platform\u2019s citation behavior will dramatically outperform a generic \"optimize everything\" approach. Use the citation data in this article to prioritize your efforts, allocate your budget, and measure your progress against the sources that actually drive AI recommendations.\n\nFor a deeper dive into platform-specific strategies, read [Platform-by-Platform GEO](/blog/platform-by-platform-geo). For the complete Reddit strategy, see [Why Reddit Is the Most Important Platform for AI Visibility](/blog/reddit-most-important-platform). And for the full framework that ties citation sources to business outcomes, start with [What Is GEO: The Complete Guide](/blog/what-is-geo-complete-guide).",
+          "Let me synthesize the citation data into a concrete action framework. Here\u2019s where each citation source maps to a GEO tactic:\n\n| Citation Source | AI Platform Weight | GEO Tactic | MentionLayer Module |\n|---|---|---|---|\n| Reddit threads | Perplexity (46.7%), ChatGPT (8-12% for recs), Gemini (6.6%) | Citation seeding in high-authority threads | Citation Engine |\n| Wikipedia | ChatGPT (47.9%), Claude (high) | Wikipedia mention strategy, entity accuracy | Entity Sync |\n| News publications | All platforms (authority signal) | Press campaigns, thought leadership | PressForge |\n| Review platforms | All platforms (trust signal) | Multi-platform review building | Review Engine |\n| YouTube | Perplexity (high), Gemini (high) | YouTube GEO, video content optimization | YouTube GEO |\n| Google Business | Gemini/AI Overviews (dominant for local) | GBP optimization, review management | Entity Sync |\n| Schema markup | Gemini (highest impact), all platforms | Organization, Product, FAQ, Review schema | Technical GEO |\n| Brand website | All platforms (10% of citations) | First-person content, regular updates | Content optimization |\n\n**If you can only do one thing:** Focus on Reddit citation seeding. Reddit is the single highest-leverage source because it\u2019s weighted heavily by Perplexity (46.7% of citations), increasingly referenced by ChatGPT for recommendation queries, included in Gemini\u2019s AI Overviews, and present in Claude\u2019s training data. No other source gives you cross-platform coverage like Reddit does.\n\n**If you can do three things:** Add entity consistency (particularly Wikipedia and Google Business Profile) and review volume building (particularly Google Reviews and industry-specific platforms). These two additions cover the Wikipedia-heavy ChatGPT channel and the GBP-heavy Gemini channel, giving you broad AI platform coverage.\n\n**If you\u2019re going all-in:** Layer in press campaigns targeting the publications each AI model cites for your category (use Perplexity\u2019s visible sources to identify them), YouTube content optimization for Perplexity and Gemini visibility, and comprehensive schema markup for Gemini\u2019s AI Overviews. The brands running all five pillars simultaneously create a citation moat that\u2019s extremely difficult for competitors to breach.\n\nThe data is clear: AI models have specific, measurable source preferences, and those preferences vary by platform. A targeted strategy that aligns your efforts to each platform\u2019s citation behavior will dramatically outperform a generic \"optimize everything\" approach. Use the citation data in this article to prioritize your efforts, allocate your budget, and measure your progress against the sources that actually drive AI recommendations.\n\nFor a deeper dive into platform-specific strategies, read [Platform-by-Platform GEO](/blog/platform-by-platform-geo). For the complete Reddit strategy, see [Why Reddit Is the Most Important Platform for AI Visibility](/blog/reddit-most-important-platform). And for the full framework that ties citation sources to business outcomes, start with [What Is GEO: The Complete Guide](/blog/what-is-geo-complete-guide).",
       },
     ],
     faqs: [

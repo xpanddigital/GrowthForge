@@ -40,7 +40,7 @@ export interface RobotsAuditResult {
 // -----------------------------------------------------------------------------
 
 const FETCH_USER_AGENT =
-  "Mozilla/5.0 (compatible; GrowthForge/1.0; +https://growthforge.io)";
+  "Mozilla/5.0 (compatible; MentionLayer/1.0; +https://mentionlayer.com)";
 
 const FETCH_TIMEOUT_MS = 15_000;
 

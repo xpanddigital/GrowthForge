@@ -1,4 +1,4 @@
-// Classification pipeline for GrowthForge.
+// Classification pipeline for MentionLayer.
 // Batches threads into groups of 20, calls Claude Sonnet for classification,
 // and returns typed ClassificationResult arrays.
 

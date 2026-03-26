@@ -163,7 +163,7 @@ export function KeywordOnboarding({
             {/* Info box */}
             <div className="mx-6 mb-4 rounded-md bg-muted/20 border border-border p-3">
               <p className="text-xs text-muted-foreground">
-                For each keyword, GrowthForge will generate 5 prompt variations and test them across
+                For each keyword, MentionLayer will generate 5 prompt variations and test them across
                 ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews. Cost: 5 credits per
                 keyword for prompt generation + 3 credits per test.
               </p>

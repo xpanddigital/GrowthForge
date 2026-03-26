@@ -188,7 +188,7 @@ Rank by impact-to-effort ratio. For each action:
 - Expected impact (high/medium/low)
 - Effort required (high/medium/low)
 - Estimated timeline
-- Which GrowthForge module handles this (Citation Engine, PressForge, Entity Sync, Review Engine, AI Monitor)
+- Which MentionLayer module handles this (Citation Engine, PressForge, Entity Sync, Review Engine, AI Monitor)
 
 Focus on quick wins first (high impact, low effort).
 

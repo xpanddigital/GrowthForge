@@ -4,7 +4,7 @@
 
 import type { EnrichedThread } from "@/lib/agents/interfaces";
 
-const USER_AGENT = "GrowthForge/1.0 (AI SEO Platform; contact: joel@xpanddigital.com)";
+const USER_AGENT = "MentionLayer/1.0 (AI Visibility Platform; contact: joel@mentionlayer.com)";
 const REQUEST_DELAY_MS = 1100; // ~1 req/sec to stay under rate limits
 
 interface RedditComment {

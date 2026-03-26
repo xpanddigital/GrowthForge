@@ -7,7 +7,7 @@ export function UpgradeCTA() {
     <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-background p-6 space-y-4">
       <h3 className="text-lg font-semibold">Ready to improve your AI visibility?</h3>
       <p className="text-sm text-muted-foreground">
-        GrowthForge automates citation seeding, AI monitoring, entity optimization,
+        MentionLayer automates citation seeding, AI monitoring, entity optimization,
         and press distribution — everything in your action plan, handled for you.
       </p>
       <div className="flex flex-col sm:flex-row gap-3">

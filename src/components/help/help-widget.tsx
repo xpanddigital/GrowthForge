@@ -43,7 +43,7 @@ const faqs: FAQ[] = [
   {
     question: "How do I copy and post a response?",
     answer:
-      "Click the copy icon on any variant to copy the text. Navigate to the thread on Reddit/Quora and paste it as a comment. Return to GrowthForge and click 'Mark as Posted' to track it.",
+      "Click the copy icon on any variant to copy the text. Navigate to the thread on Reddit/Quora and paste it as a comment. Return to MentionLayer and click 'Mark as Posted' to track it.",
     articleSlug: "citation-engine",
     contexts: ["citations"],
   },
@@ -85,7 +85,7 @@ const faqs: FAQ[] = [
   {
     question: "Why are some threads marked as 'expired'?",
     answer:
-      "Threads get marked expired when they're locked, archived, or too old for new comments. Reddit archives threads after 6 months by default. GrowthForge checks during enrichment and marks stale threads automatically.",
+      "Threads get marked expired when they're locked, archived, or too old for new comments. Reddit archives threads after 6 months by default. MentionLayer checks during enrichment and marks stale threads automatically.",
     articleSlug: "citation-engine",
     contexts: ["citations"],
   },
@@ -99,14 +99,14 @@ const faqs: FAQ[] = [
   {
     question: "What is llms.txt and do I need it?",
     answer:
-      "A proposed standard (like robots.txt for AI) that tells AI crawlers key facts about your business. GrowthForge generates it from your canonical description. Not universally adopted yet, but early implementation signals AI-readiness.",
+      "A proposed standard (like robots.txt for AI) that tells AI crawlers key facts about your business. MentionLayer generates it from your canonical description. Not universally adopted yet, but early implementation signals AI-readiness.",
     articleSlug: "entity-sync",
     contexts: ["entities"],
   },
   {
     question: "How do I generate a press release?",
     answer:
-      "Go to PressForge → Campaigns → New Campaign. Select a press idea, and GrowthForge drafts a full release using Claude Opus. Review, edit, add real quotes, then approve for distribution.",
+      "Go to PressForge → Campaigns → New Campaign. Select a press idea, and MentionLayer drafts a full release using Claude Opus. Review, edit, add real quotes, then approve for distribution.",
     articleSlug: "pressforge",
     contexts: ["press"],
   },

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Features | GrowthForge — AI Visibility Platform",
+  title: "Features | MentionLayer — AI Visibility Platform",
   description:
     "10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, Technical GEO, YouTube GEO, Mention Gaps, and ROI Reporting.",
 };
@@ -167,7 +167,7 @@ export default function FeaturesPage() {
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
             AI models are replacing search results. When someone asks ChatGPT or
             Perplexity for a recommendation, your brand is either in the answer
-            or it isn&apos;t. GrowthForge makes sure you are.
+            or it isn&apos;t. MentionLayer makes sure you are.
           </p>
         </div>
       </section>

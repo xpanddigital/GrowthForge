@@ -23,27 +23,27 @@ PressForge exists as a separate Next.js 15 + Supabase + Vercel application. **On
 - Pitch email generation prompt (tiered: Tier 1/2/3)
 - The entire campaign calendar seed data (calendar-data.json)
 
-**What to rebuild in GrowthForge patterns:**
-- Database schema (add `agency_id`/`client_id`, RLS, GrowthForge conventions)
+**What to rebuild in MentionLayer patterns:**
+- Database schema (add `agency_id`/`client_id`, RLS, MentionLayer conventions)
 - API routes → Inngest jobs (replace `maxDuration: 300` / `async_jobs` polling)
 - Press release generation → wrapped in agent abstraction
 - All remaining features built fresh
 
 **What to migrate:**
 - If the existing PressForge Supabase has press release data, provide a migration script
-- Campaign calendar JSON data → seed into GrowthForge database
+- Campaign calendar JSON data → seed into MentionLayer database
 
 ### Integration Steps (Do Before Building)
 
-1. Copy the press release generation prompt from PressForge's `src/lib/ai/prompts/press-release.ts` into GrowthForge's `src/lib/agents/press/` directory
+1. Copy the press release generation prompt from PressForge's `src/lib/ai/prompts/press-release.ts` into MentionLayer's `src/lib/agents/press/` directory
 2. Copy the voice modeling prompt from `src/lib/ai/prompts/voice-model.ts`
 3. Copy the campaign ideation prompt from `src/lib/ai/prompts/ideation.ts`
 4. Copy the journalist scoring prompt from `src/lib/ai/prompts/journalist-score.ts`
 5. Copy the pitch email generation prompt
-6. Copy `calendar-data.json` from PressForge's `src/data/` into GrowthForge's `src/data/`
+6. Copy `calendar-data.json` from PressForge's `src/data/` into MentionLayer's `src/data/`
 7. If PressForge has existing press release data in Supabase, run the migration script (see Migration Guide at bottom)
 
-Do NOT copy PressForge's API routes, Supabase client, or component code. Rebuild to GrowthForge patterns.
+Do NOT copy PressForge's API routes, Supabase client, or component code. Rebuild to MentionLayer patterns.
 
 ---
 
@@ -75,7 +75,7 @@ Per-campaign Perplexity API costs DROP over time while journalist quality RISES.
 **Instantly API** (existing account) — email outreach platform
 - Endpoint: `https://api.instantly.ai/api/v2`
 - Used for: creating campaigns, adding leads, sending tiered pitch sequences, tracking engagement
-- GrowthForge already uses Resend for transactional email (notifications). Instantly is for cold outreach. These are different purposes — keep both.
+- MentionLayer already uses Resend for transactional email (notifications). Instantly is for cold outreach. These are different purposes — keep both.
 - Verify current API docs at `https://developer.instantly.ai/` before building wrapper
 
 **Perplexity API** (existing) — journalist discovery
@@ -871,8 +871,8 @@ PR campaigns can drive review activity (media coverage → brand awareness → o
 
 ## Build Sequence
 
-1. **Copy PressForge prompts** into GrowthForge (see Integration Steps at top)
-2. **Copy calendar-data.json** into GrowthForge
+1. **Copy PressForge prompts** into MentionLayer (see Integration Steps at top)
+2. **Copy calendar-data.json** into MentionLayer
 3. **Migration 0013** — all 10 tables
 4. **Agent interfaces** — add PressForge interfaces to `interfaces.ts`
 5. **Voice Modeler agent** — port from PressForge
@@ -904,7 +904,7 @@ PR campaigns can drive review activity (media coverage → brand awareness → o
 Read CLAUDE.md in the project root completely before responding.
 Read docs/MODULE_PRESSFORGE.md completely before responding.
 
-You are building the PressForge module for GrowthForge.
+You are building the PressForge module for MentionLayer.
 All other modules (Citation Engine, AI Monitor, Entity Sync,
 Review Engine) are already built. All patterns are in place.
 
@@ -916,7 +916,7 @@ pitch email prompts should already be copied into this project
 existing prompts with the agent abstraction layer.
 
 The journalist database, campaign management, Instantly outreach,
-and coverage monitoring are built fresh to GrowthForge patterns.
+and coverage monitoring are built fresh to MentionLayer patterns.
 
 Follow the 24-step build sequence. Enter Plan Mode first.
 Do not modify any existing module code.
@@ -934,7 +934,7 @@ If the existing PressForge Supabase project has press releases or other data wor
 // Run ONCE after migration 0013 is applied.
 //
 // 1. Connect to PressForge Supabase (source)
-// 2. Connect to GrowthForge Supabase (destination)
+// 2. Connect to MentionLayer Supabase (destination)
 // 3. For each press release in source:
 //    a. Map org_id → agency_id (lookup by owner_email)
 //    b. Map client → client_id (lookup by name or create)
@@ -964,4 +964,4 @@ If PressForge has no data worth migrating (just the code patterns), skip this sc
 - Batch journalist scoring (8 per call) cuts 200 individual API calls to 25, saving ~$2 and ~4 minutes per campaign.
 - The campaign calendar is seeded once, then managed via UI. Users add custom events for their verticals.
 - Coverage monitoring is the weakest link technically (Google News scraping is fragile). Start with manual coverage entry + a simple Google News search, iterate toward automated monitoring.
-- This is the most complex module in GrowthForge. Budget 2-3 Claude Code sessions.
+- This is the most complex module in MentionLayer. Budget 2-3 Claude Code sessions.

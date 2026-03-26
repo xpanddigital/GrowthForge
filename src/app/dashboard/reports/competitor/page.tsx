@@ -342,7 +342,7 @@ export default function CompetitorReportPage() {
           {/* Footer */}
           <p className="text-xs text-zinc-600 text-center">
             Generated {new Date(report.generatedAt).toLocaleDateString()} by
-            GrowthForge
+            MentionLayer
           </p>
         </>
       )}

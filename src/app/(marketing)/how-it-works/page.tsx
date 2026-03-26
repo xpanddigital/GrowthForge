@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How It Works | GrowthForge — AI Visibility in 4 Steps",
+  title: "How It Works | MentionLayer — AI Visibility in 4 Steps",
   description:
     "Audit your AI visibility, discover high-authority threads, seed authentic responses, and monitor your share of model across ChatGPT, Perplexity, Gemini, and Claude.",
 };

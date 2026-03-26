@@ -190,7 +190,7 @@ const reviewSendCampaign = inngest.createFunction(
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                from: `${businessName} <reviews@notifications.growthforge.io>`,
+                from: `${businessName} <reviews@notifications.mentionlayer.com>`,
                 to: [recipientEmail],
                 subject: renderedSubject,
                 text: rendered,

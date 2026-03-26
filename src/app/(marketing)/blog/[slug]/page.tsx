@@ -26,12 +26,24 @@ export function generateStaticParams() {
     .map((p) => ({ slug: p.slug }));
 }
 
+function getOgImageUrl(post: { title: string; category: string }) {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
+  const params = new URLSearchParams({
+    title: post.title,
+    category: post.category,
+  });
+  return `${base}/api/og?${params.toString()}`;
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return { title: "Not Found" };
+
+  const ogImage = getOgImageUrl(post);
 
   return {
     title: post.metaTitle,
@@ -44,6 +56,20 @@ export async function generateMetadata({
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
       authors: [post.author.name],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.metaTitle,
+      description: post.metaDescription,
+      images: [ogImage],
     },
   };
 }
@@ -57,11 +83,14 @@ export default async function BlogPostPage({ params }: PageProps) {
     .map((s) => blogPosts.find((p) => p.slug === s))
     .filter(Boolean);
 
+  const ogImage = getOgImageUrl(post);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.summary,
+    image: ogImage,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     author: {
@@ -72,20 +101,19 @@ export default async function BlogPostPage({ params }: PageProps) {
       sameAs: [
         "https://joelhouse.com/about",
         "https://www.linkedin.com/in/joelhouse",
-        "https://xpanddigital.com",
-        "https://growthforge.io",
+        "https://mentionlayer.com",
       ],
       worksFor: {
         "@type": "Organization",
-        name: "GrowthForge",
-        url: "https://growthforge.io",
+        name: "MentionLayer",
+        url: "https://mentionlayer.com",
       },
-      description: "AI marketing expert, author of AI for Revenue, and founder of GrowthForge. Joel House helps brands get recommended by AI through Generative Engine Optimization.",
+      description: "AI marketing expert, author of AI for Revenue, and founder of MentionLayer. Joel House helps brands get recommended by AI through Generative Engine Optimization.",
     },
     publisher: {
       "@type": "Organization",
-      name: "GrowthForge by Xpand Digital",
-      url: "https://growthforge.io",
+      name: "MentionLayer",
+      url: "https://mentionlayer.com",
     },
   };
 
@@ -344,8 +372,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <p className="text-xs text-muted-foreground">{post.author.role}</p>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                 Joel House is an AI marketing expert, author of{" "}
-                <em>AI for Revenue</em>, and founder of GrowthForge and Xpand
-                Digital. He helps brands and agencies get recommended by AI
+                <em>AI for Revenue</em>, and founder of MentionLayer. He helps brands and agencies get recommended by AI
                 through Generative Engine Optimization.
               </p>
             </div>

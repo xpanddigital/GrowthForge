@@ -10,7 +10,7 @@ The Citation Engine (Phase 1) is fully built and deployed. All architectural pat
 
 ## Module Purpose
 
-The AI Monitor tracks whether client brands get cited by AI models (ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews) when users ask buying-intent questions. This is the ROI proof layer — it shows whether Citation Engine seeding and other GrowthForge modules are actually moving the needle on AI visibility.
+The AI Monitor tracks whether client brands get cited by AI models (ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews) when users ask buying-intent questions. This is the ROI proof layer — it shows whether Citation Engine seeding and other MentionLayer modules are actually moving the needle on AI visibility.
 
 **Primary metric: AI Visibility Score** — a composite 0-100 score combining Share of Model, recommendation rate, prominence, model coverage, and trend direction. This is the hero number on client reports and the dashboard.
 
@@ -1168,7 +1168,7 @@ PERPLEXITY_API_KEY=pplx-...
 Read CLAUDE.md in the project root completely before responding.
 Read docs/MODULE_AI_MONITOR.md completely before responding.
 
-You are building the AI Monitor module for GrowthForge.
+You are building the AI Monitor module for MentionLayer.
 The Citation Engine (Phase 1) is already built and deployed.
 All architectural patterns (agent abstraction, action logging,
 RLS, Inngest jobs, credit tracking) are already in place.

@@ -27,7 +27,7 @@ export interface SchemaSSRResult {
 
 // Minimal user agent that signals no JS execution capability
 const STATIC_USER_AGENT =
-  "Mozilla/5.0 (compatible; GrowthForge-SSR-Check/1.0; no-js)";
+  "Mozilla/5.0 (compatible; MentionLayer-SSR-Check/1.0; no-js)";
 
 const FETCH_TIMEOUT_MS = 15_000;
 

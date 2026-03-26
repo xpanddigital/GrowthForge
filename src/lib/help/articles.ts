@@ -18,13 +18,13 @@ export const helpArticles: HelpArticle[] = [
   // Article 1: Getting Started
   {
     slug: "getting-started",
-    title: "Getting Started with GrowthForge: Your First 30 Minutes",
+    title: "Getting Started with MentionLayer: Your First 30 Minutes",
     summary:
       "Set up your agency, add your first client, run an AI visibility audit, and understand your baseline score — all in under 30 minutes.",
     metaTitle:
-      "Getting Started with GrowthForge | AI Visibility Platform Setup Guide",
+      "Getting Started with MentionLayer | AI Visibility Platform Setup Guide",
     metaDescription:
-      "Learn how to set up your GrowthForge account, add clients with brand briefs, import keywords, and run your first AI visibility audit in under 30 minutes.",
+      "Learn how to set up your MentionLayer account, add clients with brand briefs, import keywords, and run your first AI visibility audit in under 30 minutes.",
     targetKeyword: "AI visibility platform getting started",
     relatedArticles: [
       "citation-engine",
@@ -45,12 +45,12 @@ export const helpArticles: HelpArticle[] = [
       {
         question: "How many keywords should I start with?",
         answer:
-          "Start with 10-20 high-intent keywords. Focus on buying-intent terms that your ideal customer would actually search for. GrowthForge's AI can suggest additional keywords based on your brand brief and industry.",
+          "Start with 10-20 high-intent keywords. Focus on buying-intent terms that your ideal customer would actually search for. MentionLayer's AI can suggest additional keywords based on your brand brief and industry.",
       },
       {
         question: "Can I import keywords from other tools?",
         answer:
-          "Yes. You can paste a comma-separated list or import from a CSV file. GrowthForge also has an AI keyword suggestion feature that generates relevant keywords from your brand brief.",
+          "Yes. You can paste a comma-separated list or import from a CSV file. MentionLayer also has an AI keyword suggestion feature that generates relevant keywords from your brand brief.",
       },
       {
         question: "What happens after I run my first audit?",
@@ -62,7 +62,7 @@ export const helpArticles: HelpArticle[] = [
       {
         id: "create-your-account",
         title: "Create Your Account & Agency Profile",
-        content: `When you first sign up for GrowthForge, you'll set up your agency profile. This is your top-level account that contains all your clients.
+        content: `When you first sign up for MentionLayer, you'll set up your agency profile. This is your top-level account that contains all your clients.
 
 [Screenshot: Agency setup form with name, logo, and owner email fields]
 
@@ -71,7 +71,7 @@ Your agency profile includes:
 - **Owner email** — the primary contact for billing and admin
 - **Logo** — displayed in the dashboard header and client reports
 
-If you're a single brand (not an agency), just use your brand name as the agency name. GrowthForge works the same way either way — one agency with one client.`,
+If you're a single brand (not an agency), just use your brand name as the agency name. MentionLayer works the same way either way — one agency with one client.`,
       },
       {
         id: "add-your-first-client",
@@ -82,7 +82,7 @@ If you're a single brand (not an agency), just use your brand name as the agency
 
 The four fields that matter most:
 
-**Brand Brief** — This is the single most important field in GrowthForge. Every AI-generated response, every classification decision, every audit scan uses this text. Write 2-3 paragraphs describing what the business does, who it serves, and what makes it different. Be specific. "We're a marketing agency" is useless. "We're a B2B SaaS content marketing agency that's generated $47M in pipeline for 200+ tech companies since 2019" is what you want.
+**Brand Brief** — This is the single most important field in MentionLayer. Every AI-generated response, every classification decision, every audit scan uses this text. Write 2-3 paragraphs describing what the business does, who it serves, and what makes it different. Be specific. "We're a marketing agency" is useless. "We're a B2B SaaS content marketing agency that's generated $47M in pipeline for 200+ tech companies since 2019" is what you want.
 
 **Tone Guidelines** — How should responses sound? Casual and helpful? Technical and authoritative? Include specific rules like "never use the word 'utilize'" or "always mention the free trial."
 
@@ -93,13 +93,13 @@ The four fields that matter most:
       {
         id: "add-keywords",
         title: "Add Keywords to Power Discovery",
-        content: `Keywords are the fuel for GrowthForge's discovery engine. They determine which Reddit threads, Quora questions, and Facebook Group discussions get surfaced.
+        content: `Keywords are the fuel for MentionLayer's discovery engine. They determine which Reddit threads, Quora questions, and Facebook Group discussions get surfaced.
 
 [Screenshot: Keyword management screen with tags, intent classification, and bulk import]
 
 **Manual entry:** Type keywords one at a time. Good for starting out.
 
-**AI suggestions:** Click "Suggest Keywords" and GrowthForge generates relevant keywords based on your brand brief and industry. Review and add the ones that match buying intent.
+**AI suggestions:** Click "Suggest Keywords" and MentionLayer generates relevant keywords based on your brand brief and industry. Review and add the ones that match buying intent.
 
 **Bulk import:** Paste a comma-separated list or upload a CSV. Useful if you already have keyword research from tools like Ahrefs or Semrush.
 
@@ -114,7 +114,7 @@ Each keyword can be tagged with categories and assigned to specific platforms (R
       {
         id: "run-your-first-audit",
         title: "Run Your First AI Visibility Audit",
-        content: `Once you've added keywords, GrowthForge can run a baseline audit. This scans 5 pillars to measure your current AI visibility.
+        content: `Once you've added keywords, MentionLayer can run a baseline audit. This scans 5 pillars to measure your current AI visibility.
 
 [Screenshot: Audit progress screen showing 5 pillars being scanned]
 
@@ -164,7 +164,7 @@ The discovery engine runs automatically twice per week, so new threads will keep
     metaTitle:
       "Citation Engine Guide | Reddit & Quora AI Citation Seeding Tool",
     metaDescription:
-      "Learn how GrowthForge's Citation Engine discovers high-authority forum threads on Reddit and Quora, generates 3 response variants, and helps you seed brand citations where AI models look.",
+      "Learn how MentionLayer's Citation Engine discovers high-authority forum threads on Reddit and Quora, generates 3 response variants, and helps you seed brand citations where AI models look.",
     targetKeyword: "citation seeding Reddit Quora AI visibility",
     relatedArticles: ["getting-started", "ai-monitor", "mention-gaps"],
     faqs: [
@@ -181,12 +181,12 @@ The discovery engine runs automatically twice per week, so new threads will keep
       {
         question: "How do I copy and post a response?",
         answer:
-          "Click the copy icon on any response variant. It copies the full text to your clipboard. Then navigate to the actual thread on Reddit/Quora and paste it as a comment. Come back to GrowthForge and click 'Mark as Posted' to track it.",
+          "Click the copy icon on any response variant. It copies the full text to your clipboard. Then navigate to the actual thread on Reddit/Quora and paste it as a comment. Come back to MentionLayer and click 'Mark as Posted' to track it.",
       },
       {
         question: "Why are some threads marked as 'expired'?",
         answer:
-          "Threads get marked expired when they're locked, archived, or too old to accept new comments. Reddit archives threads after 6 months by default. GrowthForge checks thread status during enrichment and automatically marks stale threads.",
+          "Threads get marked expired when they're locked, archived, or too old to accept new comments. Reddit archives threads after 6 months by default. MentionLayer checks thread status during enrichment and automatically marks stale threads.",
       },
       {
         question: "How is the opportunity score calculated?",
@@ -198,13 +198,13 @@ The discovery engine runs automatically twice per week, so new threads will keep
       {
         id: "discovery-pipeline",
         title: "The Discovery Pipeline: How Threads Are Found",
-        content: `GrowthForge's discovery engine runs a multi-step pipeline to find the highest-value threads for your brand.
+        content: `MentionLayer's discovery engine runs a multi-step pipeline to find the highest-value threads for your brand.
 
 [Screenshot: Discovery pipeline diagram showing SERP scan → AI probing → dedup → enrichment → classification]
 
-**Step 1: SERP Scanning** — For each of your keywords, GrowthForge searches Google for Reddit, Quora, and Facebook Group results. It looks for queries like "site:reddit.com best music licensing" and captures the top 20 results per keyword. Threads ranking high on Google are the ones AI models are most likely to reference.
+**Step 1: SERP Scanning** — For each of your keywords, MentionLayer searches Google for Reddit, Quora, and Facebook Group results. It looks for queries like "site:reddit.com best music licensing" and captures the top 20 results per keyword. Threads ranking high on Google are the ones AI models are most likely to reference.
 
-**Step 2: AI Probing** — GrowthForge asks Perplexity and ChatGPT buying-intent questions about your keywords and collects the source URLs they cite. These are threads that AI models already reference — the highest-value targets for citation seeding.
+**Step 2: AI Probing** — MentionLayer asks Perplexity and ChatGPT buying-intent questions about your keywords and collects the source URLs they cite. These are threads that AI models already reference — the highest-value targets for citation seeding.
 
 **Step 3: Deduplication** — Content hashing ensures the same thread never appears twice in your queue, even if discovered through multiple keywords or scans.
 
@@ -217,7 +217,7 @@ The discovery engine runs automatically twice per week, so new threads will keep
       {
         id: "thread-queue",
         title: "The Thread Queue: Your Daily Working Screen",
-        content: `The thread queue is where you spend most of your time in GrowthForge. It's a filterable, sortable table of all discovered threads for your selected client.
+        content: `The thread queue is where you spend most of your time in MentionLayer. It's a filterable, sortable table of all discovered threads for your selected client.
 
 [Screenshot: Thread queue table with platform badges, intent tags, relevance bars, and action buttons]
 
@@ -263,7 +263,7 @@ Each response includes a quality score (0-100), tone match score, and indicators
       {
         id: "posting-best-practices",
         title: "Best Practices for Posting Responses",
-        content: `GrowthForge generates responses but never auto-posts them. You copy and paste manually. This is intentional — human review ensures quality and lets you adapt to the thread's current state.
+        content: `MentionLayer generates responses but never auto-posts them. You copy and paste manually. This is intentional — human review ensures quality and lets you adapt to the thread's current state.
 
 **Before posting:**
 1. **Read the thread** — Click the thread link to open it on the source platform. Check if new comments have been added since enrichment.
@@ -272,7 +272,7 @@ Each response includes a quality score (0-100), tone match score, and indicators
 4. **Check timing** — For threads older than 30 days, the response automatically includes a "late to this thread but..." opener. For very old threads, consider whether posting is still valuable.
 
 **After posting:**
-1. **Mark as Posted** — Click "Mark as Posted" in GrowthForge to track your placement rate.
+1. **Mark as Posted** — Click "Mark as Posted" in MentionLayer to track your placement rate.
 2. **Monitor the thread** — Check back after 24-48 hours. Upvotes and replies indicate the response landed well.
 3. **Track in AI Monitor** — Set up monitoring prompts to see if your seeded citations start showing up in AI model responses.
 
@@ -295,7 +295,7 @@ Each response includes a quality score (0-100), tone match score, and indicators
     metaTitle:
       "AI Monitor Guide | Track Brand Visibility in ChatGPT, Perplexity & Gemini",
     metaDescription:
-      "Learn how GrowthForge's AI Monitor tracks your brand's share of model across ChatGPT, Perplexity, Gemini, and Claude. Set up prompts, monitor trends, and prove AI visibility ROI.",
+      "Learn how MentionLayer's AI Monitor tracks your brand's share of model across ChatGPT, Perplexity, Gemini, and Claude. Set up prompts, monitor trends, and prove AI visibility ROI.",
     targetKeyword: "track brand visibility ChatGPT Perplexity AI monitor",
     relatedArticles: [
       "ai-visibility-audit",
@@ -332,7 +332,7 @@ Each response includes a quality score (0-100), tone match score, and indicators
 
 [Screenshot: AI Monitor overview showing share-of-model score, model breakdown, and trend chart]
 
-Traditional SEO tracks Google rankings. GrowthForge's AI Monitor tracks **AI rankings** — whether your brand appears in the responses of ChatGPT, Perplexity, Gemini, and Claude when people ask buying-intent questions.
+Traditional SEO tracks Google rankings. MentionLayer's AI Monitor tracks **AI rankings** — whether your brand appears in the responses of ChatGPT, Perplexity, Gemini, and Claude when people ask buying-intent questions.
 
 This matters because AI-powered search is growing fast. Perplexity alone processes millions of queries daily, and ChatGPT's browsing feature sends traffic directly from AI conversations. If your brand isn't being recommended by these models, you're invisible to a growing segment of potential customers.
 
@@ -347,7 +347,7 @@ This matters because AI-powered search is growing fast. Perplexity alone process
       {
         id: "setting-up-prompts",
         title: "Setting Up Monitoring Prompts",
-        content: `Monitoring prompts are the questions you send to AI models to test brand visibility. GrowthForge generates suggested prompts from your keywords, but you can also write custom ones.
+        content: `Monitoring prompts are the questions you send to AI models to test brand visibility. MentionLayer generates suggested prompts from your keywords, but you can also write custom ones.
 
 [Screenshot: Prompt management screen with prompt list, frequency selector, and model toggles]
 
@@ -419,7 +419,7 @@ Alerts are sent via email to your registered address. In-app notifications appea
     metaTitle:
       "AI Visibility Audit Explained | 5-Pillar Score & Action Plan Guide",
     metaDescription:
-      "Understand GrowthForge's AI Visibility Audit: how each of the 5 pillars is scored, what the composite score means, how to read the action plan, and when to re-audit.",
+      "Understand MentionLayer's AI Visibility Audit: how each of the 5 pillars is scored, what the composite score means, how to read the action plan, and when to re-audit.",
     targetKeyword: "AI visibility audit score pillars",
     relatedArticles: ["getting-started", "ai-monitor", "roi-reporting"],
     faqs: [
@@ -511,7 +511,7 @@ Each action item includes:
 - **Impact** — High, medium, or low expected effect on your score
 - **Effort** — High, medium, or low work required
 - **Timeline** — How long this should take (e.g., "Week 1-2")
-- **Module** — Which GrowthForge module handles this action
+- **Module** — Which MentionLayer module handles this action
 
 The action plan is designed as a campaign roadmap. Work through it top to bottom and re-audit monthly to track progress. Quick wins (high impact, low effort) are always listed first.
 
@@ -551,7 +551,7 @@ Export any audit as a PDF report. The report includes the composite score, pilla
     metaTitle:
       "Entity Sync Guide | Brand Identity Consistency for AI Visibility",
     metaDescription:
-      "Learn how GrowthForge's Entity Sync ensures your brand identity is consistent across platforms that AI models reference. Fix inconsistencies, generate schema markup, and create llms.txt.",
+      "Learn how MentionLayer's Entity Sync ensures your brand identity is consistent across platforms that AI models reference. Fix inconsistencies, generate schema markup, and create llms.txt.",
     targetKeyword: "brand entity consistency AI visibility schema markup",
     relatedArticles: [
       "ai-visibility-audit",
@@ -567,7 +567,7 @@ Export any audit as a PDF report. The report includes the composite score, pilla
       {
         question: "What is llms.txt and do I need it?",
         answer:
-          "llms.txt is a proposed standard (like robots.txt for AI) that tells AI crawlers key facts about your business in a structured format. GrowthForge generates this file for you based on your canonical brand description. While not universally adopted yet, early implementation signals AI-readiness and some models already reference it.",
+          "llms.txt is a proposed standard (like robots.txt for AI) that tells AI crawlers key facts about your business in a structured format. MentionLayer generates this file for you based on your canonical brand description. While not universally adopted yet, early implementation signals AI-readiness and some models already reference it.",
       },
       {
         question:
@@ -604,7 +604,7 @@ Think of it this way: if your LinkedIn says "music distribution company" but you
 
 [Screenshot: Platform scan results showing presence, description match scores, and missing platforms]
 
-For each platform found, GrowthForge extracts your brand description and compares it to your canonical description (stored in GrowthForge). The match score (0-100) tells you how consistent each platform's description is.
+For each platform found, MentionLayer extracts your brand description and compares it to your canonical description (stored in MentionLayer). The match score (0-100) tells you how consistent each platform's description is.
 
 **Platforms scanned:**
 - Google Business Profile — Often the first thing AI models reference
@@ -638,7 +638,7 @@ Inconsistencies are flagged with specific details: "LinkedIn says 'music distrib
 - Keep it under 200 words — this needs to work on every platform
 - Write in third person ("Xpand Digital is..." not "We are...")
 
-Once set, GrowthForge generates platform-specific versions that preserve the core message while adapting length and format for each platform's requirements. You can review and edit each version before updating the actual platform profiles.`,
+Once set, MentionLayer generates platform-specific versions that preserve the core message while adapting length and format for each platform's requirements. You can review and edit each version before updating the actual platform profiles.`,
       },
       {
         id: "schema-and-llms-txt",
@@ -646,7 +646,7 @@ Once set, GrowthForge generates platform-specific versions that preserve the cor
         content: `Entity Sync generates two technical assets that improve how AI models and search engines understand your brand.
 
 **JSON-LD Schema Markup**
-GrowthForge generates Organization, Product, FAQ, and BreadcrumbList schema markup based on your canonical description. Copy and paste the generated code into your website's head section (or use a schema plugin if you're on WordPress).
+MentionLayer generates Organization, Product, FAQ, and BreadcrumbList schema markup based on your canonical description. Copy and paste the generated code into your website's head section (or use a schema plugin if you're on WordPress).
 
 [Screenshot: Generated JSON-LD code snippet for Organization schema]
 
@@ -657,7 +657,7 @@ Schema markup helps both Google and AI models understand:
 - Your site structure (BreadcrumbList type)
 
 **llms.txt**
-GrowthForge generates an llms.txt file — a structured document specifically designed for AI crawlers. It includes your brand name, description, key products/services, FAQs, and authoritative sources.
+MentionLayer generates an llms.txt file — a structured document specifically designed for AI crawlers. It includes your brand name, description, key products/services, FAQs, and authoritative sources.
 
 Place this file at yoursite.com/llms.txt (like robots.txt). While the standard is still emerging, Perplexity and some other AI models already look for it. Early adoption signals that your brand is AI-ready and helps models find accurate information about your business.`,
       },
@@ -673,7 +673,7 @@ Place this file at yoursite.com/llms.txt (like robots.txt). While the standard i
     metaTitle:
       "Review Engine Guide | AI Review Management & Monitoring Platform",
     metaDescription:
-      "Learn how GrowthForge's Review Engine monitors reviews across Google, Trustpilot, and G2, generates AI review responses, runs review request campaigns, and benchmarks competitors.",
+      "Learn how MentionLayer's Review Engine monitors reviews across Google, Trustpilot, and G2, generates AI review responses, runs review request campaigns, and benchmarks competitors.",
     targetKeyword: "review management platform AI response generation",
     relatedArticles: [
       "ai-visibility-audit",
@@ -689,13 +689,13 @@ Place this file at yoursite.com/llms.txt (like robots.txt). While the standard i
       {
         question: "How do I set up review request campaigns?",
         answer:
-          "Go to Review Engine → Campaigns → New Campaign. Set your target platform, review request email template (GrowthForge provides AI-generated templates), and delivery schedule. You can import a customer list or connect to your CRM. Reviews are requested via email with a direct link to the review platform.",
+          "Go to Review Engine → Campaigns → New Campaign. Set your target platform, review request email template (MentionLayer provides AI-generated templates), and delivery schedule. You can import a customer list or connect to your CRM. Reviews are requested via email with a direct link to the review platform.",
       },
       {
         question:
-          "Can GrowthForge write review responses for me?",
+          "Can MentionLayer write review responses for me?",
         answer:
-          "Yes. For each incoming review, GrowthForge generates a suggested response using Claude. Positive reviews get a grateful, personalized response. Negative reviews get an empathetic, solution-oriented response. You review and post manually — GrowthForge never auto-posts review responses.",
+          "Yes. For each incoming review, MentionLayer generates a suggested response using Claude. Positive reviews get a grateful, personalized response. Negative reviews get an empathetic, solution-oriented response. You review and post manually — MentionLayer never auto-posts review responses.",
       },
       {
         question: "How do reviews affect AI visibility?",
@@ -730,7 +730,7 @@ New reviews trigger alerts based on your configuration. Negative reviews get fla
       {
         id: "review-response-generation",
         title: "AI-Powered Review Response Generation",
-        content: `For each review, GrowthForge generates a suggested response using Claude. The response is tailored to the review's content, sentiment, and platform.
+        content: `For each review, MentionLayer generates a suggested response using Claude. The response is tailored to the review's content, sentiment, and platform.
 
 [Screenshot: Review response generator showing original review and generated response side by side]
 
@@ -752,7 +752,7 @@ New reviews trigger alerts based on your configuration. Negative reviews get fla
 - Addresses any specific concerns
 - Highlights features or changes that address their points
 
-You review every suggested response before posting. Edit, approve, or reject as needed. GrowthForge never auto-posts review responses.`,
+You review every suggested response before posting. Edit, approve, or reject as needed. MentionLayer never auto-posts review responses.`,
       },
       {
         id: "review-request-campaigns",
@@ -764,7 +764,7 @@ You review every suggested response before posting. Edit, approve, or reject as 
 **Campaign setup:**
 1. **Choose a target platform** — Focus on one platform per campaign (e.g., Google Reviews this month, G2 next month)
 2. **Select your audience** — Import a customer list, connect to your CRM, or manually add contacts
-3. **Customize the template** — GrowthForge generates an email template. Edit the subject line, personalization fields, and messaging
+3. **Customize the template** — MentionLayer generates an email template. Edit the subject line, personalization fields, and messaging
 4. **Set the schedule** — Drip-send review requests over time (not all at once) for natural-looking velocity
 5. **Launch and track** — Monitor open rates, click rates, and actual reviews received
 
@@ -809,7 +809,7 @@ This data feeds directly into your audit score and action plan. If a competitor 
     metaTitle:
       "PressForge Guide | AI-Powered Digital PR for Brand Authority",
     metaDescription:
-      "Learn how GrowthForge's PressForge module generates press ideas, writes releases with AI, matches you with journalists, runs outreach campaigns, and tracks media coverage.",
+      "Learn how MentionLayer's PressForge module generates press ideas, writes releases with AI, matches you with journalists, runs outreach campaigns, and tracks media coverage.",
     targetKeyword: "AI powered digital PR press release tool",
     relatedArticles: [
       "ai-visibility-audit",
@@ -820,7 +820,7 @@ This data feeds directly into your audit score and action plan. If a competitor 
       {
         question: "How do I generate a press release?",
         answer:
-          "Go to PressForge → Campaigns → New Campaign. Select a press idea (AI-generated or custom), and GrowthForge drafts a full press release using Claude Opus. The draft follows AP style, includes quotes, statistics, and contact info. You review, edit, and approve before distribution.",
+          "Go to PressForge → Campaigns → New Campaign. Select a press idea (AI-generated or custom), and MentionLayer drafts a full press release using Claude Opus. The draft follows AP style, includes quotes, statistics, and contact info. You review, edit, and approve before distribution.",
       },
       {
         question: "How does press coverage improve AI visibility?",
@@ -830,7 +830,7 @@ This data feeds directly into your audit score and action plan. If a competitor 
       {
         question: "How does the journalist matching work?",
         answer:
-          "GrowthForge maintains a database of journalists scored by relevance to your industry, publication authority, recent coverage topics, and engagement rates. When you create a press campaign, the system suggests journalists ranked by fit score. You can also search and filter manually.",
+          "MentionLayer maintains a database of journalists scored by relevance to your industry, publication authority, recent coverage topics, and engagement rates. When you create a press campaign, the system suggests journalists ranked by fit score. You can also search and filter manually.",
       },
       {
         question: "Can I track which journalists actually cover my story?",
@@ -865,7 +865,7 @@ Each idea includes a newsworthiness score, suggested headline, target publicatio
       {
         id: "release-writing",
         title: "AI-Powered Release Writing & Editing",
-        content: `Once you select a press idea, GrowthForge drafts a complete press release using Claude Opus.
+        content: `Once you select a press idea, MentionLayer drafts a complete press release using Claude Opus.
 
 [Screenshot: Press release editor showing AI-generated draft with editing tools]
 
@@ -906,7 +906,7 @@ The release is stored in your campaign and can be exported as a formatted PDF, p
 - Sort by fit score for your specific campaign
 - Save favorites and build custom media lists
 
-GrowthForge suggests the top 10-15 journalists for each campaign based on the story angle and your industry.`,
+MentionLayer suggests the top 10-15 journalists for each campaign based on the story angle and your industry.`,
       },
       {
         id: "outreach-and-coverage",
@@ -942,7 +942,7 @@ Coverage results feed back into your audit's Press pillar score. More high-autho
     metaTitle:
       "Technical GEO Guide | Robots.txt AI Crawler Audit & Citability Score",
     metaDescription:
-      "Learn how GrowthForge's Technical GEO module audits your robots.txt for AI crawlers like GPTBot and ClaudeBot, measures content citability, and verifies schema markup for AI visibility.",
+      "Learn how MentionLayer's Technical GEO module audits your robots.txt for AI crawlers like GPTBot and ClaudeBot, measures content citability, and verifies schema markup for AI visibility.",
     targetKeyword:
       "robots.txt AI crawlers GPTBot ClaudeBot citability score",
     relatedArticles: ["entity-sync", "ai-visibility-audit", "mention-gaps"],
@@ -960,7 +960,7 @@ Coverage results feed back into your audit's Press pillar score. More high-autho
       {
         question: "What AI crawlers exist?",
         answer:
-          "The main ones are GPTBot (OpenAI/ChatGPT), ClaudeBot (Anthropic/Claude), PerplexityBot (Perplexity), Google-Extended (Gemini), Bytespider (TikTok), CCBot (Common Crawl), and Amazonbot. GrowthForge checks for all of these in your robots.txt.",
+          "The main ones are GPTBot (OpenAI/ChatGPT), ClaudeBot (Anthropic/Claude), PerplexityBot (Perplexity), Google-Extended (Gemini), Bytespider (TikTok), CCBot (Common Crawl), and Amazonbot. MentionLayer checks for all of these in your robots.txt.",
       },
       {
         question: "What is a citability score?",
@@ -976,7 +976,7 @@ Coverage results feed back into your audit's Press pillar score. More high-autho
 
 [Screenshot: Robots.txt audit showing allowed/blocked status for each AI crawler]
 
-**AI crawlers GrowthForge checks for:**
+**AI crawlers MentionLayer checks for:**
 
 | Bot | Company | Used By |
 |-----|---------|---------|
@@ -994,7 +994,7 @@ Coverage results feed back into your audit's Press pillar score. More high-autho
 - **Stale rules** — Old robots.txt that doesn't account for new AI crawlers
 - **No explicit allow** — Some AI bots require explicit "Allow" rules to crawl
 
-GrowthForge shows you exactly which bots are allowed and which are blocked, with specific line numbers in your robots.txt. It generates a recommended robots.txt that allows AI crawlers while maintaining any legitimate blocks you have.`,
+MentionLayer shows you exactly which bots are allowed and which are blocked, with specific line numbers in your robots.txt. It generates a recommended robots.txt that allows AI crawlers while maintaining any legitimate blocks you have.`,
       },
       {
         id: "content-freshness",
@@ -1048,7 +1048,7 @@ Pages with outdated content are a citation risk. If an AI model cites your page 
 - SSR/crawlability (10%)
 - Content depth and originality (10%)
 
-GrowthForge provides page-by-page citability scores with specific recommendations for improvement.`,
+MentionLayer provides page-by-page citability scores with specific recommendations for improvement.`,
       },
       {
         id: "schema-and-ssr",
@@ -1058,7 +1058,7 @@ GrowthForge provides page-by-page citability scores with specific recommendation
 [Screenshot: Schema verification showing detected vs missing schema types and SSR status]
 
 **Schema markup check:**
-GrowthForge scans your website for JSON-LD structured data and reports which types are present vs missing. Key schema types for AI visibility:
+MentionLayer scans your website for JSON-LD structured data and reports which types are present vs missing. Key schema types for AI visibility:
 - **Organization** — Your company identity
 - **Product / Service** — What you sell
 - **FAQ** — Common questions (highly cited by AI models)
@@ -1088,7 +1088,7 @@ AI crawlers often can't execute JavaScript. If your content is client-side rende
     metaTitle:
       "Mention Gap Analysis Guide | Find Where Competitors Beat You in AI",
     metaDescription:
-      "Learn how GrowthForge's Mention Gap Analyzer scans Reddit, Quora, YouTube, and more to find competitor mentions you're missing, and generates action plans to close the gaps.",
+      "Learn how MentionLayer's Mention Gap Analyzer scans Reddit, Quora, YouTube, and more to find competitor mentions you're missing, and generates action plans to close the gaps.",
     targetKeyword: "mention gap analysis competitor AI visibility",
     relatedArticles: [
       "citation-engine",
@@ -1105,12 +1105,12 @@ AI crawlers often can't execute JavaScript. If your content is client-side rende
         question:
           "How is mention gap analysis different from the Citation Engine?",
         answer:
-          "The Citation Engine focuses on Reddit, Quora, and Facebook Groups — forums where you can directly post responses. The Mention Gap Analyzer casts a wider net across YouTube, LinkedIn, G2, Capterra, industry blogs, and more. It identifies gaps across all platforms, then routes actionable gaps to the right GrowthForge module.",
+          "The Citation Engine focuses on Reddit, Quora, and Facebook Groups — forums where you can directly post responses. The Mention Gap Analyzer casts a wider net across YouTube, LinkedIn, G2, Capterra, industry blogs, and more. It identifies gaps across all platforms, then routes actionable gaps to the right MentionLayer module.",
       },
       {
         question: "What can I do about YouTube mention gaps?",
         answer:
-          "GrowthForge generates YouTube GEO video briefs — content outlines optimized for topics where competitors have video coverage and you don't. These briefs include suggested titles, key points to cover, keywords to mention, and competitor videos to reference. You or a video team produce the video using the brief.",
+          "MentionLayer generates YouTube GEO video briefs — content outlines optimized for topics where competitors have video coverage and you don't. These briefs include suggested titles, key points to cover, keywords to mention, and competitor videos to reference. You or a video team produce the video using the brief.",
       },
       {
         question: "How often should I run a mention gap analysis?",
@@ -1134,7 +1134,7 @@ AI crawlers often can't execute JavaScript. If your content is client-side rende
 - **Industry blogs** — Relevant publications in your category
 - **AI models** — ChatGPT, Perplexity, Gemini, Claude responses
 
-For each platform, GrowthForge counts mentions of your brand vs each competitor across the same keywords. The result is a clear map of where your competitors have presence and you don't.
+For each platform, MentionLayer counts mentions of your brand vs each competitor across the same keywords. The result is a clear map of where your competitors have presence and you don't.
 
 **Gap severity levels:**
 - **Critical** — Competitor mentioned 20+ times, you're at zero
@@ -1162,7 +1162,7 @@ For each platform, GrowthForge counts mentions of your brand vs each competitor 
       {
         id: "acting-on-gaps",
         title: "Acting on Gaps: Routing to the Right Module",
-        content: `Every identified gap links to the GrowthForge module that can close it.
+        content: `Every identified gap links to the MentionLayer module that can close it.
 
 [Screenshot: Gap action panel showing recommended actions with module links]
 
@@ -1187,7 +1187,7 @@ Competitor recommended by AI models where you're not? This is the compound effec
       {
         id: "youtube-geo-briefs",
         title: "YouTube GEO Video Briefs",
-        content: `For mention gaps on YouTube, GrowthForge generates structured video briefs optimized for AI visibility.
+        content: `For mention gaps on YouTube, MentionLayer generates structured video briefs optimized for AI visibility.
 
 [Screenshot: YouTube GEO brief showing title, outline, keywords, and competitor video analysis]
 
@@ -1216,7 +1216,7 @@ You (or your video production team) use the brief to create the actual video. Th
     metaTitle:
       "AI Visibility ROI Reporting | Audit Comparisons & Competitor Reports",
     metaDescription:
-      "Learn how to prove ROI with GrowthForge's reporting: monthly audit score comparisons, competitor intelligence reports, GA4 attribution tracking, and client-ready PDF exports.",
+      "Learn how to prove ROI with MentionLayer's reporting: monthly audit score comparisons, competitor intelligence reports, GA4 attribution tracking, and client-ready PDF exports.",
     targetKeyword: "AI visibility ROI reporting audit comparison",
     relatedArticles: [
       "ai-visibility-audit",
@@ -1244,7 +1244,7 @@ You (or your video production team) use the brief to create the actual video. Th
         question:
           "Can I white-label the reports?",
         answer:
-          "Yes. Reports use your agency logo, name, and branding colors. Your client sees the report as coming from your agency, with GrowthForge's platform powering the data behind the scenes.",
+          "Yes. Reports use your agency logo, name, and branding colors. Your client sees the report as coming from your agency, with MentionLayer's platform powering the data behind the scenes.",
       },
     ],
     sections: [
@@ -1272,7 +1272,7 @@ This story is concrete, measurable, and impossible to argue with. No other SEO t
       {
         id: "competitor-intelligence",
         title: "Competitor Intelligence Reports",
-        content: `GrowthForge tracks competitor data alongside yours, enabling side-by-side intelligence reports.
+        content: `MentionLayer tracks competitor data alongside yours, enabling side-by-side intelligence reports.
 
 [Screenshot: Competitor comparison report showing side-by-side metrics across all 5 pillars]
 
@@ -1293,7 +1293,7 @@ This story is concrete, measurable, and impossible to argue with. No other SEO t
       {
         id: "client-reporting",
         title: "Client Reporting Best Practices",
-        content: `GrowthForge generates professional client reports that demonstrate clear, measurable value.
+        content: `MentionLayer generates professional client reports that demonstrate clear, measurable value.
 
 [Screenshot: PDF report preview showing branded layout with charts, scores, and action items]
 
@@ -1331,8 +1331,8 @@ This story is concrete, measurable, and impossible to argue with. No other SEO t
 - **User journey** — how citation-driven visitors navigate your site after arriving
 
 **Setup:**
-1. Connect your GA4 property in GrowthForge settings
-2. GrowthForge automatically identifies referral traffic from platforms where you've placed citations
+1. Connect your GA4 property in MentionLayer settings
+2. MentionLayer automatically identifies referral traffic from platforms where you've placed citations
 3. UTM parameters on links in your responses enable precise attribution
 4. Conversion data appears in your monthly reports alongside AI visibility metrics
 

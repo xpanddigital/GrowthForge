@@ -279,7 +279,7 @@ async function generateActionPlan(
     .join("\n");
 
   const result = await callSonnet(
-    `You are an AI SEO strategist. Analyze the mention gap data for "${brandName}" vs competitors [${competitors.join(", ")}]:\n\nPlatform Coverage:\n${platformSummary}\n\nTop Gaps:\n${gapSummary}\n\nGenerate a prioritized action plan (5-8 actions) ranked by impact-to-effort ratio. Map each action to a GrowthForge module (citation_engine, entity_sync, review_engine, youtube_geo, press).\n\nReturn JSON array:\n[\n  { "priority": 1, "action": "specific action", "platform": "platform", "module": "module_name", "impact": "high|medium|low", "effort": "high|medium|low" }\n]`,
+    `You are an AI SEO strategist. Analyze the mention gap data for "${brandName}" vs competitors [${competitors.join(", ")}]:\n\nPlatform Coverage:\n${platformSummary}\n\nTop Gaps:\n${gapSummary}\n\nGenerate a prioritized action plan (5-8 actions) ranked by impact-to-effort ratio. Map each action to a MentionLayer module (citation_engine, entity_sync, review_engine, youtube_geo, press).\n\nReturn JSON array:\n[\n  { "priority": 1, "action": "specific action", "platform": "platform", "module": "module_name", "impact": "high|medium|low", "effort": "high|medium|low" }\n]`,
     { maxTokens: 1536 }
   );
 

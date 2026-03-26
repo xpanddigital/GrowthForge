@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | GrowthForge Help Center",
-    default: "Help Center | GrowthForge",
+    template: "%s | MentionLayer Help Center",
+    default: "Help Center | MentionLayer",
   },
   description:
-    "Learn how to use GrowthForge to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, and more.",
+    "Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, and more.",
 };
 
 export default function HelpLayout({
@@ -36,7 +36,7 @@ export default function HelpLayout({
                 d="M13 10V3L4 14h7v7l9-11h-7z"
               />
             </svg>
-            GrowthForge Help
+            MentionLayer Help
           </Link>
           <div className="flex items-center gap-3">
             <Link

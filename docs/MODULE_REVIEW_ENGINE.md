@@ -771,7 +771,7 @@ Flag reviews that: are strongly negative (1-2 stars with specific complaints), c
 //
 // Human-in-the-loop: generated responses are DRAFTS.
 // The user must review, edit, and approve before posting.
-// GrowthForge never auto-posts responses.
+// MentionLayer never auto-posts responses.
 //
 // Response strategy by sentiment:
 // - Positive: Thank, reinforce specific praise, subtle re-engagement
@@ -1253,7 +1253,7 @@ For high-review-volume clients (100+ reviews/month), consider offering weekly sc
 Read CLAUDE.md in the project root completely before responding.
 Read docs/MODULE_REVIEW_ENGINE.md completely before responding.
 
-You are building the Review Engine module for GrowthForge.
+You are building the Review Engine module for MentionLayer.
 The Citation Engine (Phase 1), AI Monitor, and Entity Sync are
 already built and deployed. All architectural patterns (agent
 abstraction, logAgentAction, RLS, Inngest jobs, credit tracking,

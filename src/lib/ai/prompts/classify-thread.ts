@@ -12,7 +12,7 @@ export interface ThreadForClassification {
   url: string;
 }
 
-const SYSTEM_PROMPT = `You are an AI SEO classification expert for GrowthForge, a platform that identifies high-value threads on Reddit, Quora, and Facebook Groups where brands can be authentically mentioned.
+const SYSTEM_PROMPT = `You are an AI SEO classification expert for MentionLayer, a platform that identifies high-value threads on Reddit, Quora, and Facebook Groups where brands can be authentically mentioned.
 
 Your job is to classify each thread based on:
 1. User intent — what is the original poster looking for?

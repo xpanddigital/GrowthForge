@@ -10,8 +10,8 @@ export default function MarketingLayout({
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="text-lg font-bold tracking-tight">
-            <span className="text-[#6C5CE7]">Growth</span>
-            <span className="text-foreground">Forge</span>
+            <span className="text-[#6C5CE7]">Mention</span>
+            <span className="text-foreground">Layer</span>
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link
@@ -92,12 +92,12 @@ export default function MarketingLayout({
               <h3 className="text-sm font-semibold text-foreground">Company</h3>
               <ul className="mt-3 space-y-2">
                 <li><a href="mailto:joel@xpanddigital.com" className="text-sm text-muted-foreground hover:text-foreground">Contact</a></li>
-                <li><span className="text-sm text-muted-foreground">Built by Xpand Digital</span></li>
+                <li><a href="https://mentionlayer.com" className="text-sm text-muted-foreground hover:text-foreground">MentionLayer</a></li>
               </ul>
             </div>
           </div>
           <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} GrowthForge by Xpand Digital (Direct Rank LLC). All rights reserved.
+            &copy; {new Date().getFullYear()} MentionLayer. All rights reserved.
           </div>
         </div>
       </footer>

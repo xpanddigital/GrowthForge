@@ -52,7 +52,7 @@ export async function syncProspectToGHL(params: {
         email: params.email,
         companyName: params.companyName,
         website: params.websiteUrl,
-        source: "GrowthForge Free Audit",
+        source: "MentionLayer Free Audit",
         tags: [GHL_CONFIG.tags.freeAuditSignup, GHL_CONFIG.tags.newLead],
         customFields: [
           { id: GHL_CONFIG.customFields.websiteUrl, value: params.websiteUrl },

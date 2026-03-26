@@ -7,7 +7,7 @@ import { blogPosts } from "@/lib/blog/posts";
 export const revalidate = 43200;
 
 export const metadata: Metadata = {
-  title: "Blog | GrowthForge — AI Visibility & GEO Insights",
+  title: "Blog | MentionLayer — AI Visibility & GEO Insights",
   description:
     "Learn how to get your brand recommended by AI. Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and more.",
 };
@@ -41,7 +41,7 @@ export default function BlogIndexPage() {
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          GrowthForge Blog
+          MentionLayer Blog
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
           The playbook for getting your brand recommended by AI.

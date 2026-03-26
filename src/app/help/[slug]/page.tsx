@@ -48,11 +48,11 @@ export default async function HelpArticlePage({ params }: PageProps) {
     description: article.summary,
     author: {
       "@type": "Organization",
-      name: "GrowthForge by Xpand Digital",
+      name: "MentionLayer by Xpand Digital",
     },
     publisher: {
       "@type": "Organization",
-      name: "GrowthForge",
+      name: "MentionLayer",
     },
   };
 

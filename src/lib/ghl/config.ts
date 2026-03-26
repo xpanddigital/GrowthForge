@@ -19,8 +19,8 @@ export const GHL_CONFIG = {
 
   // Tags for prospect lifecycle
   tags: {
-    freeAuditSignup: "growthforge-free-audit",
-    auditComplete: "growthforge-audit-complete",
+    freeAuditSignup: "mentionlayer-free-audit",
+    auditComplete: "mentionlayer-audit-complete",
     newLead: "new lead",
   },
 } as const;

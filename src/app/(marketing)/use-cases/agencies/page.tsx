@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "For Agencies | GrowthForge — Add AI Visibility to Your Service Offering",
+  title: "For Agencies | MentionLayer — Add AI Visibility to Your Service Offering",
   description:
-    "Add AI visibility as a service offering. GrowthForge gives agencies measurable AI visibility scores, white-label reports, and a multi-client dashboard.",
+    "Add AI visibility as a service offering. MentionLayer gives agencies measurable AI visibility scores, white-label reports, and a multi-client dashboard.",
 };
 
 export default function AgenciesUseCasePage() {
@@ -22,7 +22,7 @@ export default function AgenciesUseCasePage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Your clients&apos; competitors are getting recommended by ChatGPT,
-            Perplexity, and Gemini. Your clients are invisible. GrowthForge
+            Perplexity, and Gemini. Your clients are invisible. MentionLayer
             gives you the tools to fix that — and a new revenue stream while
             you&apos;re at it.
           </p>
@@ -380,7 +380,7 @@ export default function AgenciesUseCasePage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:py-24">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Three Ways Agencies Use GrowthForge
+            Three Ways Agencies Use MentionLayer
           </h2>
           <p className="mt-4 max-w-2xl text-muted-foreground">
             Whether you&apos;re onboarding a new client, running monthly
@@ -449,7 +449,7 @@ export default function AgenciesUseCasePage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:py-24">
           <h2 className="text-center text-3xl font-bold tracking-tight sm:text-4xl">
-            Agencies Using GrowthForge
+            Agencies Using MentionLayer
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-center text-muted-foreground">
             Early-access agencies are already adding AI visibility to their
@@ -459,12 +459,12 @@ export default function AgenciesUseCasePage() {
             <div className="rounded-lg border border-border bg-card p-6">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#6C5CE7]/20 text-sm font-bold text-[#6C5CE7]">
-                  XD
+                  ML
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">Xpand Digital</p>
+                  <p className="text-sm font-semibold">MentionLayer</p>
                   <p className="text-xs text-muted-foreground">
-                    SEO Agency, Australia
+                    AI Visibility Platform
                   </p>
                 </div>
               </div>
@@ -518,7 +518,7 @@ export default function AgenciesUseCasePage() {
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
                 Add your first client, run an audit, and see exactly what
-                GrowthForge can do for your agency. No long onboarding. No
+                MentionLayer can do for your agency. No long onboarding. No
                 complex setup. Add keywords, run the scan, deliver results.
               </p>
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

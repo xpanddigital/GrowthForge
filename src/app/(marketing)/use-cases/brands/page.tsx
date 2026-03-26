@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title:
-    "For Brands | GrowthForge — Get Recommended by ChatGPT, Perplexity & Gemini",
+    "For Brands | MentionLayer — Get Recommended by ChatGPT, Perplexity & Gemini",
   description:
-    "Find out if AI recommends your brand. GrowthForge helps brands get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models.",
+    "Find out if AI recommends your brand. MentionLayer helps brands get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models.",
 };
 
 function ArrowRightIcon({ className }: { className?: string }) {
@@ -378,7 +378,7 @@ export default function BrandsUseCasePage() {
         </div>
       </section>
 
-      {/* How GrowthForge fixes it */}
+      {/* How MentionLayer fixes it */}
       <section className="border-t border-border px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
@@ -386,7 +386,7 @@ export default function BrandsUseCasePage() {
               Get your brand into the conversations AI is already reading
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              GrowthForge finds the exact threads and sources that AI models
+              MentionLayer finds the exact threads and sources that AI models
               pull from, then helps you place your brand in them authentically.
             </p>
           </div>
@@ -418,7 +418,7 @@ export default function BrandsUseCasePage() {
                   2. Seed authentic citations
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  For every high-value thread, GrowthForge generates three
+                  For every high-value thread, MentionLayer generates three
                   response variants that read like a real community member. No
                   spam. No marketing speak. Genuine, helpful contributions that
                   naturally mention your brand.
@@ -435,7 +435,7 @@ export default function BrandsUseCasePage() {
                   3. Build multi-signal authority
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  AI models don&apos;t trust a single source. GrowthForge
+                  AI models don&apos;t trust a single source. MentionLayer
                   strengthens your presence across five pillars: forum
                   citations, AI model mentions, entity consistency, reviews, and
                   earned press coverage.
@@ -454,7 +454,7 @@ export default function BrandsUseCasePage() {
                 <p className="mt-2 text-sm text-muted-foreground">
                   Track how often AI recommends your brand vs. competitors
                   across every major model. Share of model is the new share of
-                  voice &mdash; and GrowthForge makes it measurable for the
+                  voice &mdash; and MentionLayer makes it measurable for the
                   first time.
                 </p>
               </div>

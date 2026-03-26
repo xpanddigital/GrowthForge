@@ -185,7 +185,7 @@ export default function FreeAuditSetupPage() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-primary">Growth</span>Forge
+            <span className="text-primary">Mention</span>Layer
           </h1>
           <p className="text-sm text-muted-foreground">
             Set up your AI Visibility Audit

@@ -14,9 +14,9 @@ interface WelcomeStep {
 const steps: WelcomeStep[] = [
   {
     id: "welcome",
-    title: "Welcome to GrowthForge",
+    title: "Welcome to MentionLayer",
     description:
-      "GrowthForge is an AI visibility platform that helps you get your brand recommended by ChatGPT, Perplexity, Gemini, and Claude. It discovers high-authority forum threads, generates authentic responses, monitors AI citations, and tracks your visibility score over time.",
+      "MentionLayer is an AI visibility platform that helps you get your brand recommended by ChatGPT, Perplexity, Gemini, and Claude. It discovers high-authority forum threads, generates authentic responses, monitors AI citations, and tracks your visibility score over time.",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -39,7 +39,7 @@ const steps: WelcomeStep[] = [
     id: "add-keywords",
     title: "Add Keywords",
     description:
-      "Keywords power the discovery engine. Add 10-20 buying-intent terms like \"best [product]\", \"[product] alternatives\", or \"[competitor] vs\". GrowthForge can also suggest keywords based on your brand brief.",
+      "Keywords power the discovery engine. Add 10-20 buying-intent terms like \"best [product]\", \"[product] alternatives\", or \"[competitor] vs\". MentionLayer can also suggest keywords based on your brand brief.",
     icon: (
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />

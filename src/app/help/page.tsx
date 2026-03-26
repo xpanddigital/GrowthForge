@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { helpArticles } from "@/lib/help/articles";
 
 export const metadata: Metadata = {
-  title: "Help Center | GrowthForge",
+  title: "Help Center | MentionLayer",
   description:
-    "Learn how to use GrowthForge to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more.",
+    "Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more.",
 };
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -88,7 +88,7 @@ export default function HelpIndexPage() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-12 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          GrowthForge Help Center
+          MentionLayer Help Center
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
           Everything you need to master AI visibility for your brand.

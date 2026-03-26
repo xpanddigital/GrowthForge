@@ -176,3 +176,19 @@ export type CalendarEventType = (typeof CALENDAR_EVENT_TYPES)[number];
 
 export const CLIENT_TYPES = ["business", "thought_leader"] as const;
 export type ClientType = (typeof CLIENT_TYPES)[number];
+
+// ============================================
+// Billing enums
+// ============================================
+
+export const PLAN_IDS = [
+  "solo",
+  "growth",
+  "agency",
+  "agency_pro",
+  "agency_unlimited",
+] as const;
+export type PlanId = (typeof PLAN_IDS)[number];
+
+export const BILLING_INTERVALS = ["monthly", "annual"] as const;
+export type BillingInterval = (typeof BILLING_INTERVALS)[number];

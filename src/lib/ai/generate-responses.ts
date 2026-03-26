@@ -1,4 +1,4 @@
-// Response generation pipeline for GrowthForge.
+// Response generation pipeline for MentionLayer.
 // This is the most critical code in the entire system.
 // Response quality is the entire value proposition.
 //
@@ -217,7 +217,7 @@ function isBillingError(error: unknown): boolean {
 /**
  * Generate 3 response variants (casual, expert, story) for a thread.
  *
- * This is the core value-generating function of GrowthForge.
+ * This is the core value-generating function of MentionLayer.
  * Uses Claude Opus 4 for highest quality output.
  * Falls back to Gemini if Claude is unavailable (billing, rate limits).
  * All 3 variants are requested in a single API call for coherent context.

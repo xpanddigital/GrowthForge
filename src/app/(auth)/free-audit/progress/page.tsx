@@ -83,7 +83,7 @@ export default function FreeAuditProgressPage() {
       <div className="mx-auto w-full max-w-md space-y-8 text-center">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-primary">Growth</span>Forge
+            <span className="text-primary">Mention</span>Layer
           </h1>
           <h2 className="text-lg font-semibold">Running Your AI Visibility Audit</h2>
           <p className="text-sm text-muted-foreground">

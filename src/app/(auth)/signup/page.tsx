@@ -39,7 +39,7 @@ export default function SignupPage() {
       <div className="mx-auto w-full max-w-sm space-y-6 p-6">
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-primary">Growth</span>Forge
+            <span className="text-primary">Mention</span>Layer
           </h1>
           <p className="text-sm text-muted-foreground">
             Create your account

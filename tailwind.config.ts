@@ -44,7 +44,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // GrowthForge brand colors
+        // MentionLayer brand colors
         gf: {
           primary: "#6C5CE7",
           "primary-hover": "#5A4BD1",

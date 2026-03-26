@@ -10,7 +10,7 @@ export default function FreeAuditPage() {
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-center px-16 bg-gradient-to-br from-primary/5 via-background to-background">
         <div className="max-w-md">
           <h1 className="text-3xl font-bold tracking-tight mb-4">
-            <span className="text-primary">Growth</span>Forge
+            <span className="text-primary">Mention</span>Layer
           </h1>
           <h2 className="text-2xl font-semibold mb-6">
             Get Your AI Visibility Score
@@ -46,7 +46,7 @@ export default function FreeAuditPage() {
         <div className="mx-auto w-full max-w-sm space-y-6">
           <div className="space-y-2 text-center lg:hidden">
             <h1 className="text-2xl font-bold tracking-tight">
-              <span className="text-primary">Growth</span>Forge
+              <span className="text-primary">Mention</span>Layer
             </h1>
             <p className="text-sm text-muted-foreground">
               Free AI Visibility Audit

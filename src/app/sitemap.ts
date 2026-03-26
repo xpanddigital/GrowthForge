@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog/posts";
 import { helpArticles } from "@/lib/help/articles";
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://growthforge.io";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();

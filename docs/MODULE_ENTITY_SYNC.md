@@ -833,7 +833,7 @@ src/components/entity/
 Read CLAUDE.md in the project root completely before responding.
 Read docs/MODULE_ENTITY_SYNC.md completely before responding.
 
-You are building the Entity Sync module for GrowthForge.
+You are building the Entity Sync module for MentionLayer.
 The Citation Engine (Phase 1) and AI Monitor (Phase 2) are
 already built and deployed.
 

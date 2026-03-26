@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  PLANS,
+  PUBLIC_PLANS,
+  formatLimit,
+  isUnlimited,
+} from "@/lib/billing/plans";
 
 export const metadata: Metadata = {
-  title: "Pricing | GrowthForge — AI Visibility Platform Plans",
+  title: "Pricing | MentionLayer — AI Visibility Platform Plans",
   description:
-    "GrowthForge pricing: Starter ($297/mo), Growth ($597/mo), and Agency Pro ($997/mo). All plans include Citation Engine and AI Monitor. Start free.",
+    "MentionLayer pricing: Solo ($97/mo), Growth ($297/mo), Agency ($397/mo), and Agency Pro ($997/mo). All plans include every feature. Start free.",
 };
 
 const checkIcon = (
@@ -22,121 +28,126 @@ const checkIcon = (
   </svg>
 );
 
-const plans = [
-  {
-    name: "Starter",
-    price: "$297",
-    description: "For agencies getting started with AI visibility.",
-    popular: false,
-    features: [
-      "3 clients",
-      "30 keywords per client",
-      "Citation Engine",
-      "AI Monitor (weekly scans)",
-      "1 free AI Visibility Audit per month",
-      "Email support",
-    ],
-  },
-  {
-    name: "Growth",
-    price: "$597",
-    description: "Full platform access for growing agencies.",
-    popular: true,
-    features: [
-      "10 clients",
-      "100 keywords per client",
-      "Citation Engine",
-      "AI Monitor (daily scans)",
-      "PressForge",
-      "Entity Sync",
-      "Review Engine",
-      "Technical GEO",
-      "YouTube GEO",
-      "Mention Gap Analysis",
-      "5 AI Visibility Audits per month",
-      "Priority support",
-    ],
-  },
-  {
-    name: "Agency Pro",
-    price: "$997",
-    description: "Everything, unlimited, white-labeled.",
-    popular: false,
-    features: [
-      "Unlimited clients",
-      "Unlimited keywords",
-      "All Growth features",
-      "White-label reports",
-      "GA4 attribution dashboard",
-      "Competitor intelligence",
-      "Unlimited AI Visibility Audits",
-      "Dedicated account manager",
-      "Custom integrations",
-    ],
-  },
-];
+function planFeatures(planId: string): string[] {
+  const p = PLANS[planId as keyof typeof PLANS];
+  if (!p) return [];
 
-const comparisonFeatures = [
-  { feature: "Clients", starter: "3", growth: "10", agency: "Unlimited" },
+  const clients = isUnlimited(p.maxClients)
+    ? "Unlimited websites"
+    : `${p.maxClients} website${p.maxClients === 1 ? "" : "s"}`;
+  const keywords = isUnlimited(p.maxKeywordsPerClient)
+    ? "Unlimited keywords per site"
+    : `${p.maxKeywordsPerClient} keywords per site`;
+  const audits = isUnlimited(p.maxAuditsPerMonth)
+    ? "Unlimited AI Visibility Audits"
+    : `${p.maxAuditsPerMonth} AI Visibility Audit${p.maxAuditsPerMonth === 1 ? "" : "s"} per month`;
+  const credits = isUnlimited(p.monthlyCredits)
+    ? "Unlimited credits"
+    : `${p.monthlyCredits.toLocaleString()} credits per month`;
+
+  const features = [
+    clients,
+    keywords,
+    "All features included",
+    "Citation Engine",
+    "AI Monitor (weekly scans)",
+    "PressForge",
+    "Entity Sync",
+    "Review Engine",
+    "Technical GEO",
+    audits,
+    credits,
+    "Client reports",
+  ];
+
+  if (p.whiteLabel) features.push("White-label reports");
+  if (p.support === "dedicated_am") features.push("Dedicated account manager");
+  else if (p.support === "priority") features.push("Priority support");
+  else features.push("Email support");
+
+  return features;
+}
+
+interface ComparisonRow {
+  feature: string;
+  solo: boolean | string;
+  growth: boolean | string;
+  agency: boolean | string;
+  agencyPro: boolean | string;
+}
+
+const comparisonFeatures: ComparisonRow[] = [
   {
-    feature: "Keywords per client",
-    starter: "30",
-    growth: "100",
-    agency: "Unlimited",
+    feature: "Websites",
+    solo: formatLimit(PLANS.solo.maxClients),
+    growth: formatLimit(PLANS.growth.maxClients),
+    agency: formatLimit(PLANS.agency.maxClients),
+    agencyPro: formatLimit(PLANS.agency_pro.maxClients),
   },
-  { feature: "Citation Engine", starter: true, growth: true, agency: true },
   {
-    feature: "AI Monitor",
-    starter: "Weekly",
-    growth: "Daily",
-    agency: "Daily",
+    feature: "Keywords per site",
+    solo: formatLimit(PLANS.solo.maxKeywordsPerClient),
+    growth: formatLimit(PLANS.growth.maxKeywordsPerClient),
+    agency: formatLimit(PLANS.agency.maxKeywordsPerClient),
+    agencyPro: formatLimit(PLANS.agency_pro.maxKeywordsPerClient),
   },
+  {
+    feature: "Monthly credits",
+    solo: PLANS.solo.monthlyCredits.toLocaleString(),
+    growth: PLANS.growth.monthlyCredits.toLocaleString(),
+    agency: PLANS.agency.monthlyCredits.toLocaleString(),
+    agencyPro: PLANS.agency_pro.monthlyCredits.toLocaleString(),
+  },
+  { feature: "Citation Engine", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "AI Monitor", solo: "Weekly", growth: "Weekly", agency: "Weekly", agencyPro: "Weekly" },
+  { feature: "PressForge", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "Entity Sync", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "Review Engine", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "Technical GEO", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "YouTube GEO", solo: true, growth: true, agency: true, agencyPro: true },
+  { feature: "Mention Gap Analysis", solo: true, growth: true, agency: true, agencyPro: true },
   {
     feature: "AI Visibility Audits",
-    starter: "1/mo",
-    growth: "5/mo",
-    agency: "Unlimited",
+    solo: `${PLANS.solo.maxAuditsPerMonth}/mo`,
+    growth: `${PLANS.growth.maxAuditsPerMonth}/mo`,
+    agency: `${PLANS.agency.maxAuditsPerMonth}/mo`,
+    agencyPro: "Unlimited",
   },
-  { feature: "PressForge", starter: false, growth: true, agency: true },
-  { feature: "Entity Sync", starter: false, growth: true, agency: true },
-  { feature: "Review Engine", starter: false, growth: true, agency: true },
-  { feature: "Technical GEO", starter: false, growth: true, agency: true },
-  { feature: "YouTube GEO", starter: false, growth: true, agency: true },
-  {
-    feature: "Mention Gap Analysis",
-    starter: false,
-    growth: true,
-    agency: true,
-  },
+  { feature: "Client reports", solo: true, growth: true, agency: true, agencyPro: true },
   {
     feature: "White-label reports",
-    starter: false,
-    growth: false,
-    agency: true,
+    solo: PLANS.solo.whiteLabel,
+    growth: PLANS.growth.whiteLabel,
+    agency: PLANS.agency.whiteLabel,
+    agencyPro: PLANS.agency_pro.whiteLabel,
   },
   {
     feature: "GA4 attribution",
-    starter: false,
-    growth: false,
+    solo: false,
+    growth: true,
     agency: true,
+    agencyPro: true,
   },
   {
     feature: "Competitor intelligence",
-    starter: false,
-    growth: false,
-    agency: true,
+    solo: "Basic",
+    growth: "Full",
+    agency: "Full",
+    agencyPro: "Full",
   },
   {
-    feature: "Custom integrations",
-    starter: false,
-    growth: false,
-    agency: true,
+    feature: "Credit overage rate",
+    solo: `$${PLANS.solo.overageRatePerCredit.toFixed(2)}/cr`,
+    growth: `$${PLANS.growth.overageRatePerCredit.toFixed(2)}/cr`,
+    agency: `$${PLANS.agency.overageRatePerCredit.toFixed(2)}/cr`,
+    agencyPro: `$${PLANS.agency_pro.overageRatePerCredit.toFixed(2)}/cr`,
   },
   {
     feature: "Support",
-    starter: "Email",
+    solo: "Email",
     growth: "Priority",
-    agency: "Dedicated AM",
+    agency: "Priority",
+    agencyPro: "Dedicated AM",
   },
 ];
 
@@ -147,19 +158,29 @@ const faqs = [
       "Yes. Every plan includes a 14-day free trial with full access. No credit card required to start. Run your first AI Visibility Audit within minutes.",
   },
   {
-    question: "Can I change plans later?",
+    question: "What are credits?",
     answer:
-      "Upgrade or downgrade anytime. When you upgrade, you get immediate access to new features. When you downgrade, your current plan stays active until the end of your billing cycle.",
+      "Credits power every action in MentionLayer. A SERP scan costs 1 credit per keyword, response generation costs 10 credits, and a full AI Visibility Audit costs 50 credits. Each plan comes with a monthly credit allocation. If you need more, credits are available at your plan\u2019s overage rate.",
   },
   {
-    question: "What counts as a 'client'?",
+    question: "Can I change plans later?",
     answer:
-      "A client is a single brand you manage. Each client has their own brand brief, keywords, threads, and audit history. If you manage 5 brands, you need a plan that supports 5 clients.",
+      "Upgrade or downgrade anytime. When you upgrade, you get immediate access to new features and credits. When you downgrade, your current plan stays active until the end of your billing cycle.",
+  },
+  {
+    question: "What counts as a \u2018website\u2019?",
+    answer:
+      "A website is a single brand you manage. Each has its own brand brief, keywords, threads, and audit history. If you manage 5 brands, you need a plan that supports 5 websites.",
   },
   {
     question: "Do you offer annual billing?",
     answer:
-      "Yes. Pay annually and save 20%. That brings Starter to $237/mo, Growth to $477/mo, and Agency Pro to $797/mo. Contact us for enterprise pricing with custom terms.",
+      "Yes. Pay annually and save 20%. That brings Solo to $77/mo, Growth to $237/mo, Agency to $317/mo, and Agency Pro to $797/mo. Contact us for enterprise pricing with custom terms.",
+  },
+  {
+    question: "Do all plans get all features?",
+    answer:
+      "Yes. Every plan includes the Citation Engine, AI Monitor, PressForge, Entity Sync, Review Engine, Technical GEO, YouTube GEO, and client reports. Plans differ by the number of websites, keywords, credits, and whether white-label reports are included.",
   },
 ];
 
@@ -188,25 +209,30 @@ function ComparisonCell({ value }: { value: boolean | string }) {
 }
 
 export default function PricingPage() {
+  const visiblePlans = PUBLIC_PLANS.map((id) => ({
+    ...PLANS[id],
+    features: planFeatures(id),
+  }));
+
   return (
     <div className="bg-background">
       {/* Hero */}
       <section className="px-4 pb-16 pt-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-          Simple pricing. No hidden fees.
+          Every feature. Every plan.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Every plan includes the Citation Engine and AI Monitor. Pick the one
-          that matches your agency size, upgrade when you need more.
+          All plans include the full MentionLayer platform — Citation Engine, AI
+          Monitor, PressForge, and more. Pick the plan that matches your scale.
         </p>
       </section>
 
       {/* Plan Cards */}
-      <section className="mx-auto max-w-6xl px-4 pb-24">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {plans.map((plan) => (
+      <section className="mx-auto max-w-7xl px-4 pb-24">
+        <div className="grid gap-6 lg:grid-cols-4">
+          {visiblePlans.map((plan) => (
             <div
-              key={plan.name}
+              key={plan.id}
               className={`relative flex flex-col rounded-xl border p-8 ${
                 plan.popular
                   ? "border-[#6C5CE7] bg-card shadow-lg shadow-[#6C5CE7]/10"
@@ -225,15 +251,18 @@ export default function PricingPage() {
                   {plan.name}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {plan.description}
+                  {plan.tagline}
                 </p>
               </div>
               <div className="mt-6">
                 <span className="text-4xl font-bold tracking-tight text-foreground">
-                  {plan.price}
+                  ${plan.priceMonthly}
                 </span>
                 <span className="text-sm text-muted-foreground">/month</span>
               </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                ${plan.priceAnnualMonthly}/mo billed annually
+              </p>
               <Link
                 href="/signup"
                 className={`mt-6 block rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors ${
@@ -261,7 +290,7 @@ export default function PricingPage() {
       </section>
 
       {/* Feature Comparison Table */}
-      <section className="mx-auto max-w-6xl px-4 pb-24">
+      <section className="mx-auto max-w-7xl px-4 pb-24">
         <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-foreground">
           Compare plans
         </h2>
@@ -272,13 +301,16 @@ export default function PricingPage() {
                 <th className="px-6 py-4 text-left font-medium text-muted-foreground">
                   Feature
                 </th>
-                <th className="px-6 py-4 text-center font-medium text-muted-foreground">
-                  Starter
+                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
+                  Solo
                 </th>
-                <th className="px-6 py-4 text-center font-medium text-foreground">
+                <th className="px-4 py-4 text-center font-medium text-foreground">
                   Growth
                 </th>
-                <th className="px-6 py-4 text-center font-medium text-muted-foreground">
+                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
+                  Agency
+                </th>
+                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
                   Agency Pro
                 </th>
               </tr>
@@ -296,14 +328,17 @@ export default function PricingPage() {
                   <td className="px-6 py-3.5 text-sm text-foreground">
                     {row.feature}
                   </td>
-                  <td className="px-6 py-3.5 text-center">
-                    <ComparisonCell value={row.starter} />
+                  <td className="px-4 py-3.5 text-center">
+                    <ComparisonCell value={row.solo} />
                   </td>
-                  <td className="px-6 py-3.5 text-center">
+                  <td className="px-4 py-3.5 text-center">
                     <ComparisonCell value={row.growth} />
                   </td>
-                  <td className="px-6 py-3.5 text-center">
+                  <td className="px-4 py-3.5 text-center">
                     <ComparisonCell value={row.agency} />
+                  </td>
+                  <td className="px-4 py-3.5 text-center">
+                    <ComparisonCell value={row.agencyPro} />
                   </td>
                 </tr>
               ))}

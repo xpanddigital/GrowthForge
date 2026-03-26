@@ -157,7 +157,7 @@ export default function MonitorTimelinePage() {
           <div className="rounded-lg border border-border bg-muted/10 p-4">
             <h4 className="text-xs font-medium text-foreground mb-2">How Correlation Works</h4>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              GrowthForge tracks your Citation Engine activity (responses posted per week) alongside
+              MentionLayer tracks your Citation Engine activity (responses posted per week) alongside
               your AI Visibility Score over time. When AI models update their training data or re-crawl
               sources, there is typically a 2-3 week lag between posting activity and visibility changes.
               Direct proof occurs when Google AI Overviews cite a specific thread where your response was
