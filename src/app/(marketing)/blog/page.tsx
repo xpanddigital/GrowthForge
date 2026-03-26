@@ -3,21 +3,27 @@ import type { Metadata } from "next";
 import { categoryLabels } from "@/lib/blog/types";
 import { blogPosts } from "@/lib/blog/posts";
 
+// Revalidate every 12 hours so scheduled posts go live without a deploy
+export const revalidate = 43200;
+
 export const metadata: Metadata = {
   title: "Blog | GrowthForge — AI Visibility & GEO Insights",
   description:
     "Learn how to get your brand recommended by AI. Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and more.",
 };
 
-function getAllPosts() {
-  return [...blogPosts].sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-  );
+function getPublishedPosts() {
+  const now = new Date();
+  return [...blogPosts]
+    .filter((post) => new Date(post.publishedAt) <= now)
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
 }
 
 export default function BlogIndexPage() {
-  const posts = getAllPosts();
+  const posts = getPublishedPosts();
 
   const categories = [
     "fundamentals",

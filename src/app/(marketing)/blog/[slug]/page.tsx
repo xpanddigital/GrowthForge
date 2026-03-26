@@ -8,12 +8,22 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Revalidate every 12 hours so scheduled posts go live without a deploy
+export const revalidate = 43200;
+
 function getPost(slug: string) {
-  return blogPosts.find((p) => p.slug === slug);
+  const post = blogPosts.find((p) => p.slug === slug);
+  if (!post) return undefined;
+  // Don't show future-dated posts
+  if (new Date(post.publishedAt) > new Date()) return undefined;
+  return post;
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  const now = new Date();
+  return blogPosts
+    .filter((p) => new Date(p.publishedAt) <= now)
+    .map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
