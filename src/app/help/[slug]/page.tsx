@@ -48,7 +48,7 @@ export default async function HelpArticlePage({ params }: PageProps) {
     description: article.summary,
     author: {
       "@type": "Organization",
-      name: "MentionLayer by Xpand Digital",
+      name: "MentionLayer",
     },
     publisher: {
       "@type": "Organization",
