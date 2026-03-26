@@ -151,7 +151,7 @@ export default function HomePage() {
                 Sign In
               </Link>
               <Link
-                href="/signup"
+                href="/free-audit"
                 className="inline-flex h-9 items-center justify-center rounded-lg bg-[#6C5CE7] px-4 text-sm font-medium text-white hover:bg-[#5A4BD1] transition-colors"
               >
                 Get Started
@@ -196,7 +196,7 @@ export default function HomePage() {
 
               <div className="animate-fade-up-delay-3 flex flex-col sm:flex-row gap-3">
                 <Link
-                  href="/signup"
+                  href="/free-audit"
                   className="inline-flex h-12 items-center justify-center rounded-lg gradient-bg px-6 text-sm font-semibold text-white hover:opacity-90 transition-opacity gap-2"
                 >
                   Start Free Audit
@@ -776,7 +776,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
-                href="/signup"
+                href="/free-audit"
                 className="inline-flex h-12 items-center justify-center rounded-lg gradient-bg px-8 text-sm font-semibold text-white hover:opacity-90 transition-opacity gap-2"
               >
                 Run Free AI Visibility Audit

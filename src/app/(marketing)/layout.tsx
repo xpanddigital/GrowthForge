@@ -53,7 +53,7 @@ export default function MarketingLayout({
               Log in
             </Link>
             <Link
-              href="/signup"
+              href="/free-audit"
               className="rounded-md bg-[#6C5CE7] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
             >
               Start Free

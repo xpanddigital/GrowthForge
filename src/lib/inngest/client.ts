@@ -48,6 +48,15 @@ type Events = {
       auditType: "full" | "citation_only" | "ai_presence_only" | "quick";
     };
   };
+  // GHL CRM sync after free audit completion
+  "audit/ghl-sync": {
+    data: {
+      auditId: string;
+      ghlContactId: string;
+      auditScore: number;
+      auditUrl: string;
+    };
+  };
   // Entity Sync events
   "entity/scan": {
     data: {

@@ -9,6 +9,9 @@ export interface Agency {
   logo_url: string | null;
   plan: string;
   credits_balance: number;
+  monthly_credits_allocation: number;
+  billing_cycle_start: string;
+  billing_interval: "monthly" | "annual";
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   max_clients: number;
@@ -26,6 +29,10 @@ export interface User {
   full_name: string | null;
   avatar_url: string | null;
   role: string;
+  signup_source: string;
+  ghl_contact_id: string | null;
+  company_name: string | null;
+  website_url: string | null;
   last_active_at: string | null;
   created_at: string;
 }
@@ -50,6 +57,7 @@ export interface Client {
   location: string | null;
   description: string | null;
   target_regions: string[];
+  created_by_signup: boolean;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -196,6 +204,7 @@ export interface Audit {
   executive_summary: string | null;
   action_plan: Record<string, unknown>[];
   competitors_analyzed: string[];
+  is_free_audit: boolean;
   started_at: string | null;
   completed_at: string | null;
   credits_used: number;
