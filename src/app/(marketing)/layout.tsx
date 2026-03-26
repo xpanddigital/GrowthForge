@@ -97,7 +97,7 @@ export default function MarketingLayout({
             </div>
           </div>
           <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} GrowthForge by Xpand Digital (Miji Australia Pty Ltd). All rights reserved.
+            &copy; {new Date().getFullYear()} GrowthForge by Xpand Digital (Direct Rank LLC). All rights reserved.
           </div>
         </div>
       </footer>

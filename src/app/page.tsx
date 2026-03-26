@@ -137,10 +137,10 @@ export default function HomePage() {
                 <span className="text-[#6C5CE7]">Growth</span>Forge
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
-                <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-                <a href="#geo-tracker" className="text-sm text-muted-foreground hover:text-foreground transition-colors">GEO Tracker</a>
-                <a href="#results" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Results</a>
+                <Link href="/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link>
+                <Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">How It Works</Link>
+                <Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
+                <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -608,6 +608,155 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── Who It's For ─── */}
+      <section className="scroll-mt-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-medium text-[#6C5CE7] uppercase tracking-widest">Built For Growth</span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mt-3 mb-4">
+              Whether You&apos;re an Agency or a Brand
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              GrowthForge works for both — with multi-client dashboards for agencies
+              and streamlined workflows for in-house teams.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <Link href="/use-cases/agencies" className="group rounded-xl border border-white/5 bg-white/[0.02] p-8 hover:border-[#6C5CE7]/30 hover:bg-[#6C5CE7]/5 transition-all duration-300">
+              <div className="h-12 w-12 rounded-lg bg-[#6C5CE7]/10 flex items-center justify-center mb-4 group-hover:bg-[#6C5CE7]/20 transition-colors">
+                <svg className="w-6 h-6 text-[#6C5CE7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">For Agencies</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Add AI visibility as a new service line. Multi-client dashboards, white-label reports,
+                and a repeatable campaign workflow your team can run at scale. Agencies are adding
+                $2,000-$5,000/month per client with GEO services.
+              </p>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-[#6C5CE7] group-hover:gap-2 transition-all">
+                Learn more <IconArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+
+            <Link href="/use-cases/brands" className="group rounded-xl border border-white/5 bg-white/[0.02] p-8 hover:border-[#00D2D3]/30 hover:bg-[#00D2D3]/5 transition-all duration-300">
+              <div className="h-12 w-12 rounded-lg bg-[#00D2D3]/10 flex items-center justify-center mb-4 group-hover:bg-[#00D2D3]/20 transition-colors">
+                <svg className="w-6 h-6 text-[#00D2D3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">For Brands</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Stop being invisible to AI. Run your own AI visibility campaigns with guided workflows,
+                automated discovery, and real-time monitoring. Know exactly when ChatGPT starts
+                recommending you — and why.
+              </p>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-[#00D2D3] group-hover:gap-2 transition-all">
+                Learn more <IconArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Pricing Preview ─── */}
+      <section className="border-y border-white/5 bg-white/[0.01]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-medium text-[#00D2D3] uppercase tracking-widest">Simple Pricing</span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mt-3 mb-4">
+              Plans That Scale With You
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Start with a free audit. Upgrade when you&apos;re ready to run campaigns.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { name: "Starter", price: "$297", period: "/mo", description: "For brands getting started with AI visibility", highlight: false },
+              { name: "Growth", price: "$597", period: "/mo", description: "For brands running active GEO campaigns", highlight: true },
+              { name: "Agency Pro", price: "$997", period: "/mo", description: "For agencies managing multiple clients", highlight: false },
+            ].map(({ name, price, period, description, highlight }) => (
+              <div key={name} className={`rounded-xl border p-6 text-center ${highlight ? "border-[#6C5CE7]/40 bg-[#6C5CE7]/5 ring-1 ring-[#6C5CE7]/20" : "border-white/5 bg-white/[0.02]"}`}>
+                {highlight && <span className="inline-block text-xs font-medium text-[#6C5CE7] bg-[#6C5CE7]/10 rounded-full px-3 py-1 mb-3">Most Popular</span>}
+                <h3 className="text-lg font-semibold">{name}</h3>
+                <div className="mt-2 mb-3">
+                  <span className="text-3xl font-bold">{price}</span>
+                  <span className="text-sm text-muted-foreground">{period}</span>
+                </div>
+                <p className="text-sm text-muted-foreground">{description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/pricing" className="inline-flex items-center gap-2 text-sm font-medium text-[#6C5CE7] hover:text-[#5A4BD1] transition-colors">
+              See full plan comparison <IconArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Latest from the Blog ─── */}
+      <section className="scroll-mt-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <span className="text-sm font-medium text-[#6C5CE7] uppercase tracking-widest">Resources</span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mt-3">
+                Learn GEO Strategy
+              </h2>
+            </div>
+            <Link href="/blog" className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-[#6C5CE7] hover:text-[#5A4BD1] transition-colors">
+              View all articles <IconArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "What Is Generative Engine Optimization? The Complete Guide",
+                description: "Everything you need to know about GEO — how it works, why it matters, and the 5-pillar framework for getting your brand recommended by AI.",
+                slug: "what-is-geo-complete-guide",
+                category: "Fundamentals",
+                readTime: "16 min",
+              },
+              {
+                title: "How AI Models Choose What to Cite",
+                description: "AI models don't pick sources randomly. They use a consensus layer built from Reddit threads, press coverage, reviews, and structured data.",
+                slug: "how-ai-models-choose",
+                category: "Strategy",
+                readTime: "10 min",
+              },
+              {
+                title: "The Citation Seeding Playbook",
+                description: "A step-by-step guide to finding high-authority threads, writing responses that get upvoted, and measuring the impact on AI visibility.",
+                slug: "citation-seeding-playbook",
+                category: "Playbook",
+                readTime: "14 min",
+              },
+            ].map(({ title, description, slug, category, readTime }) => (
+              <Link key={slug} href={`/blog/${slug}`} className="group rounded-xl border border-white/5 bg-white/[0.02] p-6 hover:border-[#6C5CE7]/30 hover:bg-[#6C5CE7]/5 transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-medium text-[#6C5CE7] bg-[#6C5CE7]/10 rounded-full px-2.5 py-0.5">{category}</span>
+                  <span className="text-xs text-muted-foreground">{readTime} read</span>
+                </div>
+                <h3 className="text-base font-semibold mb-2 group-hover:text-[#6C5CE7] transition-colors">{title}</h3>
+                <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-8 sm:hidden">
+            <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-medium text-[#6C5CE7]">
+              View all articles <IconArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ─── Final CTA ─── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -648,25 +797,42 @@ export default function HomePage() {
       {/* ─── Footer ─── */}
       <footer className="border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-6">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
               <Link href="/" className="text-lg font-bold tracking-tight">
                 <span className="text-[#6C5CE7]">Growth</span>Forge
               </Link>
-              <span className="text-sm text-muted-foreground hidden sm:block">
-                The AI SEO Platform for Generative Engine Optimization
-              </span>
+              <p className="mt-3 text-sm text-muted-foreground">
+                The AI SEO Platform for Generative Engine Optimization.
+              </p>
             </div>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-              <a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a>
-              <a href="#geo-tracker" className="hover:text-foreground transition-colors">GEO Tracker</a>
-              <Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link>
+            <div>
+              <h3 className="text-sm font-semibold">Product</h3>
+              <ul className="mt-3 space-y-2">
+                <li><Link href="/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link></li>
+                <li><Link href="/how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">How It Works</Link></li>
+                <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold">Use Cases</h3>
+              <ul className="mt-3 space-y-2">
+                <li><Link href="/use-cases/agencies" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Agencies</Link></li>
+                <li><Link href="/use-cases/brands" className="text-sm text-muted-foreground hover:text-foreground transition-colors">For Brands</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold">Resources</h3>
+              <ul className="mt-3 space-y-2">
+                <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+                <li><Link href="/help" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Help Center</Link></li>
+                <li><a href="mailto:joel@xpanddigital.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</a></li>
+              </ul>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} GrowthForge. Built by Xpand Digital (Miji Australia Pty Ltd).
+              &copy; {new Date().getFullYear()} GrowthForge. Built by Xpand Digital (Direct Rank LLC).
             </p>
             <p className="text-xs text-muted-foreground">
               Generative Engine Optimization for brands that want to be recommended by AI.
