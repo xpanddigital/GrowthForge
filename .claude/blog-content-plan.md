@@ -1,0 +1,314 @@
+# GrowthForge Blog Content Master Plan
+
+**Purpose:** This is the single source of truth for writing all 180 blog articles. Every writing session should read this file first.
+
+**Status tracker:** `src/lib/blog/posts.ts` — check which post files exist and how many articles are published. The content calendar below tracks what needs writing.
+
+---
+
+## How Writing Sessions Work
+
+### Session Setup
+1. Read THIS file first — it contains the style guide, quality rules, and linking strategy
+2. Check `src/lib/blog/posts.ts` to see what batches exist (posts-1-5.ts through posts-X.ts)
+3. Pick up where the last session left off using the calendar below
+4. Write 10-20 articles per session (one TypeScript file per batch of 5)
+
+### File Structure
+- Each batch of 5 articles goes in `src/lib/blog/posts-{N}-{N+4}.ts`
+- Export as `postsNtoM: BlogPost[]`
+- Import and spread into `src/lib/blog/posts.ts`
+- Set `publishedAt` dates to match the calendar schedule below
+
+### After Writing
+- Run `npx next build` to verify no TypeScript errors
+- Commit and push — articles auto-publish on their scheduled date (ISR revalidates every 12 hours)
+
+---
+
+## Brand Voice & Style Guide
+
+### Author
+All articles are authored by:
+```
+author: { name: "Joel House", role: "Founder, GrowthForge" }
+```
+
+### Tone
+- **Direct and specific.** Lead with data, not fluff. "Reddit appears in 68% of AI answers" not "Reddit is very important."
+- **Practitioner voice.** Write as someone who runs AI visibility campaigns daily, not as a journalist covering them.
+- **Confident but honest.** Make strong claims backed by data. Acknowledge uncertainty where it exists.
+- **Zero filler phrases.** Never use: "In today's digital landscape," "Let's dive in," "In the ever-evolving world of," "It's no secret that," "At the end of the day."
+- **Short paragraphs.** 2-4 sentences max. One idea per paragraph.
+- **Use numbers.** "3.2x more citations" not "significantly more citations."
+
+### Formatting Rules
+- Sections use `## Heading` style (rendered as H2s on the blog)
+- Use markdown-style links: `[anchor text](/blog/slug)` for internal links
+- Bullet points for lists of 3+ items
+- Bold key phrases within paragraphs for scannability
+- Every article starts with a "Key Takeaway" (the `keyTakeaway` field) — 1-2 sentence TL;DR
+
+### Content Rules
+- **First 200 words must contain a direct answer.** AI models extract from the top of content.
+- **Include at least one original insight** per article — proprietary data, a framework, a specific example from campaign experience
+- **All statistics must be specific and sourced** (in the content text, not footnotes)
+- **Minimum 4 internal links per article**, spread across multiple sections
+- **Include 3-5 FAQs** at the end of every article (these render with FAQ schema)
+- **Never duplicate another article's core topic.** Overlap is fine; duplication is not.
+
+### Apostrophe Escaping
+Content strings use template literals (backticks). **All apostrophes in content must be escaped as `\\'`** to avoid breaking the template literal. This is critical — every `it's`, `don't`, `you're`, `brand's` must be `it\\'s`, `don\\'t`, `you\\'re`, `brand\\'s`.
+
+---
+
+## TypeScript Interface
+
+Every article must conform to this type (defined in `src/lib/blog/types.ts`):
+
+```typescript
+interface BlogPost {
+  slug: string;                    // kebab-case URL slug
+  title: string;                   // H1 title
+  summary: string;                 // 1-2 sentence summary for cards
+  metaTitle: string;               // SEO title (under 60 chars)
+  metaDescription: string;         // SEO description (under 155 chars)
+  targetKeyword: string;           // Primary keyword to rank for
+  publishedAt: string;             // ISO date matching calendar
+  updatedAt?: string;              // Set on refreshes only
+  author: { name: string; role: string };
+  category: "fundamentals" | "strategy" | "technical" | "industry" | "tools";
+  buyingStage: "awareness" | "consideration" | "decision";
+  estimatedReadTime: number;       // Minutes (word count / 250)
+  relatedSlugs: string[];          // 3-5 related article slugs
+  faqs: Array<{ question: string; answer: string }>;  // 3-5 FAQs
+  sections: Array<{ id: string; title: string; content: string }>;
+  keyTakeaway: string;             // TL;DR box at top of article
+}
+```
+
+---
+
+## Internal Linking Strategy
+
+### Layer 1: Within-Cluster Hub and Spoke
+- Every supporting article links back to its cluster's pillar page
+- Every pillar page links to all its supporting articles
+- Use the pillar's target keyword as anchor text
+
+### Layer 2: Cross-Cluster Strategic Links
+- Link from informational → commercial content (guides → comparisons, tools)
+- Link from newer articles → older established articles (pass authority backward)
+- Link from blog articles → product pages where natural:
+  - `/features` — when describing what a GEO platform does
+  - `/pricing` — when discussing agency services pricing
+  - `/how-it-works` — when explaining the audit-discover-seed-monitor cycle
+  - `/use-cases/agencies` — when writing about agency use cases
+  - `/use-cases/brands` — when writing about brand use cases
+  - `/help/ai-visibility-audit` — when referencing the audit process
+  - `/help/citation-engine` — when referencing citation seeding
+
+### Layer 3: Glossary Auto-Links
+Every first occurrence of these terms in any article should link to its glossary page:
+
+| Term | Link Target |
+|------|-------------|
+| Answer engine optimization / AEO | `/blog/what-is-answer-engine-optimization` |
+| LLMO | `/blog/what-is-llmo` |
+| Prompt-based search | `/blog/what-is-prompt-based-search` |
+| AI referral traffic | `/blog/what-is-ai-referral-traffic` |
+| Citation velocity | `/blog/what-is-citation-velocity` |
+| LLM seeding / Content seeding | `/blog/what-is-llm-seeding` or `/blog/what-is-content-seeding` |
+| AI visibility score | `/blog/what-is-ai-visibility-score` |
+| Consensus layer | `/blog/what-is-consensus-layer-ai-search` |
+| Share of model | `/blog/share-of-model-metric` |
+| E-E-A-T | `/blog/what-is-eeat-framework-ai` |
+| Entity authority | `/blog/what-is-entity-authority-ai` |
+| Knowledge graph | `/blog/what-is-knowledge-graph` |
+| Structured data | `/blog/what-is-structured-data-ai` |
+| Topical authority | `/blog/what-is-topical-authority-ai` |
+| Content cluster | `/blog/what-is-content-cluster` |
+| RAG | `/blog/what-is-rag-seo` |
+| AI brand sentiment | `/blog/what-is-ai-brand-sentiment` |
+| Unlinked mention | `/blog/what-is-unlinked-mention` |
+| Agentic SEO | `/blog/what-is-agentic-seo` |
+| Information gain | `/blog/what-is-information-gain-ai-search` |
+
+### Layer 4: Related Articles
+Each article's `relatedSlugs` array should contain 3-5 slugs from:
+1. Same cluster siblings (priority)
+2. Closest cross-cluster matches
+3. The cluster's pillar page (if the article is a supporting piece)
+
+### Links to Existing 20 Articles
+These are already published and should be linked TO from new articles wherever relevant:
+
+| Slug | Topic | Category |
+|------|-------|----------|
+| `brand-invisible-to-ai` | Brand visibility test | fundamentals |
+| `ai-seo-vs-traditional-seo` | AI SEO vs traditional | fundamentals |
+| `what-is-geo-complete-guide` | GEO pillar page | fundamentals |
+| `share-of-model-metric` | Share of Model definition | fundamentals |
+| `ai-citation-index` | Which sources AI cites | fundamentals |
+| `how-ai-models-choose` | AI source selection | fundamentals |
+| `reddit-most-important-platform` | Reddit for GEO | strategy |
+| `citation-seeding-playbook` | Seeding playbook | strategy |
+| `platform-by-platform-geo` | Platform optimization | strategy |
+| `ai-visibility-audit-five-pillars` | 5-pillar audit | tools |
+| `schema-markup-ai-search` | Schema for AI | technical |
+| `digital-pr-ai-era` | Digital PR and AI | strategy |
+| `robots-txt-ai-crawlers` | Robots.txt strategy | technical |
+| `zero-click-search-data` | Zero-click analysis | fundamentals |
+| `entity-seo-knowledge-graph` | Entity SEO | technical |
+| `ai-visibility-tools-compared` | Tool comparison | tools |
+| `geo-for-agencies` | Agency guide | industry |
+| `geo-for-saas` | SaaS guide | industry |
+| `roi-ai-visibility` | ROI calculation | strategy |
+| `ninety-day-playbook` | 90-day plan | strategy |
+
+---
+
+## Quality Checklist (Every Article)
+
+Before marking an article done, verify:
+
+- [ ] `keyTakeaway` is a clear 1-2 sentence TL;DR
+- [ ] First 200 words contain a direct answer to the search intent
+- [ ] Contains at least one original insight, framework, or data point
+- [ ] All statistics include specific numbers (not "many" or "significantly")
+- [ ] Minimum 4 internal links spread across multiple sections
+- [ ] Links to at least 1 product page where natural
+- [ ] Links to at least 2 related blog articles
+- [ ] First occurrence of glossary terms are linked
+- [ ] 3-5 FAQs with specific, useful answers
+- [ ] `relatedSlugs` has 3-5 entries
+- [ ] `metaTitle` under 60 characters
+- [ ] `metaDescription` under 155 characters
+- [ ] All apostrophes escaped as `\\'`
+- [ ] No filler phrases (checked against banned list above)
+- [ ] `publishedAt` matches the calendar date
+- [ ] Category and buyingStage are correct
+
+---
+
+## Key Statistics Bank
+
+Reference these throughout articles (with attribution):
+
+| Stat | Source Context |
+|------|--------------|
+| 527% YoY growth in AI-referred sessions | 2025 data |
+| 37% of consumers start searches with AI, not Google | 2026 survey |
+| 60-83% of searches end with zero clicks | 83% when AI Overviews appear |
+| AI Overviews slash organic CTR by 61% | Google data |
+| Reddit appears in 68% of AI answers | Citation study |
+| Reddit in 95% of product-review AI queries on Google | Semrush study |
+| Content with schema has 2.5x higher chance of AI citation | Search Engine Land |
+| 76.4% of ChatGPT's cited pages updated within 30 days | Freshness study |
+| Only 6% of AI brand mentions result in recommendations | Rand Fishkin / SparkToro |
+| Brand mentions correlate 3x more than backlinks with AI visibility | Citation research |
+| Perplexity averages 21.87 citations per response | Qwairy Q3 2025 study |
+| ChatGPT averages 7.92 citations per response | Qwairy Q3 2025 study |
+| Wikipedia accounts for 47.9% of ChatGPT top-10 citations | Profound study |
+| YouTube overtook Reddit: 39.2% vs 20.3% social citation share | PikaSEO study |
+| Only 11% of cited domains appear across multiple AI platforms | Cross-platform study |
+| 90% of citations driving LLM visibility come from earned media | PR on the Go |
+| Content with H2/H3 hierarchy and bullets cited 65% more | Content structure study |
+| First-person writing with author byline yields 1.67x citation improvement | GEO study |
+| AI citation visibility can decay within 48-72 hours | Decay research |
+| AI referral traffic converts 4.4x better than organic | Conversion data |
+| LLM-referred visitors convert 5-9x higher for B2B | BrightEdge data |
+
+---
+
+## 6-Month Content Calendar
+
+**Schedule:** April 1 – September 27, 2026, one article per day.
+**Full calendar:** See `CONTENT-CALENDAR-180.md` for the complete day-by-day breakdown.
+**Cluster sequencing:** Complete one cluster (pillar + 8-12 supporting articles) before starting the next.
+
+### Month-by-Month Overview
+
+| Month | Dates | Clusters | Articles |
+|-------|-------|----------|----------|
+| **1** | Apr 1-30 | GEO Fundamentals → AI Search Visibility | 30 |
+| **2** | May 1-31 | Topical Authority → Content Seeding & Forums | 31 |
+| **3** | Jun 1-30 | E-E-A-T for AI → Entity & Knowledge Graphs | 30 |
+| **4** | Jul 1-30 | Agency AI SEO → AI Monitoring & Measurement | 30 (2 refreshes) |
+| **5** | Aug 1-30 | AI Model-Specific → Digital PR → Industry Pt.1 | 30 (2 refreshes) |
+| **6** | Sep 1-27 | Industry Pt.2 → Technical → Future → Case Studies | 29 (4 refreshes) |
+
+### Content Type Distribution
+
+| Type | Count | Word Count Range |
+|------|-------|-----------------|
+| Pillar pages | 15 | 3,000-5,000 |
+| Standard articles | 55 | 1,500-2,500 |
+| Short tactical | 25 | 800-1,200 |
+| Glossary/definition | 25 | 500-800 |
+| Comparison/versus | 18 | 1,500-2,000 |
+| Listicles | 15 | 1,200-2,000 |
+| Data/statistics | 10 | 1,500-2,500 |
+| Case studies | 8 | 1,200-2,000 |
+| Trend pieces | 5 | 800-1,500 |
+| Templates/tools | 4 | 800-1,500 |
+
+### Buying Stage Mix
+
+| Stage | Count | % |
+|-------|-------|---|
+| Awareness | 58 | 32% |
+| Consideration | 93 | 52% |
+| Decision | 29 | 16% |
+
+---
+
+## Writing Session Workflow
+
+### Starting a New Session
+
+```
+1. Read .claude/blog-content-plan.md (this file)
+2. Read CONTENT-CALENDAR-180.md to find next batch of articles
+3. Check src/lib/blog/posts.ts to see last written batch number
+4. Write next 10-20 articles as posts-{N}-{M}.ts files
+5. Update posts.ts barrel file to import new batches
+6. Run npx next build to verify
+7. Commit and push
+```
+
+### Naming Convention
+
+| Articles | File | Export Name |
+|----------|------|-------------|
+| 21-25 | `posts-21-25.ts` | `posts21to25` |
+| 26-30 | `posts-26-30.ts` | `posts26to30` |
+| 31-35 | `posts-31-35.ts` | `posts31to35` |
+| ... | ... | ... |
+
+### Updating the Barrel File
+
+After writing new batch files, add to `src/lib/blog/posts.ts`:
+
+```typescript
+import { posts21to25 } from "./posts-21-25";
+// ... etc
+
+export const blogPosts = [
+  ...posts1to5,
+  // ... existing batches
+  ...posts21to25,
+  // ... new batches
+];
+```
+
+---
+
+## Post-Sprint Plan (After Month 6)
+
+- Reduce to 3-4 articles per week
+- Monthly refresh cycle for pillar content
+- Expand A-tier articles into video, infographics, lead magnets
+- Begin guest posting and digital PR for backlinks
+- Re-run AI visibility audit to measure progress
+- Create resource hub pages that aggregate clusters by audience
