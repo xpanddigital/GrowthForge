@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       line_items: [{ price: validated.price_id, quantity: 1 }],
       success_url:
         validated.success_url ||
-        `${appUrl}/dashboard/settings?tab=billing&checkout=success`,
+        `${appUrl}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:
         validated.cancel_url ||
         `${appUrl}/dashboard/settings?tab=billing&checkout=cancelled`,

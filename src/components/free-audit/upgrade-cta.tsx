@@ -60,7 +60,7 @@ export function UpgradeCTA() {
         },
         body: JSON.stringify({
           price_id: priceId,
-          success_url: `${window.location.origin}/dashboard?checkout=success`,
+          success_url: `${window.location.origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${window.location.origin}/free-audit/results/${window.location.pathname.split("/").pop()}`,
         }),
       });

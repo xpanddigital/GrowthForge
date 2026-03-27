@@ -126,10 +126,46 @@ export function DashboardContent() {
 
   const searchParams = useSearchParams();
   const isCheckoutSuccess = searchParams.get("checkout") === "success";
-  const [showBanner, setShowBanner] = useState(isCheckoutSuccess);
+  const sessionId = searchParams.get("session_id");
+  const [showBanner, setShowBanner] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+
+  // When returning from Stripe checkout, verify the session and activate the plan
+  useEffect(() => {
+    if (!isCheckoutSuccess || !sessionId || verifying) return;
+
+    async function verifyCheckout() {
+      setVerifying(true);
+      try {
+        const res = await fetch("/api/billing/verify-checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId }),
+        });
+        if (res.ok) {
+          setShowBanner(true);
+          // Clean up URL params
+          window.history.replaceState({}, "", "/dashboard");
+        }
+      } catch (err) {
+        console.error("Checkout verification failed:", err);
+      }
+      setVerifying(false);
+    }
+
+    verifyCheckout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCheckoutSuccess, sessionId]);
 
   return (
     <div className="space-y-6">
+      {/* Checkout Verification */}
+      {verifying && (
+        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm text-muted-foreground">
+          Activating your plan...
+        </div>
+      )}
+
       {/* Checkout Success Banner */}
       {showBanner && (
         <div className="relative rounded-lg border border-green-500/20 bg-green-500/10 p-4">
