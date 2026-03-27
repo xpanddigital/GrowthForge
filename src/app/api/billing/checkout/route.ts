@@ -4,6 +4,8 @@ import { getStripe } from "@/lib/billing/stripe";
 import { handleApiError } from "@/lib/utils/errors";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const checkoutSchema = z.object({
   price_id: z.string(),
   success_url: z.string().url().optional(),

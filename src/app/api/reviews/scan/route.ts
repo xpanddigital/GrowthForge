@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/reviews/scan — trigger review scan
 export async function POST(req: NextRequest) {
   const supabase = await createServerClient();

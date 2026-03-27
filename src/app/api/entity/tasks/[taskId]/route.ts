@@ -4,6 +4,8 @@ import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const updateTaskSchema = z.object({
   status: z.enum(["pending", "in_progress", "completed", "skipped", "blocked"]),
   notes: z.string().optional(),

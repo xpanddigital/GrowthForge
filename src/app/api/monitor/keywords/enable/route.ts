@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { generatePromptVariations } from "@/lib/monitor/prompt-generator";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/monitor/keywords/enable — enable keyword monitoring + generate prompt variations
 export async function POST(req: NextRequest) {
   const supabase = await createServerClient();

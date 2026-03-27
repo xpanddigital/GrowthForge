@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // Vercel Cron: "0 4 * * 0" (Sunday 4am UTC)
 // Triggers weekly monitoring for all active clients.
 

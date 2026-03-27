@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { updateJournalistSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 interface RouteParams {
   params: Promise<{ journalistId: string }>;
 }

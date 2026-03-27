@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { createSpokespersonSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/press/spokespersons — List spokespersons for a client
 export async function GET(request: Request) {
   try {

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/entity/canonical/[id]/approve — Approve a canonical
 export async function POST(
   request: Request,

@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { createCalendarEventSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/press/calendar — List calendar events
 export async function GET(request: Request) {
   try {

@@ -7,6 +7,8 @@ import {
   type TrafficData,
 } from "@/lib/analytics/correlation-engine";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/analytics/correlations — Get SoM-traffic correlations
 export async function GET(request: Request) {
   try {

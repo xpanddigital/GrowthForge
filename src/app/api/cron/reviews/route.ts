@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { inngest } from "@/lib/inngest/client";
 import { createClient } from "@supabase/supabase-js";
 
+export const dynamic = "force-dynamic";
+
 // Vercel Cron: monthly review scan for all active clients
 // Schedule: "0 2 1 * *" (1st of month at 2am UTC)
 export async function GET(req: NextRequest) {

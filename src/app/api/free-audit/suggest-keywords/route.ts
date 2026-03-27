@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const suggestSchema = z.object({
   websiteUrl: z.string().url(),
   companyName: z.string().min(1),

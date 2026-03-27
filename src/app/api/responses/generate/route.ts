@@ -7,6 +7,8 @@ import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 import { rateLimit } from "@/lib/utils/rate-limit";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/responses/generate — Generate 3 response variants for a thread
 export async function POST(request: Request) {
   try {

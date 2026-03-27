@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { updateResponseSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // PATCH /api/responses/[responseId] — Update response status
 export async function PATCH(
   request: Request,

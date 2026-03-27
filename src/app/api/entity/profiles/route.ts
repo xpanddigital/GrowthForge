@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/entity/profiles?clientId=xxx&status=xxx&sortBy=xxx — List profiles for a client
 export async function GET(request: Request) {
   try {

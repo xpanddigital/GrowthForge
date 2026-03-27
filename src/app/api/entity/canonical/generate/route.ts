@@ -5,6 +5,8 @@ import { generateAutoCanonical } from "@/lib/entity/auto-canonical";
 import { z } from "zod";
 import { uuidLike } from "@/lib/utils/validators";
 
+export const dynamic = "force-dynamic";
+
 const generateCanonicalSchema = z.object({
   clientId: uuidLike,
 });

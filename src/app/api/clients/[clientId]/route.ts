@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { updateClientSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/clients/[clientId]
 export async function GET(
   _request: Request,

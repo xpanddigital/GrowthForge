@@ -5,6 +5,8 @@ import { inngest } from "@/lib/inngest/client";
 import { z } from "zod";
 import { uuidLike } from "@/lib/utils/validators";
 
+export const dynamic = "force-dynamic";
+
 const triggerSchema = z.object({
   clientId: uuidLike,
   keywords: z.array(z.string().min(1).max(200)).min(3).max(20),

@@ -7,6 +7,8 @@ import { uuidLike } from "@/lib/utils/validators";
 import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
+export const dynamic = "force-dynamic";
+
 const enrichRequestSchema = z.object({
   client_id: uuidLike,
   thread_ids: z

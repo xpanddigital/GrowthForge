@@ -3,6 +3,8 @@ import { createServerClient, createServiceRoleClient } from "@/lib/supabase/serv
 import { agents } from "@/lib/agents/registry";
 import type { MonitorTestInput } from "@/lib/agents/interfaces";
 
+export const dynamic = "force-dynamic";
+
 const VALID_MODELS = [
   "chatgpt",
   "perplexity",

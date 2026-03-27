@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/entity/tasks?clientId=xxx&status=xxx&assignedTo=xxx&platform=xxx
 export async function GET(request: Request) {
   try {

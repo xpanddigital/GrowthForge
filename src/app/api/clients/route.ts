@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { createClientSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 function slugify(text: string): string {
   return text
     .toLowerCase()

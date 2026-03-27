@@ -4,6 +4,8 @@ import { handleApiError } from "@/lib/utils/errors";
 import { z } from "zod";
 import { uuidLike } from "@/lib/utils/validators";
 
+export const dynamic = "force-dynamic";
+
 const createCanonicalSchema = z.object({
   client_id: uuidLike,
   canonical_name: z.string().min(1, "canonical_name is required"),

@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { createKeywordsSchema, updateKeywordSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/keywords?client_id=xxx
 export async function GET(request: Request) {
   try {

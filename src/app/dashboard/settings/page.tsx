@@ -337,22 +337,26 @@ export default function SettingsPage() {
                       ? "Agency Unlimited"
                       : agency?.plan === "agency_pro"
                         ? "Agency Pro"
-                        : agency?.plan === "growth"
-                          ? "Growth"
-                          : agency?.plan === "starter"
-                            ? "Starter"
-                            : agency?.plan || "Free"}
+                        : agency?.plan === "agency"
+                          ? "Agency"
+                          : agency?.plan === "growth"
+                            ? "Growth"
+                            : agency?.plan === "solo"
+                              ? "Solo"
+                              : agency?.plan || "Free"}
                   </Badge>
                   <p className="text-2xl font-bold">
                     {agency?.plan === "agency_unlimited"
                       ? "Unlimited Plan"
                       : agency?.plan === "agency_pro"
-                        ? "$499/mo"
-                        : agency?.plan === "growth"
-                          ? "$249/mo"
-                          : agency?.plan === "starter"
-                            ? "$99/mo"
-                            : "No Plan"}
+                        ? "$997/mo"
+                        : agency?.plan === "agency"
+                          ? "$397/mo"
+                          : agency?.plan === "growth"
+                            ? "$297/mo"
+                            : agency?.plan === "solo"
+                              ? "$97/mo"
+                              : "No Plan"}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {agency?.max_clients || 0} clients · {agency?.max_keywords_per_client || 0} keywords/client
@@ -396,35 +400,35 @@ export default function SettingsPage() {
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {[
                   {
-                    name: "Starter",
-                    price: "$99",
+                    name: "Solo",
+                    price: "$97",
                     credits: "500",
-                    clients: "5",
-                    keywords: "50",
-                    features: ["Citation Engine", "AI Monitor"],
-                    planKey: "starter",
-                    priceEnv: "STRIPE_PRICE_STARTER",
+                    clients: "1",
+                    keywords: "20",
+                    features: ["All features included"],
+                    planKey: "solo",
+                    priceEnv: "STRIPE_PRICE_SOLO",
                   },
                   {
                     name: "Growth",
-                    price: "$249",
-                    credits: "2,000",
-                    clients: "15",
-                    keywords: "200",
-                    features: ["+ Entity Sync", "+ Review Engine"],
+                    price: "$297",
+                    credits: "2,500",
+                    clients: "5",
+                    keywords: "50",
+                    features: ["All features included"],
                     planKey: "growth",
                     priceEnv: "STRIPE_PRICE_GROWTH",
                     popular: true,
                   },
                   {
-                    name: "Agency Pro",
-                    price: "$499",
-                    credits: "10,000",
-                    clients: "50",
-                    keywords: "500",
-                    features: ["+ PressForge", "+ Full Audit"],
-                    planKey: "agency_pro",
-                    priceEnv: "STRIPE_PRICE_AGENCY_PRO",
+                    name: "Agency",
+                    price: "$397",
+                    credits: "7,500",
+                    clients: "15",
+                    keywords: "100",
+                    features: ["White-label reports"],
+                    planKey: "agency",
+                    priceEnv: "STRIPE_PRICE_AGENCY",
                   },
                 ].map((plan) => {
                   const isCurrent = agency?.plan === plan.planKey;
@@ -467,21 +471,15 @@ export default function SettingsPage() {
                         variant={isCurrent ? "outline" : "default"}
                         disabled={isCurrent}
                         size="sm"
-                        onClick={async () => {
-                          const res = await fetch("/api/billing/checkout", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                              price_id: plan.planKey,
-                            }),
-                          });
-                          const data = await res.json();
-                          if (data.data?.url) {
-                            window.location.href = data.data.url;
-                          }
+                        onClick={() => {
+                          window.open(
+                            "https://xpanddigital.io/book-a-call",
+                            "_blank",
+                            "noopener,noreferrer"
+                          );
                         }}
                       >
-                        {isCurrent ? "Current Plan" : "Upgrade"}
+                        {isCurrent ? "Current Plan" : "Contact to Upgrade"}
                       </Button>
                     </div>
                   );

@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { getAIReferralTraffic } from "@/lib/analytics/ga4-attribution";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/analytics/ai-traffic — Get AI referral traffic data
 export async function GET(request: Request) {
   try {

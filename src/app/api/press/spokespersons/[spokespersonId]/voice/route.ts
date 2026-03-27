@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 interface RouteParams {
   params: Promise<{ spokespersonId: string }>;
 }

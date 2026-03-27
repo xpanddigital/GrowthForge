@@ -264,7 +264,7 @@ export default function PricingPage() {
                 ${plan.priceAnnualMonthly}/mo billed annually
               </p>
               <Link
-                href="/signup"
+                href="/free-audit"
                 className={`mt-6 block rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors ${
                   plan.popular
                     ? "bg-[#6C5CE7] text-white hover:bg-[#5A4BD1]"
@@ -378,7 +378,7 @@ export default function PricingPage() {
         </p>
         <div className="mt-8 flex items-center justify-center gap-4">
           <Link
-            href="/signup"
+            href="/free-audit"
             className="rounded-md bg-[#6C5CE7] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
           >
             Start free trial

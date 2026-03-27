@@ -5,6 +5,8 @@ import { generateLlmsTxt } from "@/lib/entity/llmstxt-generator";
 import { z } from "zod";
 import { uuidLike } from "@/lib/utils/validators";
 
+export const dynamic = "force-dynamic";
+
 const generateLlmsTxtBody = z.object({
   clientId: uuidLike,
 });

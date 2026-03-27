@@ -4,6 +4,8 @@ import { triggerIdeationSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/press/ideas/generate — Trigger campaign ideation
 export async function POST(request: Request) {
   try {

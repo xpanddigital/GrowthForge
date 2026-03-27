@@ -4,6 +4,8 @@ import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { nanoid } from "nanoid";
 
+export const dynamic = "force-dynamic";
+
 interface RouteParams {
   params: Promise<{ campaignId: string }>;
 }

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/cron/press-coverage — Weekly coverage scan for all active clients
 // Vercel Cron: { "path": "/api/cron/press-coverage", "schedule": "0 8 * * 1" }
 export async function GET(request: Request) {

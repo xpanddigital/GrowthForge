@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/reviews/:reviewId/generate-response — generate AI response draft
 export async function POST(
   _req: NextRequest,

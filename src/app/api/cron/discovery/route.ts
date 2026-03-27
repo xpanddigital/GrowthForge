@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/cron/discovery — Scheduled discovery scan (Vercel Cron)
 // Vercel cron config: { "path": "/api/cron/discovery", "schedule": "0 6 * * 2,5" }
 export async function GET(request: Request) {

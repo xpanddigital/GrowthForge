@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/health — Basic health check for uptime monitoring
 export async function GET() {
   const checks: Record<string, "ok" | "error"> = {

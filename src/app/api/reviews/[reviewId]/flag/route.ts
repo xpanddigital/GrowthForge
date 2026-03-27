@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/reviews/:reviewId/flag — flag a review for attention
 export async function POST(
   req: NextRequest,

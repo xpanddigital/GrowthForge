@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { inngest } from "@/lib/inngest/client";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/cron/entity — Monthly entity scan cron
 // Vercel cron config: { "path": "/api/cron/entity", "schedule": "0 6 1 * *" }
 export async function POST(request: Request) {

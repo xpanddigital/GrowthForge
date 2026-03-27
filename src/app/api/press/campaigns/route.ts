@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { createPressCampaignSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/press/campaigns — List press campaigns for the current client
 export async function GET(request: Request) {
   try {

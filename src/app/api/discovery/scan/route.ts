@@ -7,6 +7,8 @@ import { rateLimit } from "@/lib/utils/rate-limit";
 import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/discovery/scan — Trigger a manual discovery scan
 export async function POST(request: Request) {
   try {

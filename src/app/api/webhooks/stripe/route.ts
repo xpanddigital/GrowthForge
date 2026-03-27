@@ -5,6 +5,8 @@ import { addCredits } from "@/lib/billing/credits";
 import { sendPlanActivatedEmail } from "@/lib/email/notifications";
 import type Stripe from "stripe";
 
+export const dynamic = "force-dynamic";
+
 function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -61,12 +63,12 @@ export async function POST(request: Request) {
           const sub = await stripe.subscriptions.retrieve(subscriptionId);
           const priceId = sub.items.data[0]?.price?.id;
           const planKey = priceId ? getPlanByPriceId(priceId) : null;
-          const plan = planKey ? PLANS[planKey] : PLANS.starter;
+          const plan = planKey ? PLANS[planKey] : PLANS.solo;
 
           await supabase
             .from("agencies")
             .update({
-              plan: planKey || "starter",
+              plan: planKey || "solo",
               stripe_subscription_id: subscriptionId,
               credits_balance: plan.monthlyCredits,
               max_clients: plan.maxClients,
@@ -134,7 +136,7 @@ export async function POST(request: Request) {
 
         if (!agency) break;
 
-        const plan = PLANS[agency.plan as keyof typeof PLANS] || PLANS.starter;
+        const plan = PLANS[agency.plan as keyof typeof PLANS] || PLANS.solo;
 
         // Refill credits to the plan's monthly amount
         await supabase
@@ -160,7 +162,7 @@ export async function POST(request: Request) {
           await supabase
             .from("agencies")
             .update({
-              plan: "starter",
+              plan: "solo",
               stripe_subscription_id: null,
               max_clients: 5,
               max_keywords_per_client: 50,

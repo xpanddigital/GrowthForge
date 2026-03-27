@@ -5,29 +5,26 @@ import { createClient } from "@/lib/supabase/client";
 
 const PLANS = [
   {
-    key: "starter",
-    name: "Starter",
-    price: "$99/mo",
+    key: "solo",
+    name: "Solo",
+    price: "$97/mo",
     credits: "500 credits",
-    features: ["Citation Engine", "AI Monitor", "5 clients"],
-    envKey: "NEXT_PUBLIC_STRIPE_PRICE_STARTER",
+    features: ["1 website", "20 keywords", "All features included"],
   },
   {
     key: "growth",
     name: "Growth",
-    price: "$249/mo",
-    credits: "2,000 credits",
-    features: ["Everything in Starter", "Entity Sync", "Review Engine", "15 clients"],
-    envKey: "NEXT_PUBLIC_STRIPE_PRICE_GROWTH",
+    price: "$297/mo",
+    credits: "2,500 credits",
+    features: ["5 websites", "50 keywords", "All features included"],
     popular: true,
   },
   {
-    key: "agency_pro",
-    name: "Agency Pro",
-    price: "$499/mo",
-    credits: "10,000 credits",
-    features: ["Everything in Growth", "PressForge", "Full Audit", "50 clients"],
-    envKey: "NEXT_PUBLIC_STRIPE_PRICE_AGENCY_PRO",
+    key: "agency",
+    name: "Agency",
+    price: "$397/mo",
+    credits: "7,500 credits",
+    features: ["15 websites", "100 keywords", "White-label reports"],
   },
 ];
 
@@ -160,8 +157,9 @@ export function UpgradeCTA() {
 function getPriceId(planKey: string): string | null {
   // These are exposed as NEXT_PUBLIC_ env vars for client-side access
   const mapping: Record<string, string | undefined> = {
-    starter: process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER,
+    solo: process.env.NEXT_PUBLIC_STRIPE_PRICE_SOLO,
     growth: process.env.NEXT_PUBLIC_STRIPE_PRICE_GROWTH,
+    agency: process.env.NEXT_PUBLIC_STRIPE_PRICE_AGENCY,
     agency_pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_AGENCY_PRO,
   };
   return mapping[planKey] || null;

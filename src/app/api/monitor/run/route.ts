@@ -6,6 +6,8 @@ import { RateLimitError } from "@/lib/utils/errors";
 import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/monitor/run — trigger manual monitoring scan
 export async function POST(req: NextRequest) {
   try {

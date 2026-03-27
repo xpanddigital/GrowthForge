@@ -1,7 +1,11 @@
-// Stripe integration for GrowthForge billing.
+// Stripe integration for MentionLayer billing.
 // Handles customer creation, checkout sessions, and subscription management.
+//
+// Plan definitions come from @/lib/billing/plans.ts — this file just bridges
+// Stripe price IDs to our plan system and provides cost constants for credit checks.
 
 import Stripe from "stripe";
+import { PLANS, CREDIT_COSTS as PLAN_CREDIT_COSTS, type PlanId } from "./plans";
 
 let _stripe: Stripe | null = null;
 
@@ -16,74 +20,30 @@ export function getStripe(): Stripe {
   return _stripe;
 }
 
-// Plan definitions — prices are set in Stripe Dashboard, IDs stored here.
-// These map to Stripe Price IDs created in the Stripe Dashboard.
-export const PLANS = {
-  starter: {
-    name: "Starter",
-    monthlyCredits: 500,
-    maxClients: 5,
-    maxKeywordsPerClient: 50,
-    features: ["Citation Engine", "AI Monitor"],
-    priceMonthly: 99,
-  },
-  growth: {
-    name: "Growth",
-    monthlyCredits: 2000,
-    maxClients: 15,
-    maxKeywordsPerClient: 200,
-    features: ["Citation Engine", "AI Monitor", "Entity Sync", "Review Engine"],
-    priceMonthly: 249,
-  },
-  agency_pro: {
-    name: "Agency Pro",
-    monthlyCredits: 10000,
-    maxClients: 50,
-    maxKeywordsPerClient: 500,
-    features: [
-      "Citation Engine",
-      "AI Monitor",
-      "Entity Sync",
-      "Review Engine",
-      "PressForge",
-      "Full Audit",
-    ],
-    priceMonthly: 499,
-  },
-  agency_unlimited: {
-    name: "Agency Unlimited",
-    monthlyCredits: 999999,
-    maxClients: 100,
-    maxKeywordsPerClient: 100,
-    features: ["Everything"],
-    priceMonthly: 0,
-  },
-} as const;
-
-export type PlanKey = keyof typeof PLANS;
-
-export function getPlanByPriceId(priceId: string): PlanKey | null {
-  const mapping: Record<string, PlanKey> = {
-    [process.env.STRIPE_PRICE_STARTER || ""]: "starter",
+/**
+ * Map a Stripe Price ID back to our internal plan ID.
+ * Price IDs are configured via environment variables.
+ */
+export function getPlanByPriceId(priceId: string): PlanId | null {
+  const mapping: Record<string, PlanId> = {
+    [process.env.STRIPE_PRICE_SOLO || ""]: "solo",
     [process.env.STRIPE_PRICE_GROWTH || ""]: "growth",
+    [process.env.STRIPE_PRICE_AGENCY || ""]: "agency",
     [process.env.STRIPE_PRICE_AGENCY_PRO || ""]: "agency_pro",
   };
+  // Remove empty string key if env vars not set
+  delete mapping[""];
   return mapping[priceId] || null;
 }
 
+/**
+ * Get plan limits by plan ID string.
+ */
 export function getPlanLimits(plan: string) {
-  const key = plan as PlanKey;
-  return PLANS[key] || PLANS.starter;
+  const key = plan as PlanId;
+  return PLANS[key] || PLANS.solo;
 }
 
-// Credit cost constants
-export const CREDIT_COSTS = {
-  serp_scan: 1,          // per keyword
-  thread_enrich: 2,      // per thread
-  classification: 1,     // per thread
-  response_generation: 10, // 3 variants
-  ai_probe: 5,           // per keyword set
-  monitor_test: 3,       // per model
-  full_audit: 50,        // 5 pillars
-  quick_audit: 20,       // 3 pillars
-} as const;
+// Re-export so API routes can import from either location
+export { PLANS };
+export const CREDIT_COSTS = PLAN_CREDIT_COSTS;

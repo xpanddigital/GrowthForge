@@ -3,6 +3,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/billing/stripe";
 import { handleApiError } from "@/lib/utils/errors";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/billing/portal — Create a Stripe Customer Portal session
 export async function POST() {
   try {
