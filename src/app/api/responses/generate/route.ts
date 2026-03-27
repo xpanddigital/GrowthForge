@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { generateResponsesSchema } from "@/lib/utils/validators";
-import { handleApiError, RateLimitError } from "@/lib/utils/errors";
+import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";

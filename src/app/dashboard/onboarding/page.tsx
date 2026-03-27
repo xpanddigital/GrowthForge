@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { ArrowRight, Building2, Search, BarChart3, Loader2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +10,6 @@ type Step = "client" | "keywords" | "audit" | "done";
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const supabase = createClient();
-
   const [step, setStep] = useState<Step>("client");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

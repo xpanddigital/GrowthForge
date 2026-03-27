@@ -26,7 +26,12 @@ export async function POST(request: Request) {
       .eq("id", authUser.user.id)
       .single();
 
-    if (!user || !["agency_owner", "platform_admin"].includes(user.role)) {
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Allow prospects to upgrade (they become agency_owner after checkout)
+    if (!["agency_owner", "platform_admin", "prospect"].includes(user.role)) {
       return NextResponse.json(
         { error: "Only agency owners can manage billing" },
         { status: 403 }

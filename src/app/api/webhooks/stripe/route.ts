@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getStripe, getPlanByPriceId, PLANS } from "@/lib/billing/stripe";
 import { addCredits } from "@/lib/billing/credits";
+import { sendPlanActivatedEmail } from "@/lib/email/notifications";
 import type Stripe from "stripe";
 
 function createAdminClient() {
@@ -81,6 +82,29 @@ export async function POST(request: Request) {
             reason: "purchase",
             description: `${plan.name} plan activated — ${plan.monthlyCredits} credits`,
           });
+
+          // Upgrade any prospect users to agency_owner
+          await supabase
+            .from("users")
+            .update({ role: "agency_owner" })
+            .eq("agency_id", agencyId)
+            .eq("role", "prospect");
+
+          // Send plan activation email
+          const { data: agencyForEmail } = await supabase
+            .from("agencies")
+            .select("owner_email, name")
+            .eq("id", agencyId)
+            .single();
+
+          if (agencyForEmail?.owner_email) {
+            sendPlanActivatedEmail(
+              agencyForEmail.owner_email,
+              plan.name,
+              plan.monthlyCredits,
+              agencyForEmail.name
+            ).catch((err) => console.error("[Webhook] Email send failed:", err));
+          }
         }
         break;
       }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useClientContext } from "@/hooks/use-client-context";
 import { StatsCards } from "./stats-cards";
@@ -123,8 +124,30 @@ export function DashboardContent() {
 
   const contextLabel = selectedClientName ?? "All Clients";
 
+  const searchParams = useSearchParams();
+  const isCheckoutSuccess = searchParams.get("checkout") === "success";
+  const [showBanner, setShowBanner] = useState(isCheckoutSuccess);
+
   return (
     <div className="space-y-6">
+      {/* Checkout Success Banner */}
+      {showBanner && (
+        <div className="relative rounded-lg border border-green-500/20 bg-green-500/10 p-4">
+          <button
+            onClick={() => setShowBanner(false)}
+            className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+          >
+            ✕
+          </button>
+          <h3 className="font-semibold text-green-600 dark:text-green-400">
+            Welcome to MentionLayer! 🎉
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Your plan is now active. Get started by adding your first client and running a discovery scan.
+          </p>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
