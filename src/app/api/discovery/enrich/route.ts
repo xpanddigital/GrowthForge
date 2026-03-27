@@ -4,6 +4,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { uuidLike } from "@/lib/utils/validators";
+import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
 const enrichRequestSchema = z.object({
   client_id: uuidLike,
@@ -61,6 +63,25 @@ export async function POST(request: Request) {
         { error: "Client not found or does not belong to your agency" },
         { status: 404 }
       );
+    }
+
+    // Check credits (2 credits per thread to enrich)
+    const enrichCost = validated.thread_ids.length * CREDIT_COSTS.thread_enrich;
+    try {
+      await checkCredits(user.agency_id, enrichCost);
+    } catch (err) {
+      if (err instanceof InsufficientCreditsError) {
+        return NextResponse.json(
+          {
+            error: `Insufficient credits. Enriching ${validated.thread_ids.length} threads requires ${enrichCost} credits. You have ${err.available}.`,
+            code: "INSUFFICIENT_CREDITS",
+            required: enrichCost,
+            available: err.available,
+          },
+          { status: 402 }
+        );
+      }
+      throw err;
     }
 
     // Verify all threads belong to this client and are eligible for enrichment

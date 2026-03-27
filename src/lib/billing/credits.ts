@@ -1,71 +1,94 @@
-// ============================================
-// CREDIT TRANSACTIONS
-// ============================================
-// Handles deducting and adding credits to an
-// agency's balance. All mutations go through
-// Supabase with a transaction-safe pattern.
-// ============================================
+// Credit transaction helpers for GrowthForge.
+// Every action that consumes credits goes through these functions.
 
-import { createServerClient } from "@/lib/supabase/server";
-import { CREDIT_COSTS, type CreditAction } from "./plans";
+import { createClient } from "@supabase/supabase-js";
 
-interface DeductCreditsParams {
-  agencyId: string;
-  action: CreditAction;
-  quantity?: number;
-  referenceType?: string;
-  referenceId?: string;
-  description?: string;
+function createAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Missing Supabase environment variables");
+  return createClient(url, key, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
 }
 
-interface CreditResult {
-  success: boolean;
-  creditsUsed: number;
-  balanceAfter: number;
-  error?: string;
+export class InsufficientCreditsError extends Error {
+  constructor(
+    public required: number,
+    public available: number
+  ) {
+    super(
+      `Insufficient credits: ${required} required, ${available} available`
+    );
+    this.name = "InsufficientCreditsError";
+  }
 }
 
 /**
- * Deduct credits from an agency's balance and log the transaction.
- * Returns the new balance. Fails if insufficient credits.
+ * Check if an agency has enough credits for an operation.
+ * Returns the current balance.
  */
-export async function deductCredits({
-  agencyId,
-  action,
-  quantity = 1,
-  referenceType,
-  referenceId,
-  description,
-}: DeductCreditsParams): Promise<CreditResult> {
-  const supabase = await createServerClient();
-  const cost = CREDIT_COSTS[action] * quantity;
+export async function checkCredits(
+  agencyId: string,
+  required: number
+): Promise<number> {
+  const supabase = createAdminClient();
 
-  // Fetch current balance
+  const { data: agency, error } = await supabase
+    .from("agencies")
+    .select("credits_balance, plan")
+    .eq("id", agencyId)
+    .single();
+
+  if (error || !agency) {
+    throw new Error(`Agency ${agencyId} not found`);
+  }
+
+  // Unlimited plans skip credit checks
+  if (agency.plan === "agency_unlimited") {
+    return agency.credits_balance;
+  }
+
+  if (agency.credits_balance < required) {
+    throw new InsufficientCreditsError(required, agency.credits_balance);
+  }
+
+  return agency.credits_balance;
+}
+
+/**
+ * Deduct credits from an agency and log the transaction.
+ * Returns the new balance.
+ */
+export async function deductCredits(params: {
+  agencyId: string;
+  amount: number;
+  reason: string;
+  referenceType?: string;
+  referenceId?: string;
+  description?: string;
+}): Promise<number> {
+  const supabase = createAdminClient();
+  const { agencyId, amount, reason, referenceType, referenceId, description } =
+    params;
+
+  // Get current balance
   const { data: agency, error: fetchError } = await supabase
     .from("agencies")
-    .select("credits_balance")
+    .select("credits_balance, plan")
     .eq("id", agencyId)
     .single();
 
   if (fetchError || !agency) {
-    return {
-      success: false,
-      creditsUsed: 0,
-      balanceAfter: 0,
-      error: "Agency not found",
-    };
+    throw new Error(`Agency ${agencyId} not found`);
   }
 
-  if (agency.credits_balance < cost) {
-    return {
-      success: false,
-      creditsUsed: 0,
-      balanceAfter: agency.credits_balance,
-      error: `Insufficient credits: ${cost} required, ${agency.credits_balance} available`,
-    };
+  // Unlimited plans don't deduct
+  if (agency.plan === "agency_unlimited") {
+    return agency.credits_balance;
   }
 
-  const newBalance = agency.credits_balance - cost;
+  const newBalance = agency.credits_balance - amount;
 
   // Update balance
   const { error: updateError } = await supabase
@@ -74,47 +97,34 @@ export async function deductCredits({
     .eq("id", agencyId);
 
   if (updateError) {
-    return {
-      success: false,
-      creditsUsed: 0,
-      balanceAfter: agency.credits_balance,
-      error: "Failed to update balance",
-    };
+    throw new Error(`Failed to update credits: ${updateError.message}`);
   }
 
-  // Log the transaction
+  // Log transaction
   await supabase.from("credit_transactions").insert({
     agency_id: agencyId,
-    amount: -cost,
-    reason: action,
-    reference_type: referenceType ?? null,
-    reference_id: referenceId ?? null,
+    amount: -amount,
+    reason,
+    reference_type: referenceType || null,
+    reference_id: referenceId || null,
     balance_after: newBalance,
-    description: description ?? `${action} x${quantity}`,
+    description: description || `${reason}: -${amount} credits`,
   });
 
-  return {
-    success: true,
-    creditsUsed: cost,
-    balanceAfter: newBalance,
-  };
+  return newBalance;
 }
 
 /**
- * Add credits to an agency's balance (purchase, refund, bonus).
+ * Add credits to an agency (purchase, refund, bonus).
  */
-export async function addCredits({
-  agencyId,
-  amount,
-  reason,
-  description,
-}: {
+export async function addCredits(params: {
   agencyId: string;
   amount: number;
   reason: string;
   description?: string;
-}): Promise<CreditResult> {
-  const supabase = await createServerClient();
+}): Promise<number> {
+  const supabase = createAdminClient();
+  const { agencyId, amount, reason, description } = params;
 
   const { data: agency, error: fetchError } = await supabase
     .from("agencies")
@@ -123,12 +133,7 @@ export async function addCredits({
     .single();
 
   if (fetchError || !agency) {
-    return {
-      success: false,
-      creditsUsed: 0,
-      balanceAfter: 0,
-      error: "Agency not found",
-    };
+    throw new Error(`Agency ${agencyId} not found`);
   }
 
   const newBalance = agency.credits_balance + amount;
@@ -139,12 +144,7 @@ export async function addCredits({
     .eq("id", agencyId);
 
   if (updateError) {
-    return {
-      success: false,
-      creditsUsed: 0,
-      balanceAfter: agency.credits_balance,
-      error: "Failed to update balance",
-    };
+    throw new Error(`Failed to update credits: ${updateError.message}`);
   }
 
   await supabase.from("credit_transactions").insert({
@@ -152,24 +152,20 @@ export async function addCredits({
     amount,
     reason,
     balance_after: newBalance,
-    description: description ?? `${reason}: +${amount} credits`,
+    description: description || `${reason}: +${amount} credits`,
   });
 
-  return {
-    success: true,
-    creditsUsed: 0,
-    balanceAfter: newBalance,
-  };
+  return newBalance;
 }
 
 /**
  * Reset an agency's credits to their plan's monthly allocation.
- * Called by a monthly cron job at billing cycle reset.
+ * Called on Stripe invoice.payment_succeeded webhook.
  */
 export async function resetMonthlyCredits(
   agencyId: string,
   monthlyAllocation: number
-): Promise<CreditResult> {
+): Promise<number> {
   return addCredits({
     agencyId,
     amount: monthlyAllocation,

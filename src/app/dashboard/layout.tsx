@@ -4,6 +4,7 @@ import { Sidebar, SidebarProvider } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { WelcomeGuide } from "@/components/onboarding/welcome-guide";
 import { HelpWidget } from "@/components/help/help-widget";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 export default function DashboardLayout({
   children,
@@ -17,7 +18,9 @@ export default function DashboardLayout({
         <div className="flex flex-1 flex-col overflow-hidden">
           <Header />
           <main className="flex-1 overflow-y-auto bg-background p-4 md:p-6">
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </main>
         </div>
       </div>

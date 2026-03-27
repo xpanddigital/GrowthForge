@@ -60,6 +60,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // Check client limit
+    const { data: agency } = await supabase
+      .from("agencies")
+      .select("max_clients")
+      .eq("id", user.agency_id)
+      .single();
+
+    if (agency) {
+      const { count: clientCount } = await supabase
+        .from("clients")
+        .select("id", { count: "exact", head: true })
+        .eq("agency_id", user.agency_id)
+        .eq("is_active", true);
+
+      if (clientCount !== null && clientCount >= agency.max_clients) {
+        return NextResponse.json(
+          {
+            error: `Client limit reached (${agency.max_clients}). Upgrade your plan to add more clients.`,
+            code: "CLIENT_LIMIT_REACHED",
+          },
+          { status: 403 }
+        );
+      }
+    }
+
     const body = await request.json();
     const validated = createClientSchema.parse(body);
 

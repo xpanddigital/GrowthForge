@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { generateResponsesSchema } from "@/lib/utils/validators";
-import { handleApiError } from "@/lib/utils/errors";
+import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
+import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { CREDIT_COSTS } from "@/lib/billing/stripe";
+import { rateLimit } from "@/lib/utils/rate-limit";
 
 // POST /api/responses/generate — Generate 3 response variants for a thread
 export async function POST(request: Request) {
@@ -34,6 +37,9 @@ export async function POST(request: Request) {
       );
     }
 
+    // Rate limit: max 10 response generations per minute per agency
+    rateLimit(`responses:${user.agency_id}`, { maxRequests: 10, windowMs: 60_000 });
+
     // Parse and validate request body
     const body = await request.json();
     const validated = generateResponsesSchema.parse(body);
@@ -59,6 +65,24 @@ export async function POST(request: Request) {
         { error: "Thread does not belong to your agency" },
         { status: 403 }
       );
+    }
+
+    // Check credits
+    try {
+      await checkCredits(user.agency_id, CREDIT_COSTS.response_generation);
+    } catch (err) {
+      if (err instanceof InsufficientCreditsError) {
+        return NextResponse.json(
+          {
+            error: `Insufficient credits. Response generation requires ${CREDIT_COSTS.response_generation} credits. You have ${err.available}.`,
+            code: "INSUFFICIENT_CREDITS",
+            required: err.required,
+            available: err.available,
+          },
+          { status: 402 }
+        );
+      }
+      throw err;
     }
 
     // Check thread is in a valid state for response generation

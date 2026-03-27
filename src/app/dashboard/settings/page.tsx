@@ -333,11 +333,29 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Badge className="mb-2 bg-primary/10 text-primary">
-                    Agency Unlimited
+                    {agency?.plan === "agency_unlimited"
+                      ? "Agency Unlimited"
+                      : agency?.plan === "agency_pro"
+                        ? "Agency Pro"
+                        : agency?.plan === "growth"
+                          ? "Growth"
+                          : agency?.plan === "starter"
+                            ? "Starter"
+                            : agency?.plan || "Free"}
                   </Badge>
-                  <p className="text-2xl font-bold">Phase 1 — Free</p>
+                  <p className="text-2xl font-bold">
+                    {agency?.plan === "agency_unlimited"
+                      ? "Unlimited Plan"
+                      : agency?.plan === "agency_pro"
+                        ? "$499/mo"
+                        : agency?.plan === "growth"
+                          ? "$249/mo"
+                          : agency?.plan === "starter"
+                            ? "$99/mo"
+                            : "No Plan"}
+                  </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Unlimited credits, unlimited clients during development.
+                    {agency?.max_clients || 0} clients · {agency?.max_keywords_per_client || 0} keywords/client
                   </p>
                 </div>
                 <div className="text-right">
@@ -345,11 +363,131 @@ export default function SettingsPage() {
                     Credits remaining
                   </p>
                   <p className="text-3xl font-bold text-primary">
-                    {agency?.credits_balance?.toLocaleString() || "∞"}
+                    {agency?.plan === "agency_unlimited"
+                      ? "∞"
+                      : agency?.credits_balance?.toLocaleString() || "0"}
                   </p>
                 </div>
               </div>
+              {agency?.stripe_customer_id && (
+                <div className="mt-4 flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      const res = await fetch("/api/billing/portal", {
+                        method: "POST",
+                      });
+                      const data = await res.json();
+                      if (data.data?.url) {
+                        window.location.href = data.data.url;
+                      }
+                    }}
+                  >
+                    <CreditCard className="mr-2 h-3.5 w-3.5" />
+                    Manage Subscription
+                  </Button>
+                </div>
+              )}
             </div>
+
+            {/* Plan cards for upgrade */}
+            {agency?.plan !== "agency_unlimited" && (
+              <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                {[
+                  {
+                    name: "Starter",
+                    price: "$99",
+                    credits: "500",
+                    clients: "5",
+                    keywords: "50",
+                    features: ["Citation Engine", "AI Monitor"],
+                    planKey: "starter",
+                    priceEnv: "STRIPE_PRICE_STARTER",
+                  },
+                  {
+                    name: "Growth",
+                    price: "$249",
+                    credits: "2,000",
+                    clients: "15",
+                    keywords: "200",
+                    features: ["+ Entity Sync", "+ Review Engine"],
+                    planKey: "growth",
+                    priceEnv: "STRIPE_PRICE_GROWTH",
+                    popular: true,
+                  },
+                  {
+                    name: "Agency Pro",
+                    price: "$499",
+                    credits: "10,000",
+                    clients: "50",
+                    keywords: "500",
+                    features: ["+ PressForge", "+ Full Audit"],
+                    planKey: "agency_pro",
+                    priceEnv: "STRIPE_PRICE_AGENCY_PRO",
+                  },
+                ].map((plan) => {
+                  const isCurrent = agency?.plan === plan.planKey;
+                  return (
+                    <div
+                      key={plan.planKey}
+                      className={`rounded-lg border p-5 ${
+                        plan.popular
+                          ? "border-primary bg-primary/5"
+                          : "border-border bg-background"
+                      } ${isCurrent ? "ring-2 ring-primary" : ""}`}
+                    >
+                      {plan.popular && (
+                        <Badge className="mb-2 bg-primary text-primary-foreground text-xs">
+                          Most Popular
+                        </Badge>
+                      )}
+                      <p className="text-sm font-semibold">{plan.name}</p>
+                      <p className="mt-1 text-2xl font-bold">
+                        {plan.price}
+                        <span className="text-sm font-normal text-muted-foreground">
+                          /mo
+                        </span>
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {plan.credits} credits · {plan.clients} clients · {plan.keywords} kw
+                      </p>
+                      <ul className="mt-3 space-y-1">
+                        {plan.features.map((f) => (
+                          <li
+                            key={f}
+                            className="text-xs text-muted-foreground"
+                          >
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button
+                        className="mt-4 w-full"
+                        variant={isCurrent ? "outline" : "default"}
+                        disabled={isCurrent}
+                        size="sm"
+                        onClick={async () => {
+                          const res = await fetch("/api/billing/checkout", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              price_id: plan.planKey,
+                            }),
+                          });
+                          const data = await res.json();
+                          if (data.data?.url) {
+                            window.location.href = data.data.url;
+                          }
+                        }}
+                      >
+                        {isCurrent ? "Current Plan" : "Upgrade"}
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               <div className="rounded-md border border-border bg-background p-4 text-center">
@@ -370,10 +508,6 @@ export default function SettingsPage() {
                 <p className="text-xs text-muted-foreground">5 pillars</p>
               </div>
             </div>
-
-            <p className="mt-4 text-xs text-muted-foreground">
-              Credit-based billing with Stripe will be available in Phase 3.
-            </p>
           </div>
         </TabsContent>
 

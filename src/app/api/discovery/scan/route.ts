@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { triggerScanSchema } from "@/lib/utils/validators";
-import { handleApiError } from "@/lib/utils/errors";
+import { handleApiError, RateLimitError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
+import { rateLimit } from "@/lib/utils/rate-limit";
+import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
 // POST /api/discovery/scan — Trigger a manual discovery scan
 export async function POST(request: Request) {
@@ -34,6 +37,9 @@ export async function POST(request: Request) {
       );
     }
 
+    // Rate limit: max 5 scans per hour per agency
+    rateLimit(`discovery:${user.agency_id}`, { maxRequests: 5, windowMs: 3_600_000 });
+
     // Parse and validate request body
     const body = await request.json();
     const validated = triggerScanSchema.parse(body);
@@ -52,6 +58,30 @@ export async function POST(request: Request) {
         { error: "Client not found or does not belong to your agency" },
         { status: 404 }
       );
+    }
+
+    // Check credits (estimate: 1 credit per keyword scanned)
+    const { data: keywordCount } = await supabase
+      .from("keywords")
+      .select("id", { count: "exact", head: true })
+      .eq("client_id", validated.client_id)
+      .eq("is_active", true);
+    const estimatedCost = Math.max((keywordCount as unknown as number) || 5, 5) * CREDIT_COSTS.serp_scan;
+    try {
+      await checkCredits(user.agency_id, estimatedCost);
+    } catch (err) {
+      if (err instanceof InsufficientCreditsError) {
+        return NextResponse.json(
+          {
+            error: `Insufficient credits. Discovery scan requires ~${estimatedCost} credits. You have ${err.available}.`,
+            code: "INSUFFICIENT_CREDITS",
+            required: estimatedCost,
+            available: err.available,
+          },
+          { status: 402 }
+        );
+      }
+      throw err;
     }
 
     // Create a discovery run record
