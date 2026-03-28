@@ -96,12 +96,37 @@ export default function LoginPage() {
 
           {mode === "password" && (
             <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium leading-none"
-              >
-                Password
-              </label>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium leading-none"
+                >
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!email) {
+                      setMessage("Enter your email first, then click reset.");
+                      return;
+                    }
+                    setLoading(true);
+                    setMessage("");
+                    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                      redirectTo: `${window.location.origin}/callback?type=recovery`,
+                    });
+                    if (error) {
+                      setMessage(error.message);
+                    } else {
+                      setMessage("Check your email for the password reset link!");
+                    }
+                    setLoading(false);
+                  }}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Forgot password?
+                </button>
+              </div>
               <input
                 id="password"
                 type="password"
