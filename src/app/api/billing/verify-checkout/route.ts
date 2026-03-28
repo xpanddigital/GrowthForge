@@ -55,8 +55,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Session mismatch" }, { status: 403 });
     }
 
-    // Only process completed sessions
-    if (session.payment_status !== "paid") {
+    // Only process completed sessions (trials have "no_payment_required" status)
+    if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") {
       return NextResponse.json(
         { error: "Payment not completed", status: session.payment_status },
         { status: 400 }
@@ -92,8 +92,11 @@ export async function POST(request: Request) {
     let planKey = "solo";
     let plan = PLANS.solo;
 
+    let isTrialing = false;
+
     if (subscriptionId) {
       const sub = await stripe.subscriptions.retrieve(subscriptionId);
+      isTrialing = sub.status === "trialing";
       const priceId = sub.items.data[0]?.price?.id;
       const resolved = priceId ? getPlanByPriceId(priceId) : null;
       if (resolved) {
@@ -101,6 +104,8 @@ export async function POST(request: Request) {
         plan = PLANS[resolved];
       }
     }
+
+    const creditsToGrant = isTrialing ? plan.trialCredits : plan.monthlyCredits;
 
     // Update agency: plan, subscription, credits, limits
     await admin
@@ -112,7 +117,7 @@ export async function POST(request: Request) {
           typeof session.customer === "string"
             ? session.customer
             : (session.customer as { id?: string } | null)?.id || null,
-        credits_balance: plan.monthlyCredits,
+        credits_balance: creditsToGrant,
         max_clients: plan.maxClients,
         max_keywords_per_client: plan.maxKeywordsPerClient,
         is_active: true,
@@ -120,11 +125,15 @@ export async function POST(request: Request) {
       .eq("id", agencyId);
 
     // Log the initial credit grant
+    const creditDescription = isTrialing
+      ? `${plan.name} trial started — ${creditsToGrant} trial credits`
+      : `${plan.name} plan activated — ${creditsToGrant} credits`;
+
     await addCredits({
       agencyId,
-      amount: plan.monthlyCredits,
+      amount: creditsToGrant,
       reason: "purchase",
-      description: `${plan.name} plan activated — ${plan.monthlyCredits} credits`,
+      description: creditDescription,
     });
 
     // Upgrade any prospect users to agency_owner
@@ -139,7 +148,7 @@ export async function POST(request: Request) {
       sendPlanActivatedEmail(
         agency.owner_email,
         plan.name,
-        plan.monthlyCredits,
+        creditsToGrant,
         agency.name
       ).catch((err) => console.error("[VerifyCheckout] Email failed:", err));
     }
@@ -147,8 +156,9 @@ export async function POST(request: Request) {
     return NextResponse.json({
       data: {
         plan: planKey,
-        credits: plan.monthlyCredits,
+        credits: creditsToGrant,
         max_clients: plan.maxClients,
+        is_trialing: isTrialing,
       },
     });
   } catch (error) {

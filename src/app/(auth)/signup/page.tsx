@@ -1,11 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { PLANS } from "@/lib/billing/plans";
+import type { PlanId } from "@/lib/billing/plans";
 import Link from "next/link";
 
-export default function SignupPage() {
-  useEffect(() => { document.title = "Sign Up — MentionLayer"; }, []);
+function getPriceId(planKey: string): string | null {
+  const mapping: Record<string, string | undefined> = {
+    solo: process.env.NEXT_PUBLIC_STRIPE_PRICE_SOLO,
+    growth: process.env.NEXT_PUBLIC_STRIPE_PRICE_GROWTH,
+    agency: process.env.NEXT_PUBLIC_STRIPE_PRICE_AGENCY,
+    agency_pro: process.env.NEXT_PUBLIC_STRIPE_PRICE_AGENCY_PRO,
+  };
+  return mapping[planKey] || null;
+}
+
+function SignupForm() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const plan = searchParams.get("plan");
+
+  useEffect(() => { document.title = "Sign Up \u2014 MentionLayer"; }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +33,15 @@ export default function SignupPage() {
   const [isError, setIsError] = useState(false);
   const [usePassword, setUsePassword] = useState(true);
   const supabase = createClient();
+
+  // Redirect to plan selection if no plan chosen
+  if (!plan) {
+    router.push("/signup/plan");
+    return null;
+  }
+
+  const planConfig = PLANS[plan as PlanId];
+  const planName = planConfig?.name || plan;
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -53,7 +79,45 @@ export default function SignupPage() {
           }),
         });
 
-        // Redirect to onboarding for new users
+        // Redirect to Stripe checkout with 14-day trial
+        const priceId = plan ? getPriceId(plan) : null;
+        if (!priceId) {
+          // Fallback for plans without a Stripe price configured
+          window.location.href = "/dashboard/onboarding";
+          return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          window.location.href = "/dashboard/onboarding";
+          return;
+        }
+
+        try {
+          const checkoutRes = await fetch("/api/billing/checkout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({
+              price_id: priceId,
+              trial_period_days: 14,
+              success_url: `${window.location.origin}/dashboard/onboarding?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+              cancel_url: `${window.location.origin}/signup?plan=${plan}`,
+            }),
+          });
+
+          const checkoutResult = await checkoutRes.json();
+
+          if (checkoutResult.data?.url) {
+            window.location.href = checkoutResult.data.url;
+            return;
+          }
+        } catch {
+          // If checkout fails, fall back to onboarding
+        }
+
         window.location.href = "/dashboard/onboarding";
         return;
       }
@@ -91,7 +155,7 @@ export default function SignupPage() {
             <span className="text-primary">Mention</span>Layer
           </h1>
           <p className="text-sm text-muted-foreground">
-            Create your agency account
+            Start your 14-day {planName} trial
           </p>
         </div>
 
@@ -130,7 +194,7 @@ export default function SignupPage() {
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             />
             <p className="text-xs text-muted-foreground">
-              Optional — we&apos;ll create one from your name if left blank.
+              Optional &mdash; we&apos;ll create one from your name if left blank.
             </p>
           </div>
 
@@ -163,7 +227,7 @@ export default function SignupPage() {
               <input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required={usePassword}
@@ -182,7 +246,7 @@ export default function SignupPage() {
               ? usePassword
                 ? "Creating account..."
                 : "Sending magic link..."
-              : "Get Started — Free"}
+              : "Continue to payment"}
           </button>
         </form>
 
@@ -214,9 +278,23 @@ export default function SignupPage() {
         </p>
 
         <p className="text-center text-xs text-muted-foreground">
-          Start with 100 free credits. No credit card required.
+          14-day free trial. Cancel anytime before you&apos;re charged.
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-sm text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <SignupForm />
+    </Suspense>
   );
 }

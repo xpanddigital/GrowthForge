@@ -155,7 +155,7 @@ const faqs = [
   {
     question: "Is there a free trial?",
     answer:
-      "Yes. Every plan includes a 14-day free trial with full access. No credit card required to start. Run your first AI Visibility Audit within minutes.",
+      "Yes. Every plan includes a 14-day free trial with full access. A credit card is required to start your trial, but you won\u2019t be charged until day 15. Run your first AI Visibility Audit within minutes.",
   },
   {
     question: "What are credits?",
@@ -264,7 +264,7 @@ export default function PricingPage() {
                 ${plan.priceAnnualMonthly}/mo billed annually
               </p>
               <Link
-                href="/free-audit"
+                href="/signup/plan"
                 className={`mt-6 block rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors ${
                   plan.popular
                     ? "bg-[#6C5CE7] text-white hover:bg-[#5A4BD1]"
@@ -374,11 +374,11 @@ export default function PricingPage() {
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
           Start with a free 14-day trial. Run your first AI Visibility Audit in
-          under 5 minutes. No credit card required.
+          under 5 minutes. Cancel anytime during your trial.
         </p>
         <div className="mt-8 flex items-center justify-center gap-4">
           <Link
-            href="/free-audit"
+            href="/signup/plan"
             className="rounded-md bg-[#6C5CE7] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
           >
             Start free trial

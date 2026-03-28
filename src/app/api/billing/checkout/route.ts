@@ -10,6 +10,7 @@ const checkoutSchema = z.object({
   price_id: z.string(),
   success_url: z.string().url().optional(),
   cancel_url: z.string().url().optional(),
+  trial_period_days: z.number().optional(),
 });
 
 // POST /api/billing/checkout — Create a Stripe Checkout session
@@ -73,20 +74,23 @@ export async function POST(request: Request) {
     }
 
     // Create checkout session
+    const defaultSuccessUrl = validated.trial_period_days
+      ? `${appUrl}/dashboard/onboarding?checkout=success&session_id={CHECKOUT_SESSION_ID}`
+      : `${appUrl}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`;
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: validated.price_id, quantity: 1 }],
-      success_url:
-        validated.success_url ||
-        `${appUrl}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: validated.success_url || defaultSuccessUrl,
       cancel_url:
         validated.cancel_url ||
         `${appUrl}/dashboard/settings?tab=billing&checkout=cancelled`,
       metadata: { agency_id: agency.id },
       subscription_data: {
         metadata: { agency_id: agency.id },
+        trial_period_days: validated.trial_period_days || undefined,
       },
     });
 

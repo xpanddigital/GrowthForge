@@ -61,16 +61,18 @@ export async function POST(request: Request) {
           // Get the subscription to find the price/plan
           const stripe = getStripe();
           const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          const isTrialing = sub.status === "trialing";
           const priceId = sub.items.data[0]?.price?.id;
           const planKey = priceId ? getPlanByPriceId(priceId) : null;
           const plan = planKey ? PLANS[planKey] : PLANS.solo;
+          const creditsToGrant = isTrialing ? plan.trialCredits : plan.monthlyCredits;
 
           await supabase
             .from("agencies")
             .update({
               plan: planKey || "solo",
               stripe_subscription_id: subscriptionId,
-              credits_balance: plan.monthlyCredits,
+              credits_balance: creditsToGrant,
               max_clients: plan.maxClients,
               max_keywords_per_client: plan.maxKeywordsPerClient,
               is_active: true,
@@ -78,11 +80,15 @@ export async function POST(request: Request) {
             .eq("id", agencyId);
 
           // Log the initial credit grant
+          const creditDescription = isTrialing
+            ? `${plan.name} trial started — ${creditsToGrant} trial credits`
+            : `${plan.name} plan activated — ${creditsToGrant} credits`;
+
           await addCredits({
             agencyId,
-            amount: plan.monthlyCredits,
+            amount: creditsToGrant,
             reason: "purchase",
-            description: `${plan.name} plan activated — ${plan.monthlyCredits} credits`,
+            description: creditDescription,
           });
 
           // Upgrade any prospect users to agency_owner
@@ -103,7 +109,7 @@ export async function POST(request: Request) {
             sendPlanActivatedEmail(
               agencyForEmail.owner_email,
               plan.name,
-              plan.monthlyCredits,
+              creditsToGrant,
               agencyForEmail.name
             ).catch((err) => console.error("[Webhook] Email send failed:", err));
           }

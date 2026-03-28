@@ -104,7 +104,7 @@ export async function POST(request: Request) {
         slug,
         owner_email: user.email!,
         plan: "starter",
-        credits_balance: 100, // 100 free credits to try the platform
+        credits_balance: 0, // Credits granted after plan selection + Stripe checkout
         max_clients: 5,
         max_keywords_per_client: 50,
         is_platform_owner: false,

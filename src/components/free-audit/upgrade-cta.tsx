@@ -60,6 +60,7 @@ export function UpgradeCTA() {
         },
         body: JSON.stringify({
           price_id: priceId,
+          trial_period_days: 14,
           success_url: `${window.location.origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${window.location.origin}/free-audit/results/${window.location.pathname.split("/").pop()}`,
         }),
