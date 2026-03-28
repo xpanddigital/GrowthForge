@@ -37,6 +37,8 @@ const STATUS_BADGE: Record<string, { className: string; label: string }> = {
 };
 
 export default function CanonicalHistoryPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [versions, setVersions] = useState<CanonicalVersion[]>([]);
   const [loading, setLoading] = useState(true);

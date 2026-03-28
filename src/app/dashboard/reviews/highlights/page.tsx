@@ -88,6 +88,8 @@ const dateOptions = [
 ];
 
 export default function HighlightsPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [reviews, setReviews] = useState<HighlightedReview[]>([]);
   const [loading, setLoading] = useState(true);

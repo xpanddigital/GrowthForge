@@ -12,6 +12,8 @@ interface ClientWithCount extends Client {
 }
 
 export default function ClientsPage() {
+  useEffect(() => { document.title = "Clients — MentionLayer"; }, []);
+
   const [clients, setClients] = useState<ClientWithCount[]>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();

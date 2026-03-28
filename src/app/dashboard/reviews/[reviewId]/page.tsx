@@ -77,6 +77,8 @@ function getScoreBarColor(score: number | null): string {
 }
 
 export default function ReviewDetailPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const params = useParams();
   const reviewId = params.reviewId as string;
   const { selectedClientId } = useClientContext();

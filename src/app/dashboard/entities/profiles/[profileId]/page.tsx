@@ -115,6 +115,8 @@ const DETAIL_WEIGHTS: Record<string, string> = {
 };
 
 export default function ProfileDetailPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const params = useParams();
   const profileId = params.profileId as string;
   const { selectedClientId } = useClientContext();

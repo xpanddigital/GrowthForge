@@ -39,6 +39,8 @@ function getScoreColor(score: number | null): string {
 }
 
 export default function SchemaAuditPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [results, setResults] = useState<SchemaResult[]>([]);
   const [loading, setLoading] = useState(true);

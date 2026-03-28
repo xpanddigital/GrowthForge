@@ -65,6 +65,8 @@ function formatDuration(start: string | null, end: string | null): string {
 }
 
 export default function ScansPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [scans, setScans] = useState<Scan[]>([]);
   const [loading, setLoading] = useState(true);

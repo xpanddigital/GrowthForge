@@ -78,6 +78,8 @@ function getSentimentColor(sentiment: string | null): string {
 }
 
 export default function ReviewFeedPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   return (
     <Suspense fallback={<div className="space-y-4">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-24 rounded-lg bg-muted animate-pulse" />)}</div>}>
       <ReviewFeedPageInner />

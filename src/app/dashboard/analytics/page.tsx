@@ -55,6 +55,8 @@ function getChangeColor(change: number): string {
 }
 
 export default function AnalyticsPage() {
+  useEffect(() => { document.title = "Analytics — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [data, setData] = useState<CorrelationData | null>(null);
   const [loading, setLoading] = useState(true);

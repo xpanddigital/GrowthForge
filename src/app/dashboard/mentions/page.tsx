@@ -50,6 +50,8 @@ function getMentionTypeBadge(type: string) {
 }
 
 export default function MentionsPage() {
+  useEffect(() => { document.title = "Mentions — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [sources, setSources] = useState<MentionSource[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);

@@ -843,6 +843,8 @@ function ThreadTableSkeleton() {
 // ---------------------------------------------------------------------------
 
 export default function CitationsPage() {
+  useEffect(() => { document.title = "Citation Engine — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const supabase = createClient();
 

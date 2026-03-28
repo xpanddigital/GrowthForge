@@ -19,6 +19,8 @@ interface TimelineEntry {
 }
 
 export default function MonitorTimelinePage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [timeline, setTimeline] = useState<TimelineEntry[]>([]);
   const [loading, setLoading] = useState(true);

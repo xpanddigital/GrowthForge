@@ -71,6 +71,8 @@ function PillarBar({ pillar, score }: { pillar: string; score: number }) {
 }
 
 export default function FreeAuditResultsPage() {
+  useEffect(() => { document.title = "Audit Results — MentionLayer"; }, []);
+
   const { auditId } = useParams<{ auditId: string }>();
   const router = useRouter();
   const supabase = createClient();

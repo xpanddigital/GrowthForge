@@ -17,6 +17,8 @@ interface CampaignWithRelations extends PressCampaign {
 }
 
 export default function PressPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const router = useRouter();
   const [campaigns, setCampaigns] = useState<CampaignWithRelations[]>([]);

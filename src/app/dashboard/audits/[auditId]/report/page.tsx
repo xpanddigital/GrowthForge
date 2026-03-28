@@ -78,6 +78,8 @@ function getImpactColor(impact: string): string {
 }
 
 export default function AuditReportPage() {
+  useEffect(() => { document.title = "Audit Results — MentionLayer"; }, []);
+
   const params = useParams();
   const auditId = params.auditId as string;
   const [audit, setAudit] = useState<AuditData | null>(null);

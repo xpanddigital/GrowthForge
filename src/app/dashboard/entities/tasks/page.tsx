@@ -29,6 +29,8 @@ const PRIORITY_ORDER: Record<string, number> = {
 };
 
 export default function EntityTasksPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [tasks, setTasks] = useState<TaskData[]>([]);
   const [loading, setLoading] = useState(true);

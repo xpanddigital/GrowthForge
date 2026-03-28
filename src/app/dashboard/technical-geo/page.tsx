@@ -45,6 +45,8 @@ function getImpactColor(impact: string): string {
 }
 
 export default function TechnicalGeoPage() {
+  useEffect(() => { document.title = "Technical GEO — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [scan, setScan] = useState<TechnicalGeoScan | null>(null);
   const [loading, setLoading] = useState(true);

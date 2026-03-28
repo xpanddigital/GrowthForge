@@ -181,6 +181,8 @@ function ProgressContent() {
 }
 
 export default function FreeAuditProgressPage() {
+  useEffect(() => { document.title = "Audit in Progress — MentionLayer"; }, []);
+
   return (
     <Suspense
       fallback={

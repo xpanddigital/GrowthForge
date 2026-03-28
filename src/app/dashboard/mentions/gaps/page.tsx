@@ -79,6 +79,8 @@ function formatModule(module: string): string {
 }
 
 export default function MentionGapsPage() {
+  useEffect(() => { document.title = "Mentions — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [gaps, setGaps] = useState<MentionGap[]>([]);
   const [loading, setLoading] = useState(true);

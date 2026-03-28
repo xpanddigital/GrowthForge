@@ -44,6 +44,8 @@ const PILLAR_LABELS: Record<string, string> = {
 // ------------------------------------------------------------------
 
 export default function AuditDetailPage() {
+  useEffect(() => { document.title = "Audit Results — MentionLayer"; }, []);
+
   const params = useParams();
   const router = useRouter();
   const auditId = params.auditId as string;

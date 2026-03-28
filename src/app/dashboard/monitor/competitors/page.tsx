@@ -24,6 +24,8 @@ interface Competitor {
 }
 
 export default function MonitorCompetitorsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [loading, setLoading] = useState(true);

@@ -48,6 +48,8 @@ interface TimelineEntry {
 }
 
 export default function MonitorPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [trendData, setTrendData] = useState<Array<{ date: string; score: number; som: number }>>([]);

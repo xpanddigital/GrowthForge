@@ -91,6 +91,8 @@ function timeAgo(dateStr: string | null): string {
 }
 
 export default function TeamPage() {
+  useEffect(() => { document.title = "Team — MentionLayer"; }, []);
+
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [showInvite, setShowInvite] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Newspaper, Loader2, Copy, Check, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -18,6 +18,8 @@ interface NewsroomResult {
 }
 
 export default function NewsroomPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [result, setResult] = useState<NewsroomResult | null>(null);
   const [loading, setLoading] = useState(false);

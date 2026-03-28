@@ -26,6 +26,8 @@ function getScoreColor(score: number): string {
 }
 
 export default function ReportsPage() {
+  useEffect(() => { document.title = "Reports — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [audits, setAudits] = useState<AuditReport[]>([]);
   const [loading, setLoading] = useState(true);

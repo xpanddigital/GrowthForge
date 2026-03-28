@@ -18,6 +18,8 @@ interface MonitorKeyword {
 }
 
 export default function MonitorKeywordsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [keywords, setKeywords] = useState<MonitorKeyword[]>([]);
   const [loading, setLoading] = useState(true);

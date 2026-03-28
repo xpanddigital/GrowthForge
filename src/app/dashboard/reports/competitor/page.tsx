@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarChart3, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +54,8 @@ function formatPillar(pillar: string): string {
 }
 
 export default function CompetitorReportPage() {
+  useEffect(() => { document.title = "Reports — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [report, setReport] = useState<CompetitorReport | null>(null);
   const [loading, setLoading] = useState(false);

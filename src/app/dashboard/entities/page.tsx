@@ -57,6 +57,8 @@ interface TaskData {
 }
 
 export default function EntitiesPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [canonical, setCanonical] = useState<CanonicalData | null>(null);
   const [profiles, setProfiles] = useState<ProfileData[]>([]);

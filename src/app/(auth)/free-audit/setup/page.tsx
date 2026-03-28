@@ -9,6 +9,8 @@ import { CompetitorInput } from "@/components/free-audit/competitor-input";
 type Step = 1 | 2 | 3;
 
 export default function FreeAuditSetupPage() {
+  useEffect(() => { document.title = "Audit Setup — MentionLayer"; }, []);
+
   const router = useRouter();
   const supabase = createClient();
 

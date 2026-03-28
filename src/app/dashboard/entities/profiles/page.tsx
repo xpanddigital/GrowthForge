@@ -75,6 +75,8 @@ function getScoreColor(score: number | null): string {
 }
 
 export default function ProfilesPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);

@@ -51,6 +51,8 @@ const MODEL_LABELS: Record<string, string> = {
 };
 
 export default function MonitorPromptsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [prompts, setPrompts] = useState<PromptRow[]>([]);
   const [templates] = useState<PromptTemplate[]>([]);

@@ -19,6 +19,8 @@ import { IdeaGenerationDialog } from "@/components/press/idea-generation-dialog"
 import type { PressCampaignIdea, Spokesperson } from "@/types/database";
 
 export default function IdeasPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const router = useRouter();
   const [ideas, setIdeas] = useState<PressCampaignIdea[]>([]);

@@ -38,6 +38,8 @@ function getOpportunityColor(score: number): string {
 }
 
 export default function YouTubeGeoPage() {
+  useEffect(() => { document.title = "YouTube GEO — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [topics, setTopics] = useState<YouTubeTopic[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);

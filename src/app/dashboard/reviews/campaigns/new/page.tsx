@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, Megaphone } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +35,8 @@ interface FormData {
 }
 
 export default function NewCampaignPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const router = useRouter();
   const { selectedClientId, selectedClientName } = useClientContext();
   const [step, setStep] = useState(0);

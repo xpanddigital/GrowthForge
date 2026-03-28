@@ -51,6 +51,8 @@ const TEMPLATE_VARIABLES = [
 ];
 
 export default function ReviewTemplatesPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const [templates, setTemplates] = useState<ReviewTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);

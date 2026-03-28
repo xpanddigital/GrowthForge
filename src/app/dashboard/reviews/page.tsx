@@ -95,6 +95,8 @@ function renderStars(rating: number | null) {
 }
 
 export default function ReviewsPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [profiles, setProfiles] = useState<ReviewProfile[]>([]);
   const [snapshots, setSnapshots] = useState<ReviewSnapshot[]>([]);

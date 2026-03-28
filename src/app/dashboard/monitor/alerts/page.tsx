@@ -29,6 +29,8 @@ interface AlertRule {
 }
 
 export default function MonitorAlertsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [events, setEvents] = useState<AlertEvent[]>([]);
   const [rules, setRules] = useState<AlertRule[]>([]);

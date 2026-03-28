@@ -1,5 +1,7 @@
 import { ClientForm } from "@/components/clients/client-form";
 
+export const metadata = { title: "New Client — MentionLayer" };
+
 export default function NewClientPage() {
   return (
     <div className="space-y-6">

@@ -1,9 +1,12 @@
 "use client";
+import { useEffect } from "react";
 
 import Link from "next/link";
 import { FreeAuditSignupForm } from "@/components/free-audit/signup-form";
 
 export default function FreeAuditPage() {
+  useEffect(() => { document.title = "Free AI Visibility Audit — MentionLayer"; }, []);
+
   return (
     <div className="flex min-h-screen bg-background">
       {/* Left: Value prop */}

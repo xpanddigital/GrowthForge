@@ -57,6 +57,8 @@ function formatDimensionName(name: string): string {
 }
 
 export default function CitabilityPage() {
+  useEffect(() => { document.title = "Technical GEO — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [data, setData] = useState<ScanData | null>(null);
   const [loading, setLoading] = useState(true);

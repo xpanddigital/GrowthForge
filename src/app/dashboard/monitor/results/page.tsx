@@ -43,6 +43,8 @@ const MODELS = [
 ];
 
 export default function MonitorResultsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [results, setResults] = useState<MonitorResult[]>([]);
   const [loading, setLoading] = useState(true);

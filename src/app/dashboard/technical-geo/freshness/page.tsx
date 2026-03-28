@@ -49,6 +49,8 @@ function getPriorityBadge(priority: string) {
 }
 
 export default function FreshnessPage() {
+  useEffect(() => { document.title = "Technical GEO — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [entries, setEntries] = useState<FreshnessEntry[]>([]);
   const [loading, setLoading] = useState(true);

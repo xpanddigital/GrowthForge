@@ -21,6 +21,8 @@ interface ContentGap {
 }
 
 export default function MonitorGapsPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [gaps, setGaps] = useState<ContentGap[]>([]);
   const [loading, setLoading] = useState(true);

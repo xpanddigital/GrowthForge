@@ -1,5 +1,6 @@
 import { ClientDetailLoader } from "@/components/clients/client-detail-loader";
 
+export const metadata = { title: "Client Details — MentionLayer" };
 export const dynamic = "force-dynamic";
 
 export default function ClientDetailPage({

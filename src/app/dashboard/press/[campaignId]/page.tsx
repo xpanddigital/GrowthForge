@@ -60,6 +60,8 @@ const STATUS_TO_TAB: Record<string, string> = {
 // ---------- Page Component ----------
 
 export default function CampaignDetailPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const params = useParams();
   const router = useRouter();
   const campaignId = params.campaignId as string;

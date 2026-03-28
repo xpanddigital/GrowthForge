@@ -11,6 +11,8 @@ import { SpokespersonFormDialog } from "@/components/press/spokesperson-form-dia
 import type { Spokesperson } from "@/types/database";
 
 export default function SpokespersonsPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [spokespersons, setSpokespersons] = useState<Spokesperson[]>([]);
   const [loading, setLoading] = useState(true);

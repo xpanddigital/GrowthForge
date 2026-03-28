@@ -11,6 +11,8 @@ import { CoverageFormDialog } from "@/components/press/coverage-form-dialog";
 import type { PressCoverage } from "@/types/database";
 
 export default function CoveragePage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [items, setItems] = useState<PressCoverage[]>([]);
   const [loading, setLoading] = useState(true);

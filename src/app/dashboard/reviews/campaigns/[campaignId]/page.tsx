@@ -68,6 +68,8 @@ const RECIPIENT_STATUS: Record<string, { label: string; color: string }> = {
 };
 
 export default function CampaignDetailPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const params = useParams();
   const campaignId = params.campaignId as string;
   const { selectedClientId } = useClientContext();

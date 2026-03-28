@@ -16,6 +16,8 @@ import { JournalistTable } from "@/components/press/journalist-table";
 import type { Journalist } from "@/types/database";
 
 export default function JournalistsPage() {
+  useEffect(() => { document.title = "PressForge — MentionLayer"; }, []);
+
   const [journalists, setJournalists] = useState<Journalist[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");

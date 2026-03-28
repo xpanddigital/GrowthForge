@@ -49,6 +49,8 @@ function renderStars(rating: number | null) {
 }
 
 export default function CompetitorsPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [loading, setLoading] = useState(true);

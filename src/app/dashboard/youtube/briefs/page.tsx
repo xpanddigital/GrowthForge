@@ -27,6 +27,8 @@ interface YouTubeTopic {
 }
 
 export default function VideoBriefsPage() {
+  useEffect(() => { document.title = "YouTube GEO — MentionLayer"; }, []);
+
   const { selectedClientId } = useClientContext();
   const [topics, setTopics] = useState<YouTubeTopic[]>([]);
   const [loading, setLoading] = useState(true);

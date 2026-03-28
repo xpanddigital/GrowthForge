@@ -34,6 +34,8 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: typeof
 };
 
 export default function CampaignsPage() {
+  useEffect(() => { document.title = "Review Engine — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);

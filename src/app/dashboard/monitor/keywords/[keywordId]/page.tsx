@@ -33,6 +33,8 @@ interface KeywordDetail {
 }
 
 export default function KeywordDetailPage() {
+  useEffect(() => { document.title = "AI Monitor — MentionLayer"; }, []);
+
   const params = useParams();
   const keywordId = params.keywordId as string;
   const { selectedClientId } = useClientContext();

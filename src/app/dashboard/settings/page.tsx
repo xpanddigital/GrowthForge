@@ -22,6 +22,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Agency } from "@/types/database";
 
 export default function SettingsPage() {
+  useEffect(() => { document.title = "Settings — MentionLayer"; }, []);
+
   const [agency, setAgency] = useState<Agency | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

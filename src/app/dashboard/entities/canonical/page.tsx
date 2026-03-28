@@ -59,6 +59,8 @@ function countWords(text: string): number {
 }
 
 export default function CanonicalPage() {
+  useEffect(() => { document.title = "Entity Sync — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const [canonical, setCanonical] = useState<CanonicalData | null>(null);
   const [loading, setLoading] = useState(true);

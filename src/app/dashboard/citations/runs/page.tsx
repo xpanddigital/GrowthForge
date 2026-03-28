@@ -224,6 +224,8 @@ function RunsTableSkeleton() {
 // ---------------------------------------------------------------------------
 
 export default function DiscoveryRunsPage() {
+  useEffect(() => { document.title = "Discovery Runs — MentionLayer"; }, []);
+
   const { selectedClientId, selectedClientName } = useClientContext();
   const supabase = createClient();
 

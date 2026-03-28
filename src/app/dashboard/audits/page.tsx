@@ -62,6 +62,8 @@ function formatDate(dateString: string): string {
 }
 
 export default function AuditsPage() {
+  useEffect(() => { document.title = "Audits — MentionLayer"; }, []);
+
   const router = useRouter();
   const { selectedClientId, selectedClientName } = useClientContext();
   const [audits, setAudits] = useState<Audit[]>([]);
