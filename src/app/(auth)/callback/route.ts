@@ -7,6 +7,7 @@ import { syncProspectToGHL } from "@/lib/ghl/sync";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
+  const type = searchParams.get("type");
   const next = searchParams.get("next") ?? "/dashboard";
 
   if (code) {
@@ -30,6 +31,22 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // Password recovery — redirect to reset page
+      if (type === "recovery" || searchParams.get("type") === "recovery") {
+        return NextResponse.redirect(`${origin}/reset-password`);
+      }
+
+      // Also check if this session was created via a recovery flow
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user?.recovery_sent_at) {
+        const recoverySentAt = new Date(session.user.recovery_sent_at).getTime();
+        const now = Date.now();
+        // If recovery was sent in the last 10 minutes, this is a password reset
+        if (now - recoverySentAt < 10 * 60 * 1000) {
+          return NextResponse.redirect(`${origin}/reset-password`);
+        }
+      }
+
       // Ensure user row exists in public.users table
       // This links the auth user to the correct agency
       const {
