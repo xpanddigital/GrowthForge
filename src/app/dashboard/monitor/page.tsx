@@ -189,6 +189,7 @@ export default function MonitorPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ clientId: selectedClientId, keywordIds }),
     });
+    setShowOnboarding(false);
     await loadData();
   };
 
