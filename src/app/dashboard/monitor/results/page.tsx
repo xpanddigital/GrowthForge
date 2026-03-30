@@ -30,7 +30,7 @@ interface MonitorResult {
   full_response: string;
   response_hash: string | null;
   tested_at: string;
-  prompt_text?: string;
+  prompt_text?: string | null;
 }
 
 const MODELS = [
@@ -181,8 +181,13 @@ export default function MonitorResultsPage() {
                     {result.brand_mentioned ? "Cited" : "Not Cited"}
                   </span>
                 </div>
+                {result.prompt_text && (
+                  <p className="text-xs text-foreground/70 truncate italic mb-0.5">
+                    &ldquo;{result.prompt_text}&rdquo;
+                  </p>
+                )}
                 <p className="text-xs text-muted-foreground truncate">
-                  {result.full_response?.substring(0, 120) || "(No response)"}...
+                  {result.full_response?.substring(0, 100) || "(No response)"}...
                 </p>
                 <p className="text-[10px] text-muted-foreground mt-1">
                   {new Date(result.tested_at).toLocaleDateString()} · Prominence: {result.prominence_score}

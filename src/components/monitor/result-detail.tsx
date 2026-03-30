@@ -28,6 +28,7 @@ interface ResultDetailProps {
     full_response: string;
     response_hash: string | null;
     tested_at: string;
+    prompt_text?: string | null;
   };
   clientName: string;
   onClose?: () => void;
@@ -61,6 +62,14 @@ export function ResultDetail({ result, onClose }: ResultDetailProps) {
           </button>
         )}
       </div>
+
+      {/* Prompt used */}
+      {result.prompt_text && (
+        <div className="px-4 py-3 border-b border-border">
+          <h4 className="text-xs font-medium text-muted-foreground mb-1">Prompt</h4>
+          <p className="text-sm text-foreground italic">&ldquo;{result.prompt_text}&rdquo;</p>
+        </div>
+      )}
 
       {/* Status badges */}
       <div className="flex flex-wrap gap-2 px-4 py-3 border-b border-border">

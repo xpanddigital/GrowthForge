@@ -251,8 +251,7 @@ export async function runTestBatch(
         }
       }
 
-      await supabase.from("monitor_results").insert({
-        prompt_id: promptEntry.promptId,
+      const insertPayload: Record<string, unknown> = {
         client_id: clientId,
         keyword_id: promptEntry.keywordId,
         ai_model: modelName,
@@ -271,8 +270,19 @@ export async function runTestBatch(
         response_hash: result.responseHash,
         sentiment: result.sentiment,
         prominence_score: result.prominenceScore,
+        prompt_text: promptEntry.promptText,
         tested_at: new Date().toISOString(),
-      });
+      };
+      // Only include prompt_id if we have one (custom prompts from monitor_prompts table)
+      if (promptEntry.promptId) {
+        insertPayload.prompt_id = promptEntry.promptId;
+      }
+      const { error: insertError } = await supabase
+        .from("monitor_results")
+        .insert(insertPayload);
+      if (insertError) {
+        console.error(`[monitor] Failed to save result for ${modelName}:`, insertError.message);
+      }
 
       acc.totalTests++;
       if (result.brandMentioned) acc.totalMentions++;
@@ -455,7 +465,7 @@ export async function finalizeMonitoringRun(
 
   const { data: prevSnapshot } = await supabase
     .from("monitor_snapshots")
-    .select("overall_som")
+    .select("overall_som, ai_visibility_score")
     .eq("client_id", clientId)
     .eq("period_type", "weekly")
     .order("snapshot_date", { ascending: false })
@@ -506,6 +516,11 @@ export async function finalizeMonitoringRun(
     som_delta: somDelta,
   });
 
+  const scoreDelta =
+    prevSnapshot?.ai_visibility_score != null
+      ? aiVisibilityScore - Number(prevSnapshot.ai_visibility_score)
+      : null;
+
   const today = new Date().toISOString().split("T")[0];
   const { data: snapshot } = await supabase
     .from("monitor_snapshots")
@@ -520,6 +535,7 @@ export async function finalizeMonitoringRun(
         keyword_breakdown: keywordBreakdown,
         competitor_som: competitorSom,
         som_delta: somDelta,
+        score_delta: scoreDelta,
         total_tests_run: acc.totalTests,
         total_brand_mentions: acc.totalMentions,
         total_brand_recommendations: acc.totalRecommendations,

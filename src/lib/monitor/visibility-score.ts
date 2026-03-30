@@ -27,6 +27,11 @@ const WEIGHTS = {
 
 const TOTAL_MODELS = 5; // chatgpt, perplexity, gemini, claude, google_ai_overview
 
+// Minimum number of brand mentions before recommendation rate is considered
+// statistically meaningful. Below this threshold, recommendation rate
+// contributes 0 to the score to prevent 2/2 = 100% inflation.
+const MIN_MENTIONS_FOR_RECOMMEND = 5;
+
 export function calculateAIVisibilityScore(
   snapshot: VisibilityScoreInput
 ): number {
@@ -34,8 +39,9 @@ export function calculateAIVisibilityScore(
   const somScore = snapshot.overall_som;
 
   // Recommendation component: of mentions, what % were recommendations?
+  // Only counts when we have enough mentions for statistical significance.
   const recommendScore =
-    snapshot.total_brand_mentions > 0
+    snapshot.total_brand_mentions >= MIN_MENTIONS_FOR_RECOMMEND
       ? (snapshot.total_brand_recommendations / snapshot.total_brand_mentions) *
         100
       : 0;
@@ -49,11 +55,13 @@ export function calculateAIVisibilityScore(
   ).length;
   const coverageScore = (modelsMentionedIn / TOTAL_MODELS) * 100;
 
-  // Trend component: positive delta = bonus, negative = penalty
-  // 50 is neutral, +delta pushes toward 100, -delta pushes toward 0
-  const trendScore = snapshot.som_delta
-    ? Math.min(100, Math.max(0, 50 + snapshot.som_delta * 2))
-    : 50;
+  // Trend component: positive delta = bonus, negative = penalty.
+  // null delta (first scan) → 0 (no momentum earned yet).
+  // Otherwise 50 is neutral, +delta pushes toward 100, -delta toward 0.
+  const trendScore =
+    snapshot.som_delta !== null
+      ? Math.min(100, Math.max(0, 50 + snapshot.som_delta * 2))
+      : 0;
 
   const raw =
     somScore * WEIGHTS.som +
