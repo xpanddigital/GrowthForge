@@ -143,7 +143,7 @@ function SignupForm() {
             <input
               id="fullName"
               type="text"
-              placeholder="Joel House"
+              placeholder="Full name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -199,7 +199,7 @@ function SignupForm() {
             <input
               id="password"
               type="password"
-              placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+              placeholder="Min 8 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
