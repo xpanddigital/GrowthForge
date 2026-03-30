@@ -134,14 +134,15 @@ export default function HomePage() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-8">
               <Link href="/" className="text-xl font-bold tracking-tight">
-                <span className="text-[#6C5CE7]">Growth</span>Forge
+                <span className="text-[#6C5CE7]">Mention</span>Layer
               </Link>
               <div className="hidden md:flex items-center gap-6">
                 <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
                 <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-                <a href="#geo-tracker" className="text-sm text-muted-foreground hover:text-foreground transition-colors">GEO Tracker</a>
-                <a href="#results" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Results</a>
                 <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+                <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
+                <Link href="/academy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Academy</Link>
+                <Link href="/services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Done for You</Link>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -751,17 +752,18 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-6">
               <Link href="/" className="text-lg font-bold tracking-tight">
-                <span className="text-[#6C5CE7]">Growth</span>Forge
+                <span className="text-[#6C5CE7]">Mention</span>Layer
               </Link>
               <span className="text-sm text-muted-foreground hidden sm:block">
-                The AI SEO Platform for Generative Engine Optimization
+                The AI Visibility Platform for Generative Engine Optimization
               </span>
             </div>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-              <a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a>
-              <a href="#geo-tracker" className="hover:text-foreground transition-colors">GEO Tracker</a>
-              <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
+              <Link href="/features" className="hover:text-foreground transition-colors">Features</Link>
+              <Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link>
+              <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
+              <Link href="/academy" className="hover:text-foreground transition-colors">Academy</Link>
+              <Link href="/services" className="hover:text-foreground transition-colors">Done for You</Link>
               <Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link>
             </div>
           </div>
