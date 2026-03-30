@@ -103,7 +103,7 @@ export async function POST(request: Request) {
         name: finalName,
         slug,
         owner_email: user.email!,
-        plan: "starter",
+        plan: "solo",
         credits_balance: 0, // Credits granted after plan selection + Stripe checkout
         max_clients: 5,
         max_keywords_per_client: 50,
