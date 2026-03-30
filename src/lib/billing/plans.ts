@@ -146,19 +146,21 @@ export const PUBLIC_PLANS: PlanId[] = [
 // CREDIT COSTS — What each operation costs
 // ============================================
 
+// Credit costs — calibrated so 1 credit ≈ $0.04 in API cost
+// Target: 70% gross margin across all plans
 export const CREDIT_COSTS = {
-  serp_scan: 1, // per keyword
-  thread_enrich: 2, // per thread
-  classification: 1, // per thread
-  response_generation: 10, // 3 variants per thread
-  ai_probe: 5, // per query
-  monitor_test: 3, // per model per prompt
-  full_audit: 50, // all 5 pillars
-  quick_audit: 20, // 3 pillars
-  citation_only_audit: 10, // citation + ai presence
-  press_ideation: 5, // per campaign idea batch
-  press_release: 15, // per press release generation
-  press_pitch: 3, // per pitch generation
+  serp_scan: 1, // per keyword (~$0.01 API cost)
+  thread_enrich: 1, // per thread (~$0.02 API cost)
+  classification: 1, // per thread (~$0.005 API cost)
+  response_generation: 2, // 3 variants per thread (~$0.08 API cost)
+  ai_probe: 2, // per query (~$0.03 API cost)
+  monitor_test: 1, // per model per prompt (~$0.02 API cost)
+  full_audit: 20, // all 5 pillars (~$0.75 API cost)
+  quick_audit: 8, // 3 pillars (~$0.30 API cost)
+  citation_only_audit: 4, // citation + ai presence (~$0.15 API cost)
+  press_ideation: 2, // per campaign idea batch (~$0.05 API cost)
+  press_release: 5, // per press release generation (~$0.15 API cost)
+  press_pitch: 1, // per pitch generation (~$0.03 API cost)
 } as const;
 
 export type CreditAction = keyof typeof CREDIT_COSTS;

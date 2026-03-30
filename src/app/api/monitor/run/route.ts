@@ -55,16 +55,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Client not found" }, { status: 404 });
     }
 
-    // Check credits (estimate: 4 models × 3 credits each = 12 credits minimum)
+    // Calculate monitor cost: count enabled keywords × 5 prompts × 5 models × cost per test
+    let monitorCost = 0;
     if (userData) {
-      const monitorCost = CREDIT_COSTS.monitor_test * 4;
+      const { count: kwCount } = await supabase
+        .from("monitor_keywords" as string)
+        .select("id", { count: "exact", head: true })
+        .eq("client_id", clientId)
+        .eq("is_enabled", true);
+
+      const numKeywords = kwCount || 5;
+      const promptsPerKeyword = 5;
+      const numModels = 5;
+      monitorCost = numKeywords * promptsPerKeyword * numModels * CREDIT_COSTS.monitor_test;
+
       try {
         await checkCredits(userData.agency_id, monitorCost);
       } catch (err) {
         if (err instanceof InsufficientCreditsError) {
           return NextResponse.json(
             {
-              error: `Insufficient credits. Monitor scan requires ~${monitorCost} credits. You have ${err.available}.`,
+              error: `Insufficient credits. Monitor scan requires ${monitorCost} credits (${numKeywords} keywords × 5 prompts × 5 models). You have ${err.available}.`,
               code: "INSUFFICIENT_CREDITS",
               required: monitorCost,
               available: err.available,
@@ -74,16 +85,13 @@ export async function POST(req: NextRequest) {
         }
         throw err;
       }
-    }
 
-    // Deduct credits upfront (before queuing the job)
-    if (userData) {
-      const totalCost = CREDIT_COSTS.monitor_test * 4;
+      // Deduct credits upfront (before queuing the job)
       await deductCredits({
         agencyId: userData.agency_id,
-        amount: totalCost,
+        amount: monitorCost,
         reason: "monitor_test",
-        description: `AI Monitor scan — ${totalCost} credits (4 models × ${CREDIT_COSTS.monitor_test} credits)`,
+        description: `AI Monitor scan — ${monitorCost} credits (${numKeywords} keywords × ${promptsPerKeyword} prompts × ${numModels} models)`,
       });
     }
 
