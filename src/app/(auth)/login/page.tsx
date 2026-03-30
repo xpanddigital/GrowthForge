@@ -2,16 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function LoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const isPostCheckout = searchParams.get("checkout") === "success";
+  const sessionId = searchParams.get("session_id");
+
   useEffect(() => { document.title = "Sign In — MentionLayer"; }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(isPostCheckout ? "" : "");
   const [mode, setMode] = useState<"password" | "magic">("password");
   const supabase = createClient();
   const router = useRouter();
@@ -36,7 +41,22 @@ export default function LoginPage() {
       } catch {
         // Non-blocking — proceed to dashboard even if this fails
       }
-      router.push("/dashboard");
+
+      // If coming back from Stripe checkout, verify and go to onboarding
+      if (isPostCheckout && sessionId) {
+        try {
+          await fetch("/api/billing/verify-checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ session_id: sessionId }),
+          });
+        } catch {
+          // Non-blocking
+        }
+        router.push("/dashboard/onboarding?checkout=success");
+      } else {
+        router.push("/dashboard");
+      }
     }
   }
 
@@ -63,6 +83,17 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="mx-auto w-full max-w-sm space-y-6 p-6">
+        {isPostCheckout && (
+          <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 text-center">
+            <p className="text-sm font-medium text-emerald-500">
+              🎉 Payment successful! Your 14-day trial is active.
+            </p>
+            <p className="mt-1 text-xs text-emerald-500/70">
+              Sign in to get started with your account.
+            </p>
+          </div>
+        )}
+
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold tracking-tight">
             <span className="text-primary">Mention</span>Layer
@@ -181,5 +212,19 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-sm text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
