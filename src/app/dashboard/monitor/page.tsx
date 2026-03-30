@@ -152,11 +152,27 @@ export default function MonitorPage() {
   }, [loadData]);
 
   const [scanStatus, setScanStatus] = useState<string | null>(null);
+  const [scanProgress, setScanProgress] = useState(0);
+  const [scanStartTime, setScanStartTime] = useState<number | null>(null);
+  const ESTIMATED_SCAN_SECONDS = 180; // 3 minutes estimate
+
+  // Progress bar timer
+  useEffect(() => {
+    if (!scanning || !scanStartTime) return;
+    const interval = setInterval(() => {
+      const elapsed = (Date.now() - scanStartTime) / 1000;
+      const progress = Math.min((elapsed / ESTIMATED_SCAN_SECONDS) * 100, 95);
+      setScanProgress(progress);
+    }, 500);
+    return () => clearInterval(interval);
+  }, [scanning, scanStartTime]);
 
   const handleRunScan = async () => {
-    if (!selectedClientId) return;
+    if (!selectedClientId || scanning) return;
     setScanning(true);
     setScanStatus(null);
+    setScanProgress(0);
+    setScanStartTime(Date.now());
     try {
       const res = await fetch("/api/monitor/run", {
         method: "POST",
@@ -167,18 +183,33 @@ export default function MonitorPage() {
       if (!res.ok) {
         console.error("[monitor] Scan failed:", data);
         setScanStatus(`Error: ${data.details || data.error || "Unknown error"}`);
+        setScanning(false);
+        setScanStartTime(null);
+        setScanProgress(0);
       } else {
-        setScanStatus("Scan queued — results will appear shortly.");
-        // Poll for results after a delay
-        setTimeout(() => loadData(), 15000);
-        setTimeout(() => loadData(), 30000);
-        setTimeout(() => loadData(), 60000);
+        setScanStatus("scanning");
+        // Poll for results — when we get a snapshot, scan is done
+        const pollInterval = setInterval(async () => {
+          await loadData();
+        }, 10000);
+        // Auto-stop polling after 5 minutes
+        setTimeout(() => {
+          clearInterval(pollInterval);
+          if (scanning) {
+            setScanning(false);
+            setScanStartTime(null);
+            setScanProgress(100);
+            setScanStatus("Scan complete — loading results.");
+            loadData();
+          }
+        }, 300000);
       }
     } catch (err) {
       console.error("[monitor] Scan request failed:", err);
       setScanStatus("Failed to reach server.");
-    } finally {
       setScanning(false);
+      setScanStartTime(null);
+      setScanProgress(0);
     }
   };
 
@@ -294,7 +325,30 @@ export default function MonitorPage() {
                 </div>
               ))}
             </div>
-            {scanStatus && (
+            {scanning && scanStatus === "scanning" && (
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-primary font-medium flex items-center gap-2">
+                    <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
+                    Scanning across 5 AI models...
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {Math.round(scanProgress)}%
+                  </span>
+                </div>
+                <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                    style={{ width: `${scanProgress}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Testing your brand against real prompts on ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.
+                  This typically takes 2–5 minutes. You can leave this page — results will be here when you return.
+                </p>
+              </div>
+            )}
+            {scanStatus && scanStatus !== "scanning" && (
               <div className={`mt-4 p-3 rounded-md text-sm ${
                 scanStatus.startsWith("Error") || scanStatus.startsWith("Failed")
                   ? "bg-red-500/10 text-red-400 border border-red-500/20"
@@ -303,7 +357,7 @@ export default function MonitorPage() {
                 {scanStatus}
               </div>
             )}
-            {!scanStatus && (
+            {!scanStatus && !scanning && (
               <p className="text-xs text-muted-foreground mt-4">
                 Click &quot;Run First Scan&quot; to test your brand across ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.
               </p>
@@ -391,7 +445,29 @@ export default function MonitorPage() {
         </button>
       </div>
 
-      {scanStatus && (
+      {scanning && scanStatus === "scanning" && (
+        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 space-y-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-primary font-medium flex items-center gap-2">
+              <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
+              Scanning across 5 AI models...
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {Math.round(scanProgress)}%
+            </span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+              style={{ width: `${scanProgress}%` }}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Typically takes 2–5 minutes. You can leave this page — results will be here when you return.
+          </p>
+        </div>
+      )}
+      {scanStatus && scanStatus !== "scanning" && (
         <div className={`p-3 rounded-md text-sm ${
           scanStatus.startsWith("Error") || scanStatus.startsWith("Failed")
             ? "bg-red-500/10 text-red-400 border border-red-500/20"
