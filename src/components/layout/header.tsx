@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ClientSelector } from "./client-selector";
 import { useSidebar } from "./sidebar";
-import { Bell, LogOut, Menu } from "lucide-react";
+import { Bell, LogOut, Menu, Coins } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const pageTitles: Record<string, string> = {
@@ -40,6 +41,36 @@ export function Header() {
   const router = useRouter();
   const supabase = createClient();
   const { setMobileOpen } = useSidebar();
+  const [credits, setCredits] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function fetchCredits() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: userData } = await supabase
+        .from("users")
+        .select("agency_id")
+        .eq("id", user.id)
+        .single();
+
+      if (!userData) return;
+
+      const { data: agency } = await supabase
+        .from("agencies")
+        .select("credits_balance")
+        .eq("id", userData.agency_id)
+        .single();
+
+      if (agency) setCredits(agency.credits_balance);
+    }
+
+    fetchCredits();
+
+    // Refresh credits every 30 seconds
+    const interval = setInterval(fetchCredits, 30000);
+    return () => clearInterval(interval);
+  }, [supabase]);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -60,6 +91,19 @@ export function Header() {
 
       <div className="flex items-center gap-2 md:gap-4">
         <ClientSelector />
+
+        {credits !== null && (
+          <div
+            className="flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs font-medium cursor-pointer hover:bg-accent"
+            onClick={() => router.push("/dashboard/settings")}
+            title="Credits remaining"
+          >
+            <Coins className="h-3.5 w-3.5 text-primary" />
+            <span className={credits < 100 ? "text-amber-500" : "text-foreground"}>
+              {credits.toLocaleString()}
+            </span>
+          </div>
+        )}
 
         <button className="relative rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-foreground">
           <Bell className="h-4 w-4" />
