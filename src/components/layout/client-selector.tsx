@@ -34,8 +34,26 @@ export function ClientSelector() {
       setLoading(false);
     }
     fetchClients();
+
+    // Re-fetch when dropdown opens (catches newly added clients)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_hasHydrated]);
+
+  // Refresh client list every time dropdown opens
+  useEffect(() => {
+    if (!open) return;
+    async function refreshClients() {
+      const { data } = await supabase
+        .from("clients")
+        .select("*")
+        .eq("is_active", true)
+        .order("name");
+
+      if (data) setClients(data);
+    }
+    refreshClients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (loading) {
     return (
