@@ -69,14 +69,12 @@ function SignupForm() {
     }
 
     if (data.user) {
-      // Sign in immediately so we have a session for the checkout call
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // Always use the server-side signup-checkout endpoint.
+      // It creates the agency + user row with service role (no RLS issues)
+      // and returns a Stripe checkout URL with 14-day trial.
+      const priceId = plan ? getPriceId(plan) : null;
 
-      if (signInError) {
-        // If email confirmation is required, use server-side checkout
+      if (priceId) {
         try {
           const checkoutRes = await fetch("/api/billing/signup-checkout", {
             method: "POST",
@@ -87,7 +85,7 @@ function SignupForm() {
               agency_name: agencyName || undefined,
               user_id: data.user.id,
               plan,
-              price_id: plan ? getPriceId(plan) : null,
+              price_id: priceId,
             }),
           });
 
@@ -95,64 +93,30 @@ function SignupForm() {
           if (checkoutResult.data?.url) {
             window.location.href = checkoutResult.data.url;
             return;
+          } else {
+            console.error("Checkout failed:", checkoutResult);
+            setMessage(checkoutResult.error || "Failed to create checkout session. Please try again.");
+            setIsError(true);
+            setLoading(false);
+            return;
           }
-        } catch {
-          // Fall through to message
-        }
-
-        setMessage("Account created! Check your email to confirm, then sign in to start your trial.");
-        setLoading(false);
-        return;
-      }
-
-      // Session available — create user row + redirect to Stripe
-      await fetch("/api/auth/ensure-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agency_name: agencyName || undefined }),
-      });
-
-      const priceId = plan ? getPriceId(plan) : null;
-      if (!priceId) {
-        window.location.href = "/dashboard/onboarding";
-        return;
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        window.location.href = "/dashboard/onboarding";
-        return;
-      }
-
-      try {
-        const checkoutRes = await fetch("/api/billing/checkout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({
-            price_id: priceId,
-            trial_period_days: 14,
-            success_url: `${window.location.origin}/dashboard/onboarding?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${window.location.origin}/signup?plan=${plan}`,
-          }),
-        });
-
-        const checkoutResult = await checkoutRes.json();
-        if (checkoutResult.data?.url) {
-          window.location.href = checkoutResult.data.url;
+        } catch (err) {
+          console.error("Checkout error:", err);
+          setMessage("Something went wrong. Please try again.");
+          setIsError(true);
+          setLoading(false);
           return;
         }
-      } catch {
-        // Fall back to onboarding
       }
 
+      // No price configured — sign in and go to onboarding
+      await supabase.auth.signInWithPassword({ email, password });
       window.location.href = "/dashboard/onboarding";
       return;
     }
 
-    setMessage("Account created! Check your email to confirm, then sign in to start your trial.");
+    setMessage("Something went wrong. Please try again.");
+    setIsError(true);
     setLoading(false);
   }
 
