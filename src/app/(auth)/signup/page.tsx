@@ -31,7 +31,6 @@ function SignupForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  const [usePassword, setUsePassword] = useState(true);
   const supabase = createClient();
 
   // Redirect to plan selection if no plan chosen
@@ -49,101 +48,111 @@ function SignupForm() {
     setMessage("");
     setIsError(false);
 
-    if (usePassword) {
-      // Password signup
-      const { data, error } = await supabase.auth.signUp({
+    // Password signup — create account, then redirect to Stripe
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          agency_name: agencyName || undefined,
+          selected_plan: plan,
+        },
+      },
+    });
+
+    if (error) {
+      setMessage(error.message);
+      setIsError(true);
+      setLoading(false);
+      return;
+    }
+
+    if (data.user) {
+      // Sign in immediately so we have a session for the checkout call
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          data: {
-            full_name: fullName,
-            agency_name: agencyName || undefined,
-          },
-        },
       });
 
-      if (error) {
-        setMessage(error.message);
-        setIsError(true);
-        setLoading(false);
-        return;
-      }
-
-      if (data.user) {
-        // Create agency + user row
-        await fetch("/api/auth/ensure-user", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            agency_name: agencyName || undefined,
-          }),
-        });
-
-        // Redirect to Stripe checkout with 14-day trial
-        const priceId = plan ? getPriceId(plan) : null;
-        if (!priceId) {
-          // Fallback for plans without a Stripe price configured
-          window.location.href = "/dashboard/onboarding";
-          return;
-        }
-
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          window.location.href = "/dashboard/onboarding";
-          return;
-        }
-
+      if (signInError) {
+        // If email confirmation is required, use server-side checkout
         try {
-          const checkoutRes = await fetch("/api/billing/checkout", {
+          const checkoutRes = await fetch("/api/billing/signup-checkout", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${session.access_token}`,
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              price_id: priceId,
-              trial_period_days: 14,
-              success_url: `${window.location.origin}/dashboard/onboarding?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-              cancel_url: `${window.location.origin}/signup?plan=${plan}`,
+              email,
+              full_name: fullName,
+              agency_name: agencyName || undefined,
+              user_id: data.user.id,
+              plan,
+              price_id: plan ? getPriceId(plan) : null,
             }),
           });
 
           const checkoutResult = await checkoutRes.json();
-
           if (checkoutResult.data?.url) {
             window.location.href = checkoutResult.data.url;
             return;
           }
         } catch {
-          // If checkout fails, fall back to onboarding
+          // Fall through to message
         }
 
+        setMessage("Account created! Check your email to confirm, then sign in to start your trial.");
+        setLoading(false);
+        return;
+      }
+
+      // Session available — create user row + redirect to Stripe
+      await fetch("/api/auth/ensure-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ agency_name: agencyName || undefined }),
+      });
+
+      const priceId = plan ? getPriceId(plan) : null;
+      if (!priceId) {
         window.location.href = "/dashboard/onboarding";
         return;
       }
 
-      setMessage("Check your email to verify your account.");
-    } else {
-      // Magic link signup
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/callback`,
-          data: {
-            full_name: fullName,
-            agency_name: agencyName || undefined,
-          },
-        },
-      });
-
-      if (error) {
-        setMessage(error.message);
-        setIsError(true);
-      } else {
-        setMessage("Check your email for the magic link!");
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.href = "/dashboard/onboarding";
+        return;
       }
+
+      try {
+        const checkoutRes = await fetch("/api/billing/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            price_id: priceId,
+            trial_period_days: 14,
+            success_url: `${window.location.origin}/dashboard/onboarding?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${window.location.origin}/signup?plan=${plan}`,
+          }),
+        });
+
+        const checkoutResult = await checkoutRes.json();
+        if (checkoutResult.data?.url) {
+          window.location.href = checkoutResult.data.url;
+          return;
+        }
+      } catch {
+        // Fall back to onboarding
+      }
+
+      window.location.href = "/dashboard/onboarding";
+      return;
     }
 
+    setMessage("Account created! Check your email to confirm, then sign in to start your trial.");
     setLoading(false);
   }
 
@@ -216,49 +225,33 @@ function SignupForm() {
             />
           </div>
 
-          {usePassword && (
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium leading-none"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required={usePassword}
-                minLength={8}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              />
-            </div>
-          )}
+          <div className="space-y-2">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium leading-none"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+          </div>
 
           <button
             type="submit"
             disabled={loading}
             className="inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {loading
-              ? usePassword
-                ? "Creating account..."
-                : "Sending magic link..."
-              : "Continue to payment"}
+            {loading ? "Creating account..." : "Continue to payment"}
           </button>
         </form>
-
-        <button
-          type="button"
-          onClick={() => setUsePassword(!usePassword)}
-          className="block w-full text-center text-sm text-muted-foreground hover:text-foreground"
-        >
-          {usePassword
-            ? "Use magic link instead"
-            : "Use password instead"}
-        </button>
 
         {message && (
           <p
