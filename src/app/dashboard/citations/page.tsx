@@ -24,7 +24,9 @@ import {
   SkipForward,
   CheckCircle2,
   XCircle,
+  BookOpen,
 } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +54,6 @@ import { IntentTag } from "@/components/shared/intent-tag";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { RelevanceBar } from "@/components/shared/relevance-bar";
 import type { Thread, Keyword, Response as GFResponse } from "@/types/database";
-import Link from "next/link";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -1144,7 +1145,7 @@ export default function CitationsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Citation Engine</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Citation Engine<Link href="/dashboard/academy/citation-engine" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Discover and respond to high-authority threads across Reddit, Quora,
             and Facebook Groups.
@@ -1164,7 +1165,7 @@ export default function CitationsPage() {
     <div className="space-y-4">
       {/* Page header */}
       <div>
-        <h2 className="text-lg font-semibold">Citation Engine</h2>
+        <h2 className="text-lg font-semibold flex items-center gap-2">Citation Engine<Link href="/dashboard/academy/citation-engine" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
         <p className="text-sm text-muted-foreground">
           Discover and respond to high-authority threads for{" "}
           <span className="font-medium text-foreground">

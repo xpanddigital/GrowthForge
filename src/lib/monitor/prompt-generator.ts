@@ -21,6 +21,7 @@ interface GeneratePromptsInput {
   brandBrief: string;
   competitors: string[];
   location?: string;
+  promptCount?: number; // Defaults to 5, configurable per plan
 }
 
 const SYSTEM_PROMPT = `You are a prompt variation generator for AI monitoring. Your job is to create realistic, diverse search queries that someone might type into an AI assistant when looking for products or services related to a keyword.
@@ -31,33 +32,42 @@ Rules:
 - No two prompts should start with the same word
 - Mix formality levels (casual, professional, specific, broad)
 - One prompt should reference a competitor by name (if competitors provided)
-- Include location naturally in ~3 out of 5 prompts (if location provided)
+- Include location naturally in about half the prompts (if location provided)
 - Return ONLY valid JSON — no explanation, no markdown`;
 
+const PROMPT_TYPES = [
+  { type: "recommendation", example: '"What are the best..." / "Can you recommend..."' },
+  { type: "comparison", example: '"Compare the top..." / "Which is better..."' },
+  { type: "how_to", example: '"How do I find a good..." / "What should I look for..."' },
+  { type: "cost", example: '"How much does..." / "Most affordable..."' },
+  { type: "review", example: '"Reviews of..." / "What do people say about..."' },
+];
+
 function buildUserPrompt(input: GeneratePromptsInput): string {
-  return `Generate exactly 5 prompt variations for monitoring this keyword across AI models.
+  const count = input.promptCount || 5;
+  const typesToUse = PROMPT_TYPES.slice(0, count);
+  const typeList = typesToUse
+    .map((t, i) => `${i + 1}. ${t.type} — ${t.example}`)
+    .join("\n");
+  const jsonExamples = typesToUse
+    .map((t) => `    { "text": "...", "type": "${t.type}" }`)
+    .join(",\n");
+
+  return `Generate exactly ${count} prompt variations for monitoring this keyword across AI models.
 
 KEYWORD: ${input.keyword}
 BRAND (do NOT mention in prompts): ${input.clientName}
 INDUSTRY CONTEXT: ${input.brandBrief.substring(0, 300)}
 ${input.competitors.length > 0 ? `COMPETITORS (reference ONE in one prompt): ${input.competitors.join(", ")}` : ""}
-${input.location ? `LOCATION (include naturally in ~3 prompts): ${input.location}` : ""}
+${input.location ? `LOCATION (include naturally in about half the prompts): ${input.location}` : ""}
 
 Generate prompts across these types:
-1. recommendation — "What are the best..." / "Can you recommend..."
-2. comparison — "Compare the top..." / "Which is better..."
-3. how_to — "How do I find a good..." / "What should I look for..."
-4. cost — "How much does..." / "Most affordable..."
-5. review — "Reviews of..." / "What do people say about..."
+${typeList}
 
 Return JSON:
 {
   "prompts": [
-    { "text": "the full prompt query", "type": "recommendation" },
-    { "text": "...", "type": "comparison" },
-    { "text": "...", "type": "how_to" },
-    { "text": "...", "type": "cost" },
-    { "text": "...", "type": "review" }
+${jsonExamples}
   ]
 }`;
 }

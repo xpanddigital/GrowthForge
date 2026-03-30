@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { generatePromptVariations } from "@/lib/monitor/prompt-generator";
+import { PLANS } from "@/lib/billing/plans";
+import type { PlanId } from "@/lib/billing/plans";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,26 @@ export async function POST(req: NextRequest) {
       { error: "clientId and keywordIds are required" },
       { status: 400 }
     );
+  }
+
+  // Get agency plan for promptsPerKeyword config
+  const { data: userData } = await supabase
+    .from("users")
+    .select("agency_id")
+    .eq("id", user.id)
+    .single();
+
+  let promptsPerKeyword = 5; // default
+  if (userData) {
+    const { data: agency } = await supabase
+      .from("agencies")
+      .select("plan")
+      .eq("id", userData.agency_id)
+      .single();
+    if (agency) {
+      const planConfig = PLANS[agency.plan as PlanId];
+      promptsPerKeyword = planConfig?.promptsPerKeyword || 5;
+    }
   }
 
   // Load client for context
@@ -78,6 +100,7 @@ export async function POST(req: NextRequest) {
       competitors: (competitors || []).map(
         (c: { competitor_name: string }) => c.competitor_name
       ),
+      promptCount: promptsPerKeyword,
     });
 
     if (existing) {
