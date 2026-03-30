@@ -126,7 +126,7 @@ export default function OnboardingPage() {
     <div className="mx-auto max-w-2xl py-8">
       <div className="mb-8 text-center">
         <h1 className="text-2xl font-bold tracking-tight">
-          Welcome to <span className="text-primary">Growth</span>Forge
+          Welcome to <span className="text-primary">Mention</span>Layer
         </h1>
         <p className="mt-2 text-muted-foreground">
           Let&apos;s set up your first client in 3 quick steps.

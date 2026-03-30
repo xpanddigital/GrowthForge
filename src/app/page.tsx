@@ -191,7 +191,7 @@ export default function HomePage() {
 
               <p className="animate-fade-up-delay-2 text-lg sm:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl">
                 ChatGPT, Perplexity, and Gemini are replacing Google for millions of users.
-                GrowthForge gets your brand into the answers — through forum citations,
+                MentionLayer gets your brand into the answers — through forum citations,
                 press coverage, reviews, and real-time AI visibility tracking.
               </p>
 
@@ -291,7 +291,7 @@ export default function HomePage() {
             <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-6">
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full bg-green-500" />
-                <span className="text-sm font-medium text-green-400">With GrowthForge</span>
+                <span className="text-sm font-medium text-green-400">With MentionLayer</span>
               </div>
               <div className="space-y-3 text-sm">
                 <div className="rounded-lg bg-white/5 p-3">
@@ -318,7 +318,7 @@ export default function HomePage() {
               Five Pillars of AI Visibility
             </h2>
             <p className="text-lg text-muted-foreground">
-              GrowthForge attacks AI visibility from every angle that generative models use
+              MentionLayer attacks AI visibility from every angle that generative models use
               to form recommendations. Each pillar reinforces the others.
             </p>
           </div>
@@ -491,7 +491,7 @@ export default function HomePage() {
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
                 Stop guessing whether your AI visibility strategy is working.
-                GrowthForge continuously tests your brand against real prompts across
+                MentionLayer continuously tests your brand against real prompts across
                 every major AI model — and shows you exactly where you stand.
               </p>
 
@@ -525,7 +525,7 @@ export default function HomePage() {
               Three Steps to AI Visibility
             </h2>
             <p className="text-lg text-muted-foreground">
-              GrowthForge handles the complexity. You see the results.
+              MentionLayer handles the complexity. You see the results.
             </p>
           </div>
 
@@ -575,7 +575,7 @@ export default function HomePage() {
               From Invisible to Recommended
             </h2>
             <p className="text-lg text-muted-foreground">
-              Agencies use GrowthForge to take their clients from zero AI visibility
+              Agencies use MentionLayer to take their clients from zero AI visibility
               to being the brand AI models recommend.
             </p>
           </div>
@@ -767,7 +767,7 @@ export default function HomePage() {
           </div>
           <div className="mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} GrowthForge. Built by Xpand Digital (Miji Australia Pty Ltd).
+              &copy; {new Date().getFullYear()} MentionLayer. Built by Xpand Digital (Miji Australia Pty Ltd).
             </p>
             <p className="text-xs text-muted-foreground">
               Generative Engine Optimization for brands that want to be recommended by AI.
