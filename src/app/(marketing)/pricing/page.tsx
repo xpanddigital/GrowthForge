@@ -10,7 +10,7 @@ import {
 export const metadata: Metadata = {
   title: "Pricing | MentionLayer — AI Visibility Platform Plans",
   description:
-    "MentionLayer pricing: Solo ($97/mo), Growth ($297/mo), Agency ($397/mo), and Agency Pro ($997/mo). All plans include every feature. Start free.",
+    "MentionLayer pricing: Solo ($97/mo), Growth ($297/mo), Agency Light ($497/mo), and Agency Pro ($997/mo). AI visibility for agencies. 14-day free trial.",
 };
 
 const checkIcon = (
