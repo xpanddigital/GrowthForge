@@ -31,6 +31,7 @@ import {
   Trophy,
   Mail,
   Sparkles,
+  GraduationCap,
 } from "lucide-react";
 import { useState, useEffect, createContext, useContext } from "react";
 import { OnboardingChecklist } from "@/components/onboarding/onboarding-checklist";
@@ -166,6 +167,7 @@ const navigation: NavItem[] = [
   },
   { name: "Audits", href: "/dashboard/audits", icon: ClipboardCheck },
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
+  { name: "Academy", href: "/dashboard/academy", icon: GraduationCap },
   {
     name: "Reports",
     href: "/dashboard/reports",

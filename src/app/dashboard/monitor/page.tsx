@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Radar } from "lucide-react";
+import { Radar, BookOpen } from "lucide-react";
+import Link from "next/link";
 import { useClientContext } from "@/hooks/use-client-context";
 import { EmptyState } from "@/components/shared/empty-state";
 import { VisibilityScoreCard } from "@/components/monitor/visibility-score-card";
@@ -20,6 +21,7 @@ interface Snapshot {
   som_by_model: Record<string, number>;
   model_breakdown: Record<string, { mentioned: number; total: number; som: number }>;
   som_delta: number | null;
+  score_delta: number | null;
   total_tests: number;
   total_mentions: number;
   competitor_som: Record<string, number>;
@@ -247,7 +249,7 @@ export default function MonitorPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">AI Monitor</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">AI Monitor<Link href="/dashboard/academy/ai-monitor-mastery" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Select a client to view AI visibility monitoring.
           </p>
@@ -267,7 +269,7 @@ export default function MonitorPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">AI Monitor</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">AI Monitor<Link href="/dashboard/academy/ai-monitor-mastery" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">Loading monitoring data...</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -286,7 +288,7 @@ export default function MonitorPage() {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">AI Monitor</h2>
+              <h2 className="text-lg font-semibold flex items-center gap-2">AI Monitor<Link href="/dashboard/academy/ai-monitor-mastery" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
               <p className="text-sm text-muted-foreground">
                 {selectedClientName}&apos;s AI monitoring is set up — run your first scan.
               </p>
@@ -391,7 +393,7 @@ export default function MonitorPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold">AI Monitor</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">AI Monitor<Link href="/dashboard/academy/ai-monitor-mastery" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
             <p className="text-sm text-muted-foreground">
               Track {selectedClientName}&apos;s visibility across AI models.
             </p>
@@ -431,7 +433,7 @@ export default function MonitorPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">AI Monitor</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">AI Monitor<Link href="/dashboard/academy/ai-monitor-mastery" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             {selectedClientName}&apos;s AI visibility across 5 models
           </p>
@@ -482,7 +484,7 @@ export default function MonitorPage() {
         <VisibilityScoreCard
           score={snapshot.ai_visibility_score}
           somPercent={snapshot.overall_som}
-          scoreDelta={snapshot.som_delta}
+          scoreDelta={snapshot.score_delta ?? null}
           somDelta={snapshot.som_delta}
         />
         <div className="lg:col-span-2">

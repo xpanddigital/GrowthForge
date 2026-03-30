@@ -9,6 +9,7 @@ import {
   Globe,
   AlertTriangle,
   Plus,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -164,7 +165,7 @@ export default function ReviewsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Review Engine</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Review Engine<Link href="/dashboard/academy/review-engine" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Monitor and manage reviews across key platforms.
           </p>
@@ -184,7 +185,7 @@ export default function ReviewsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Review Engine</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Review Engine<Link href="/dashboard/academy/review-engine" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">Loading review data...</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -214,7 +215,7 @@ export default function ReviewsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Review Engine</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Review Engine<Link href="/dashboard/academy/review-engine" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             {selectedClientName}&apos;s review presence and reputation
           </p>

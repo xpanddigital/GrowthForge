@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ClipboardCheck, Plus, Eye, Loader2 } from "lucide-react";
+import { ClipboardCheck, Plus, Eye, Loader2, BookOpen } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -131,7 +132,7 @@ export default function AuditsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">AI Visibility Audits</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">AI Visibility Audits<Link href="/dashboard/academy/geo-foundations/your-first-audit" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Run comprehensive audits to measure AI visibility across 5 pillars.
           </p>
@@ -150,7 +151,7 @@ export default function AuditsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">AI Visibility Audits</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">AI Visibility Audits<Link href="/dashboard/academy/geo-foundations/your-first-audit" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Audit history for {selectedClientName}
           </p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Network, RefreshCw, Zap, Search, CheckCircle2, AlertTriangle, ExternalLink } from "lucide-react";
+import { Network, RefreshCw, Zap, Search, CheckCircle2, AlertTriangle, ExternalLink, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { useClientContext } from "@/hooks/use-client-context";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -127,7 +127,7 @@ export default function EntitiesPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Entity Sync</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Entity Sync<Link href="/dashboard/academy/entity-sync" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Select a client to manage entity consistency.
           </p>
@@ -147,7 +147,7 @@ export default function EntitiesPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Entity Sync</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Entity Sync<Link href="/dashboard/academy/entity-sync" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">Loading entity data...</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -164,7 +164,7 @@ export default function EntitiesPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Entity Sync</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Entity Sync<Link href="/dashboard/academy/entity-sync" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Ensure {selectedClientName}&apos;s brand consistency across platforms.
           </p>
@@ -220,7 +220,7 @@ export default function EntitiesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">Entity Sync</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">Entity Sync<Link href="/dashboard/academy/entity-sync" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             {selectedClientName}&apos;s brand consistency across platforms
           </p>

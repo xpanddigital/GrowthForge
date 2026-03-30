@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Newspaper } from "lucide-react";
+import { Plus, Newspaper, BookOpen } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useClientContext } from "@/hooks/use-client-context";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -101,7 +102,7 @@ export default function PressPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">PressForge</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">PressForge<Link href="/dashboard/academy/pressforge" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Manage digital PR campaigns and press distribution.
           </p>
@@ -121,7 +122,7 @@ export default function PressPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold">PressForge</h2>
+          <h2 className="text-lg font-semibold flex items-center gap-2">PressForge<Link href="/dashboard/academy/pressforge" className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-primary transition-colors"><BookOpen className="h-3 w-3" />Learn</Link></h2>
           <p className="text-sm text-muted-foreground">
             Manage digital PR campaigns and press distribution.
           </p>
