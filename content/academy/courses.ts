@@ -105,7 +105,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 8,
       },
     ],
-    available: false,
+    available: true,
   },
   {
     slug: "citation-engine",
@@ -151,7 +151,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 8,
       },
     ],
-    available: false,
+    available: true,
   },
   {
     slug: "entity-sync",
@@ -197,7 +197,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 6,
       },
     ],
-    available: false,
+    available: true,
   },
   {
     slug: "pressforge",
@@ -243,7 +243,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 7,
       },
     ],
-    available: false,
+    available: true,
   },
   {
     slug: "review-engine",
@@ -289,7 +289,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 7,
       },
     ],
-    available: false,
+    available: true,
   },
   {
     slug: "selling-geo",
@@ -334,7 +334,7 @@ export const courses: AcademyCourse[] = [
         estimatedMinutes: 7,
       },
     ],
-    available: false,
+    available: true,
   },
 ];
 

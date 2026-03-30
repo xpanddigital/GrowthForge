@@ -1,0 +1,90 @@
+# Schema Markup for AI Crawlers
+
+Schema markup is structured data on your website that tells search engines and AI models exactly what your business is, what you offer, and how to categorize you. It's one of the most underused GEO tactics — and one of the easiest to implement.
+
+## What Structured Data Is
+
+HTML tells browsers how to display content. Schema markup (JSON-LD format) tells machines how to understand it. When you add schema to your website, you're providing explicit, structured information that AI models can parse without guessing.
+
+Without schema, an AI model has to read your website and infer that you're a software company based in Sydney that sells CRM tools. With schema, you tell it directly — no inference needed.
+
+## The Schema Types That Matter for AI
+
+### Organization Schema (Essential)
+This is the minimum every business needs. It tells AI models:
+- Your official name
+- Your description (use your canonical)
+- Your logo URL
+- Your founding date
+- Your location
+- Your social media profiles
+- Your contact information
+
+This is the foundational structured data that all other schema builds on.
+
+### Product Schema
+If you sell products or services with specific features and pricing, Product schema makes those details machine-readable. AI models can then accurately describe what you offer when recommending you.
+
+### FAQ Schema
+FAQ pages with schema markup are frequently cited by AI models. When your FAQ answers a question that matches a user's AI prompt, your content is more likely to be pulled in as a source.
+
+### BreadcrumbList Schema
+This helps AI models understand your site structure and navigate to relevant pages. It's a supporting signal rather than a primary one.
+
+### LocalBusiness Schema
+For businesses with physical locations, this extends Organization schema with address, hours, service areas, and geographic details.
+
+<Callout type="info">
+FAQ schema is a sleeper hit for GEO. If your website has FAQ pages that answer the same buying-intent questions people ask AI models, adding FAQ schema dramatically increases the chances those answers get cited.
+</Callout>
+
+## How MentionLayer Generates Schema
+
+Entity Sync analyzes your website and brand data, then generates ready-to-install schema markup:
+
+1. **Scan:** MentionLayer checks your website for existing schema markup
+2. **Gap analysis:** Identifies which schema types are missing
+3. **Generate:** Creates JSON-LD code for each recommended schema type, populated with your brand data
+4. **Review:** You verify the generated schema for accuracy
+5. **Export:** Copy the JSON-LD code for your developer to install
+
+The generated code uses your canonical description, official URLs, and verified business details to ensure accuracy.
+
+## Installing Schema on Your Website
+
+Schema markup goes in the `<head>` section of your HTML pages or in a `<script type="application/ld+json">` tag. How you install it depends on your website platform:
+
+- **WordPress:** Use a plugin like Yoast SEO or RankMath — paste the JSON-LD into the schema section
+- **Shopify:** Add to theme.liquid or use a schema app
+- **Custom sites:** Add the `<script>` tag directly to your template
+- **Next.js/React:** Add as a `<script>` tag in your layout component
+
+MentionLayer generates the code — you or your developer handles the installation. It's typically a 15-minute task.
+
+## Verifying Your Schema
+
+After installation, verify it works:
+
+1. Run your URL through Google's Rich Results Test (search.google.com/test/rich-results)
+2. Check for errors or warnings
+3. Verify all fields are populated correctly
+4. Re-run the Entity Sync scan in MentionLayer to confirm detection
+
+## What Schema Doesn't Do
+
+Schema is a supporting signal, not a magic bullet. It won't:
+- Make AI models recommend you if you have no other signals
+- Override negative reviews or poor citations
+- Compensate for entity inconsistency across platforms
+
+Think of schema as making your entity information easy to read. It amplifies your other signals — it doesn't replace them.
+
+## In MentionLayer
+
+Entity Sync includes a schema audit that detects existing markup, identifies gaps, and generates ready-to-install JSON-LD code for your website.
+
+<ModuleLink module="entities" label="Check your schema markup" />
+
+<KeyTakeaway>
+Schema markup gives AI models structured, explicit information about your brand instead of making them guess. Organization schema is essential, FAQ schema is high-impact for GEO, and MentionLayer generates the code for you. Installation typically takes 15 minutes.
+</KeyTakeaway>

@@ -1,0 +1,91 @@
+# Setting Up Keywords for Monitoring
+
+The keywords you choose for AI monitoring determine what you measure. Get them right, and your SOM score reflects reality. Get them wrong, and you're tracking noise.
+
+## What Makes a Good Monitoring Keyword
+
+Not all keywords belong in your AI Monitor. The best monitoring keywords share three traits:
+
+### 1. Buying Intent
+You want keywords that represent someone actively looking for a solution — the kind of query where an AI recommendation leads to a purchase or signup.
+
+**Good:** "best CRM for small agencies," "music licensing services for indie artists"
+**Bad:** "what is a CRM," "history of music licensing"
+
+The first set reflects someone ready to buy. The second is informational — even if AI mentions your brand, it's unlikely to convert.
+
+### 2. Category-Level Terms
+Monitor keywords should represent your category, not just your brand name. You already know AI models mention you when someone asks about you by name. The question is: do they mention you when someone asks about the *category*?
+
+**Good:** "best project management tools," "affordable web hosting"
+**Bad:** "Asana features," "GoDaddy pricing"
+
+### 3. Competitor Comparison Queries
+These are gold for monitoring because they're exactly the context where AI models decide between brands:
+
+**Good:** "Notion vs Asana," "alternatives to Mailchimp," "HubSpot competitors"
+
+<Callout type="tip">
+Aim for 10-20 keywords per client. Fewer than 10 and your SOM sample is too small to be meaningful. More than 20 and you're diluting focus and spending unnecessary credits.
+</Callout>
+
+## How MentionLayer Generates Prompt Variations
+
+Here's something most people miss: AI models respond differently to different phrasings of the same question. Ask ChatGPT "best email marketing tools" and you might get a different brand list than "what email marketing platform should I use?"
+
+MentionLayer solves this by generating **5 prompt variations per keyword**, each with a different phrasing style:
+
+1. **Direct question:** "What are the best {keyword}?"
+2. **Recommendation request:** "Can you recommend a good {keyword}?"
+3. **Comparison format:** "Compare the top {keyword} options"
+4. **Problem-solution:** "I need help with {keyword} — what are my options?"
+5. **Alternative seeking:** "What are some alternatives for {keyword}?"
+
+This means 10 keywords generate 50 unique prompts, tested across multiple AI models. That's a statistically meaningful sample for your SOM calculation.
+
+## Adding Keywords
+
+To add keywords to AI Monitor:
+
+1. Navigate to **AI Monitor > Keywords**
+2. Click **Add Keyword**
+3. Enter the keyword phrase
+4. MentionLayer auto-generates 5 prompt variations — review and edit if needed
+5. Choose which AI models to test against (default: all)
+6. Save
+
+You can also bulk-import keywords from a CSV or pull from your existing keyword list on the client's profile.
+
+## Recommended Keyword Categories
+
+For most businesses, build your keyword list across these categories:
+
+| Category | Examples | Why |
+|----------|---------|-----|
+| Core category terms | "best {category} tools" | The broadest measure of visibility |
+| Use-case specific | "best {tool} for {use case}" | Tests visibility in specific contexts |
+| Competitor alternatives | "alternatives to {competitor}" | Where brand switching happens |
+| Problem-oriented | "how to solve {problem}" | Buying-intent from pain points |
+| Industry-specific | "{category} for {industry}" | Tests niche visibility |
+
+## When to Add or Remove Keywords
+
+**Add keywords when:**
+- You launch a new product or service line
+- You discover a new competitor appearing in AI results
+- Client feedback reveals new buying-intent phrases their customers use
+
+**Remove keywords when:**
+- A keyword consistently returns irrelevant results (AI models interpret it differently than intended)
+- You've stopped offering a service that keyword relates to
+- The keyword is too broad to produce actionable data
+
+## In MentionLayer
+
+The keyword management interface is built into the AI Monitor module. You can add, edit, review prompt variations, and see per-keyword SOM performance all in one place.
+
+<ModuleLink module="monitor" label="Set up your monitoring keywords" />
+
+<KeyTakeaway>
+Choose 10-20 buying-intent keywords that represent your category, not your brand name. MentionLayer generates 5 prompt variations per keyword to account for how differently AI models respond to phrasing. Review and refine your keyword list monthly.
+</KeyTakeaway>

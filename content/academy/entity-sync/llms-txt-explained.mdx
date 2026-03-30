@@ -1,0 +1,116 @@
+# llms.txt Explained
+
+There's a new file joining the ranks of `robots.txt` and `sitemap.xml` — and it might become the most important file on your website for AI visibility. It's called `llms.txt`, and it's designed specifically for AI crawlers.
+
+## What llms.txt Is
+
+Just as `robots.txt` tells search engine crawlers which pages to index, `llms.txt` tells AI models how to understand your brand. It's a machine-readable file placed at the root of your website (`yoursite.com/llms.txt`) that provides structured information specifically for large language models.
+
+The file contains:
+- Your canonical brand description
+- Key products and services
+- Target audience
+- Differentiators
+- Authoritative links (press, reviews, documentation)
+- Structured FAQs
+- Contact and location information
+
+It's essentially a cheat sheet for AI models — a single, authoritative source they can reference when building an understanding of your brand.
+
+## Why It Matters
+
+AI models crawling your website have to piece together who you are from various pages — your homepage, about page, product pages, blog, etc. This is slow, error-prone, and the model might miss important context or emphasis.
+
+`llms.txt` solves this by providing a single, structured document that says: "Here's everything you need to know about this brand, organized exactly how you need it."
+
+Early evidence suggests that AI models (particularly those using real-time web crawling like Perplexity) reference `llms.txt` when it exists, treating it as an authoritative brand description.
+
+<Callout type="info">
+The llms.txt standard is still emerging and not yet universally adopted. But like schema markup before it, early adopters gain a head start. Adding it today costs nothing and positions you ahead of competitors who haven't heard of it.
+</Callout>
+
+## The llms.txt Format
+
+The file follows a simple, readable structure:
+
+```
+# Brand Name
+
+> One-sentence description of what the brand does.
+
+## About
+Detailed description matching your canonical brand identity.
+
+## Products/Services
+- Product 1: Description
+- Product 2: Description
+
+## Target Audience
+Who this brand serves and what problems it solves.
+
+## Key Differentiators
+What makes this brand different from competitors.
+
+## Links
+- Website: https://example.com
+- Documentation: https://docs.example.com
+- Press Kit: https://example.com/press
+
+## FAQ
+- Q: Common question 1?
+  A: Answer 1
+- Q: Common question 2?
+  A: Answer 2
+```
+
+The format is designed to be both human-readable (it's just markdown) and machine-parseable. AI models can extract structured information quickly and reliably.
+
+## How MentionLayer Generates It
+
+Entity Sync generates your `llms.txt` file from your existing brand data:
+
+1. Pulls your canonical description
+2. Extracts product/service information from your brand brief
+3. Includes your target audience and differentiators
+4. Adds authoritative links (website, social profiles, press mentions)
+5. Generates relevant FAQs based on your keyword data
+
+The generated file is ready to deploy — you just need to place it at your website's root.
+
+## Deploying llms.txt
+
+Place the file at `yoursite.com/llms.txt` — the same way you'd deploy `robots.txt`. How you do this depends on your platform:
+
+- **Static hosting / Custom site:** Upload the file to your public directory
+- **WordPress:** Upload to the root of your WordPress installation, or use a plugin
+- **Vercel/Netlify:** Add the file to your `public/` directory
+- **Shopify:** May require a custom route or redirect
+
+After deployment, verify it's accessible by visiting the URL directly in your browser.
+
+## Keeping It Updated
+
+Unlike `robots.txt` (which rarely changes), `llms.txt` should be updated when your brand information changes:
+
+- New product launch → add to Products/Services
+- Rebranding → update the canonical description
+- New FAQ questions emerging from AI Monitor → add to FAQ section
+- New press coverage → add to Links section
+
+MentionLayer flags when your `llms.txt` is out of sync with your canonical brand data and regenerates it for you.
+
+## The Bigger Picture
+
+`llms.txt` is one piece of a broader trend: the web is being restructured for AI consumption. Schema markup, Knowledge Panels, and now `llms.txt` all serve the same purpose — making it easy for machines to understand who you are.
+
+Brands that invest in machine-readable identity today will have a structural advantage as AI models become the primary way people discover and evaluate businesses.
+
+## In MentionLayer
+
+Entity Sync generates and manages your `llms.txt` file alongside your canonical description and schema markup.
+
+<ModuleLink module="entities" label="Generate your llms.txt file" />
+
+<KeyTakeaway>
+llms.txt is a machine-readable file that gives AI models a structured understanding of your brand. MentionLayer generates it from your brand data. Deploy it at your website root alongside robots.txt — it costs nothing and positions you ahead of competitors.
+</KeyTakeaway>

@@ -1,0 +1,99 @@
+# Thread Discovery Explained
+
+Before you can seed a citation, you need to find the right threads. Not every Reddit post or Quora question is worth responding to — discovery is about surfacing the ones that will actually move your AI visibility.
+
+## Two Discovery Methods
+
+MentionLayer uses two complementary methods to find citation-worthy threads:
+
+### 1. SERP Scanning
+This is the primary method. MentionLayer searches Google for your keywords and collects Reddit, Quora, and Facebook Group threads that appear in the results.
+
+Why SERP scanning works: if a thread ranks on Google page 1 for a buying-intent keyword, it's almost certainly being referenced by AI models that pull from Google's index (Perplexity, Gemini, Google AI Overviews).
+
+For each keyword, MentionLayer runs multiple search variations:
+- `site:reddit.com {keyword}`
+- `{keyword} reddit`
+- `site:quora.com {keyword}`
+- `{keyword} facebook group`
+
+This catches threads that rank for your keyword across all three platforms.
+
+### 2. AI Probing
+This is the secret weapon. MentionLayer sends buying-intent prompts to AI models (primarily Perplexity, which returns source URLs) and extracts the threads being cited.
+
+This finds threads that SERP scanning might miss — threads that don't rank highly in Google but are being cited by AI models through other paths.
+
+Together, SERP scanning and AI probing give you comprehensive coverage of threads that matter for AI visibility.
+
+<Callout type="tip">
+AI probing is especially valuable for finding threads cited by Perplexity, which sometimes references pages that aren't in Google's top 10 but are relevant to the query context.
+</Callout>
+
+## The Opportunity Score
+
+Every discovered thread gets an opportunity score from 0-100, calculated from four signals:
+
+### Relevance (35% weight)
+How closely does this thread relate to your brand and keywords? A thread titled "Best CRM for small agencies" is highly relevant if you sell a CRM. A thread about "CRM industry news" is less relevant even if it mentions CRMs.
+
+MentionLayer's AI reads the thread title, body, and top comments to assess relevance against your brand brief.
+
+### Google Authority (25% weight)
+Where does this thread rank in Google? Position 1 = maximum authority. Position 50 = minimal. Threads in the top 5 are cited most frequently by AI models.
+
+### Recency (20% weight)
+When was the thread posted? Recent threads are more valuable:
+- Under 7 days: 100 points
+- Under 30 days: 80 points
+- Under 90 days: 50 points
+- Under 1 year: 30 points
+- Older: 10 points
+
+Older threads can still be valuable if they rank well and are still active, but fresh threads give you the biggest window of opportunity.
+
+### Engagement (20% weight)
+How active is the thread? Comment count is the primary signal:
+- 100+ comments: 100 points
+- 20-100 comments: 75 points
+- 5-20 comments: 50 points
+- Under 5 comments: 20 points
+
+High-engagement threads are both more visible to AI models and more likely to have your response seen and upvoted by real users.
+
+## Automatic Thread Routing
+
+Based on the opportunity score, threads are automatically routed:
+
+| Score | Status | Action |
+|-------|--------|--------|
+| 70-100 | Queued | High-priority — ready for response generation |
+| 40-69 | Classified | Review manually — may be worth targeting |
+| 0-39 | Auto-skipped | Low opportunity — not worth the effort |
+
+You can always override the automatic routing. A thread scored at 35 might be perfect for your specific niche — trust your judgment.
+
+## Deduplication
+
+MentionLayer automatically deduplicates threads. If the same Reddit post is discovered through both SERP scanning and AI probing, it appears once in your queue with both discovery sources noted.
+
+Deduplication uses a content hash of the normalized title and URL, so the same thread won't clutter your queue even if it's found multiple times across different keywords.
+
+## Discovery Scheduling
+
+Discovery runs can be triggered two ways:
+
+- **Automatic:** Scheduled to run twice per week (Tuesday and Friday mornings by default). This keeps your thread queue fresh without manual intervention.
+- **Manual:** Click "Run Scan" in the Citation Engine to trigger an immediate discovery run for the current client.
+
+Each run processes all active keywords for the selected client and typically takes 5-15 minutes depending on keyword count.
+
+## In MentionLayer
+
+The thread queue in Citation Engine shows all discovered threads with their opportunity scores, platforms, and status. Filter by score, platform, intent, or date to find your best targets.
+
+<ModuleLink module="citations" label="View discovered threads" />
+
+<KeyTakeaway>
+Thread discovery combines SERP scanning and AI probing to find the threads that matter. The opportunity score (0-100) combines relevance, Google authority, recency, and engagement to rank targets. Focus your effort on threads scoring 70+ for the highest impact.
+</KeyTakeaway>

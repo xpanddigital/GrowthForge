@@ -1,0 +1,112 @@
+# Directory Audit Walkthrough
+
+Your brand exists on more platforms than you think — and many of those listings are outdated, incomplete, or inconsistent. The directory audit finds every platform where your brand appears and scores how well they match your canonical identity.
+
+## Which Directories Matter for AI
+
+Not all directories carry equal weight with AI models. The platforms that matter most are the ones AI models actively reference:
+
+### Tier 1 (High Impact)
+- **Google Business Profile** — Referenced by Gemini and Google AI Overviews directly
+- **LinkedIn Company Page** — Frequently cited in professional/B2B contexts
+- **Wikipedia/Wikidata** — The gold standard for entity recognition
+- **Crunchbase** — Referenced for company details, founding info, funding
+
+### Tier 2 (Moderate Impact)
+- **G2, Capterra, TrustRadius** — Referenced for software/SaaS comparisons
+- **Trustpilot** — Referenced for consumer trust signals
+- **Yelp** — Referenced for local businesses
+- **Industry-specific directories** — Varies by vertical
+
+### Tier 3 (Supporting)
+- **Twitter/X, Facebook, Instagram** — Social profiles that confirm brand identity
+- **Better Business Bureau** — Trust signal for US businesses
+- **Glassdoor** — Referenced for employer brand (affects B2B perception)
+
+## How the Audit Works
+
+MentionLayer's directory audit runs in three steps:
+
+### Step 1: Discovery
+Searches Google for your brand name and collects the top 20+ results. Identifies which platforms your brand appears on and which key directories are missing.
+
+### Step 2: Extraction
+For each discovered platform, extracts the brand description, category, contact information, and any other structured details.
+
+### Step 3: Scoring
+Compares each platform's information against your canonical brand identity. Scores each platform on:
+- **Description match** — How closely does the description align with your canonical?
+- **Information completeness** — Are all fields filled in?
+- **Accuracy** — Is the information current and correct?
+
+The overall consistency score is the weighted average across all platforms.
+
+<Callout type="tip">
+Don't be alarmed by a low initial consistency score. Most businesses score 40-60% on their first audit because platforms accumulate outdated information over time. The important thing is knowing where the gaps are so you can fix them.
+</Callout>
+
+## Reading the Consistency Report
+
+The report shows each platform with a status:
+
+- **Consistent** (green) — Description and details match your canonical. No action needed.
+- **Partial match** (amber) — Some information matches, some is outdated or different. Update needed.
+- **Inconsistent** (red) — Significant differences from your canonical. Priority fix.
+- **Missing** (gray) — No presence on this platform. Consider creating a listing.
+
+For each platform, the report shows exactly what differs: "LinkedIn description says 'digital marketing agency' but canonical says 'AI visibility platform.'"
+
+## The Fix Task List
+
+MentionLayer generates a prioritized task list from the audit:
+
+Each task includes:
+- **Platform** to update
+- **What to change** (specific field and new value)
+- **Impact rating** (high/medium/low based on platform tier)
+- **Effort estimate** (typically 5-15 minutes per platform)
+
+Tasks are sorted by impact, so you start with the highest-value fixes first. A Google Business Profile update is always higher priority than fixing a secondary directory listing.
+
+## Executing the Fixes
+
+For most platforms, fixing a listing means:
+
+1. Log into the platform with your admin credentials
+2. Navigate to profile/business settings
+3. Update the description, category, and details to match your canonical
+4. Save and wait for the platform to approve changes (some have review periods)
+
+Some updates are instant (LinkedIn), some take days for review (Google Business Profile), and some require claiming the listing first (Crunchbase, Yelp).
+
+<Callout type="warning">
+Don't copy-paste the exact same text to every platform. Use the platform-adapted versions from your canonical. Each platform has different length limits and emphasis areas. The goal is consistent facts, not identical text.
+</Callout>
+
+## Creating Missing Listings
+
+For platforms where you have no presence, the task list will suggest creating a listing. Prioritize:
+
+1. Google Business Profile (if applicable)
+2. LinkedIn Company Page
+3. G2/Capterra (for SaaS/software)
+4. Crunchbase (for funded companies)
+5. Industry-specific directories
+
+Each new listing strengthens your entity by giving AI models another consistent data point.
+
+## Re-auditing
+
+After fixing your listings, re-run the directory audit to verify. It takes 2-3 minutes and shows your updated consistency score. Aim for 80%+ consistency before moving on to other GEO priorities.
+
+Schedule quarterly re-audits to catch drift — platforms can change categories, descriptions can be overwritten, and new directories may emerge.
+
+## In MentionLayer
+
+The full directory audit with platform scoring, task generation, and re-audit capability lives in Entity Sync.
+
+<ModuleLink module="entities" label="Run a directory audit" />
+
+<KeyTakeaway>
+The directory audit finds every platform where your brand appears, scores consistency against your canonical description, and generates a prioritized fix list. Start with Tier 1 platforms (Google Business, LinkedIn, Crunchbase), aim for 80%+ consistency, and re-audit quarterly.
+</KeyTakeaway>

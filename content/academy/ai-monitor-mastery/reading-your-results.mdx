@@ -1,0 +1,100 @@
+# Reading Your AI Monitor Results
+
+Data is useless unless you know how to read it. The AI Monitor dashboard packs a lot of information into one screen — here's how to extract the insights that matter.
+
+## The Visibility Score Card
+
+The big number at the top of your dashboard is your **AI Visibility Score** — a weighted composite that factors in SOM, recommendation rate, model coverage, and sentiment. It's scored 0-100.
+
+This isn't the same as raw SOM. The visibility score includes quality signals:
+- A brand mentioned in 20% of prompts but never recommended scores lower than one mentioned in 15% but recommended in half of those
+- A brand with positive sentiment scores higher than one with neutral mentions
+- Coverage across multiple models scores higher than dominance in just one
+
+Think of the visibility score as your "GPA" and SOM as one of the grades that feeds into it.
+
+## Model Breakdown
+
+Below the score, you'll see how each AI model treats your brand:
+
+| What to look for | What it means |
+|-------------------|--------------|
+| High SOM on Perplexity, low on ChatGPT | Your live web presence is strong but training data hasn't caught up |
+| High on ChatGPT, low on Perplexity | You have historical authority but recent citations are weak |
+| Zero across all models | No AI-accessible signals exist — start with citation seeding |
+| Strong on Google AI Overviews only | Your SEO is carrying you, but purpose-built GEO signals are missing |
+
+Each model pulls from different data sources, so uneven performance is normal. Use the breakdown to prioritize where to focus.
+
+<Callout type="tip">
+Perplexity is your leading indicator — it uses real-time web data, so changes from citation seeding show up here first. ChatGPT is your lagging indicator — it needs training data updates to reflect new citations.
+</Callout>
+
+## Keyword Performance Table
+
+This is where the actionable insights live. The keyword table shows your SOM for each monitored keyword:
+
+**High SOM keywords** (20%+) — These are your strengths. Protect them by maintaining citation freshness and monitoring for competitor moves.
+
+**Medium SOM keywords** (5-20%) — These are your opportunities. You're in the conversation but not dominant. Targeted citation seeding on these topics will have the highest ROI.
+
+**Zero SOM keywords** (0%) — These are your gaps. AI models have no source material connecting your brand to these topics. You need to create that connection through citations, press, or both.
+
+Sort by SOM ascending to find your biggest gaps first — those are your highest-priority action items.
+
+## Mentioned vs Recommended
+
+The results table distinguishes between mentions and recommendations:
+
+- **Mentioned** means the AI included your brand name somewhere in the response. It might be a list of options, a passing reference, or a comparison.
+- **Recommended** means the AI specifically endorsed or suggested your brand. Phrases like "I'd recommend," "a great option is," or "you should check out" indicate a recommendation.
+
+Recommendations are worth more than mentions because they drive action. A user who sees "check out Brand X" is far more likely to visit your site than one who sees "companies in this space include A, B, C, and X."
+
+Track your **recommendation rate** (recommendations / total mentions) as a quality metric alongside SOM as a quantity metric.
+
+## Understanding Sentiment
+
+Every brand mention is classified as positive, neutral, or negative:
+
+- **Positive:** "Brand X is excellent for this" or "I've had great results with Brand X"
+- **Neutral:** "Options include Brand X, Brand Y, and Brand Z"
+- **Negative:** "Brand X has had reliability issues" or "I'd avoid Brand X for this"
+
+Negative mentions are rare in AI responses (models tend to be cautious), but they happen — especially if negative reviews or critical press articles are in the training data. If you see negative sentiment, investigate the source and address it through review responses or PR.
+
+## Reading Individual Results
+
+Click any result row to see the full AI response. This shows you:
+
+- The exact prompt that was sent
+- The complete AI-generated answer
+- Where your brand appears in the response (highlighted)
+- Which competitors were mentioned
+- Source URLs cited (for Perplexity and Google AI Overviews)
+
+Reading full responses is time-consuming but valuable — it shows you exactly how AI models position your brand relative to competitors. Do this for a sample of 5-10 results per monitoring run.
+
+<Callout type="info">
+Pay special attention to the source URLs in Perplexity responses. These show you exactly which web pages the AI is pulling from — if a Reddit thread or news article is being cited, that's a thread you want your brand in.
+</Callout>
+
+## The Weekly Review Rhythm
+
+Here's how to use the AI Monitor efficiently:
+
+1. **Monday:** Check overall SOM trend (up, down, flat)
+2. **Tuesday:** Review keyword performance — identify biggest gaps
+3. **Wednesday:** Read 5-10 full responses to understand positioning
+4. **Thursday:** Create action items — citation targets, press angles, entity fixes
+5. **Friday:** Execute or queue those actions in the relevant modules
+
+## In MentionLayer
+
+The full results dashboard with model breakdown, keyword performance, and individual result detail is all in the AI Monitor module.
+
+<ModuleLink module="monitor" label="Review your latest AI Monitor results" />
+
+<KeyTakeaway>
+Read your AI Monitor results in layers: visibility score for the big picture, model breakdown for platform strategy, keyword table for specific gaps, and individual results for competitive positioning. Build a weekly rhythm of check-analyze-act.
+</KeyTakeaway>
