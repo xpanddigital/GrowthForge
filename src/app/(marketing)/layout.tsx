@@ -39,10 +39,16 @@ export default function MarketingLayout({
               Blog
             </Link>
             <Link
-              href="/help"
+              href="/academy"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              Help
+              Academy
+            </Link>
+            <Link
+              href="/services"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Done for You
             </Link>
           </nav>
           <div className="flex items-center gap-3">
@@ -78,12 +84,14 @@ export default function MarketingLayout({
               <ul className="mt-3 space-y-2">
                 <li><Link href="/use-cases/agencies" className="text-sm text-muted-foreground hover:text-foreground">For Agencies</Link></li>
                 <li><Link href="/use-cases/brands" className="text-sm text-muted-foreground hover:text-foreground">For Brands</Link></li>
+                <li><Link href="/services" className="text-sm text-muted-foreground hover:text-foreground">Done-for-You Services</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">Resources</h3>
               <ul className="mt-3 space-y-2">
                 <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">Blog</Link></li>
+                <li><Link href="/academy" className="text-sm text-muted-foreground hover:text-foreground">Academy</Link></li>
                 <li><Link href="/help" className="text-sm text-muted-foreground hover:text-foreground">Help Center</Link></li>
                 <li><Link href="/help/getting-started" className="text-sm text-muted-foreground hover:text-foreground">Getting Started</Link></li>
               </ul>

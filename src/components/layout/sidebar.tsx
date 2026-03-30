@@ -210,8 +210,8 @@ export function Sidebar() {
             href="/dashboard"
             className="text-lg font-bold tracking-tight"
           >
-            <span className="text-primary">Growth</span>
-            <span className="text-foreground">Forge</span>
+            <span className="text-primary">Mention</span>
+            <span className="text-foreground">Layer</span>
           </Link>
         )}
         {collapsed && (
@@ -219,7 +219,7 @@ export function Sidebar() {
             href="/dashboard"
             className="text-lg font-bold text-primary"
           >
-            G
+            M
           </Link>
         )}
         {/* Mobile close button */}
