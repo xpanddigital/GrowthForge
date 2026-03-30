@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { generateResponsesSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
-import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { checkCredits, deductCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 import { rateLimit } from "@/lib/utils/rate-limit";
 
@@ -86,6 +86,14 @@ export async function POST(request: Request) {
       }
       throw err;
     }
+
+    // Deduct credits before queuing the job
+    await deductCredits({
+      agencyId: user.agency_id,
+      amount: CREDIT_COSTS.response_generation,
+      reason: "response_generation",
+      description: `Response generation for thread "${thread.title}"`,
+    });
 
     // Check thread is in a valid state for response generation
     // Allow generation from most statuses — the thread has at least a title/snippet from SERP

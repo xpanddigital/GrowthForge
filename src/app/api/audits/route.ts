@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { rateLimit } from "@/lib/utils/rate-limit";
-import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { checkCredits, deductCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 import { z } from "zod";
 import { uuidLike } from "@/lib/utils/validators";
@@ -71,8 +71,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check credits
-    const creditCost = validated.audit_type === "full" ? CREDIT_COSTS.full_audit : CREDIT_COSTS.quick_audit;
+    // Check credits — cost depends on audit type
+    const creditCost =
+      validated.audit_type === "full"
+        ? CREDIT_COSTS.full_audit
+        : validated.audit_type === "citation_only"
+          ? CREDIT_COSTS.citation_only_audit
+          : CREDIT_COSTS.quick_audit;
     try {
       await checkCredits(user.agency_id, creditCost);
     } catch (err) {
@@ -89,6 +94,14 @@ export async function POST(request: Request) {
       }
       throw err;
     }
+
+    // Deduct credits before queuing the job
+    await deductCredits({
+      agencyId: user.agency_id,
+      amount: creditCost,
+      reason: validated.audit_type === "full" ? "full_audit" : validated.audit_type === "citation_only" ? "citation_only_audit" : "quick_audit",
+      description: `${validated.audit_type} audit for ${client.name}`,
+    });
 
     // Create the main audit record
     const { data: audit, error: auditError } = await supabase

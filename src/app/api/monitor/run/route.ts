@@ -3,7 +3,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { inngest } from "@/lib/inngest/client";
 import { rateLimit } from "@/lib/utils/rate-limit";
 import { RateLimitError } from "@/lib/utils/errors";
-import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { checkCredits, deductCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +74,17 @@ export async function POST(req: NextRequest) {
         }
         throw err;
       }
+    }
+
+    // Deduct credits upfront (before queuing the job)
+    if (userData) {
+      const totalCost = CREDIT_COSTS.monitor_test * 4;
+      await deductCredits({
+        agencyId: userData.agency_id,
+        amount: totalCost,
+        reason: "monitor_test",
+        description: `AI Monitor scan — ${totalCost} credits (4 models × ${CREDIT_COSTS.monitor_test} credits)`,
+      });
     }
 
     // Queue the monitoring run

@@ -4,7 +4,7 @@ import { triggerScanSchema } from "@/lib/utils/validators";
 import { handleApiError } from "@/lib/utils/errors";
 import { inngest } from "@/lib/inngest/client";
 import { rateLimit } from "@/lib/utils/rate-limit";
-import { checkCredits, InsufficientCreditsError } from "@/lib/billing/credits";
+import { checkCredits, deductCredits, InsufficientCreditsError } from "@/lib/billing/credits";
 import { CREDIT_COSTS } from "@/lib/billing/stripe";
 
 export const dynamic = "force-dynamic";
@@ -85,6 +85,14 @@ export async function POST(request: Request) {
       }
       throw err;
     }
+
+    // Deduct credits before queuing the job
+    await deductCredits({
+      agencyId: user.agency_id,
+      amount: estimatedCost,
+      reason: "serp_scan",
+      description: `Discovery scan for ${client.name} (${(keywordCount as unknown as number) || 5} keywords)`,
+    });
 
     // Create a discovery run record
     const { data: run, error: runError } = await supabase
