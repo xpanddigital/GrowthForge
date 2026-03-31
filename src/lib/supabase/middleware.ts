@@ -128,5 +128,41 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Admin route protection: platform_admin only (fail CLOSED)
+  if (user && pathname.startsWith("/dashboard/admin")) {
+    try {
+      const adminUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      if (adminUrl && adminKey) {
+        const adminClient = createClient(adminUrl, adminKey, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        });
+
+        const { data: dbUser } = await adminClient
+          .from("users")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+
+        if (!dbUser || dbUser.role !== "platform_admin") {
+          const url = request.nextUrl.clone();
+          url.pathname = "/dashboard";
+          return NextResponse.redirect(url);
+        }
+      } else {
+        // No service role key = can't verify = block access
+        const url = request.nextUrl.clone();
+        url.pathname = "/dashboard";
+        return NextResponse.redirect(url);
+      }
+    } catch {
+      // Fail closed: if role check errors, redirect away from admin
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }

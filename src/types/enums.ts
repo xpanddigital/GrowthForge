@@ -192,3 +192,27 @@ export type PlanId = (typeof PLAN_IDS)[number];
 
 export const BILLING_INTERVALS = ["monthly", "annual"] as const;
 export type BillingInterval = (typeof BILLING_INTERVALS)[number];
+
+// ============================================
+// Admin BI enums
+// ============================================
+
+export const SUBSCRIPTION_EVENT_TYPES = [
+  "checkout_completed",
+  "subscription_updated",
+  "subscription_deleted",
+  "invoice_paid",
+  "invoice_payment_failed",
+  "trial_will_end",
+] as const;
+export type SubscriptionEventType = (typeof SUBSCRIPTION_EVENT_TYPES)[number];
+
+export const SUBSCRIPTION_STATUSES = [
+  "none",
+  "trialing",
+  "active",
+  "past_due",
+  "canceled",
+  "paused",
+] as const;
+export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number];

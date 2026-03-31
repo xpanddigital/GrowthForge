@@ -18,6 +18,9 @@ export interface Agency {
   max_keywords_per_client: number;
   is_platform_owner: boolean;
   is_active: boolean;
+  subscription_status: string;
+  trial_ends_at: string | null;
+  churned_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -449,6 +452,36 @@ export interface PressCoverage {
   discovered_via: string | null;
   verified: boolean;
   verified_at: string | null;
+  created_at: string;
+}
+
+// ============================================
+// Admin BI types (migration 0021)
+// ============================================
+
+export interface SubscriptionEvent {
+  id: string;
+  agency_id: string;
+  stripe_event_id: string;
+  stripe_subscription_id: string | null;
+  event_type: string;
+  previous_plan: string | null;
+  new_plan: string | null;
+  previous_status: string | null;
+  new_status: string | null;
+  mrr_delta: number;
+  amount_cents: number;
+  metadata: Record<string, unknown>;
+  occurred_at: string;
+  created_at: string;
+}
+
+export interface AdminNote {
+  id: string;
+  agency_id: string;
+  author_user_id: string;
+  note: string;
+  note_type: string;
   created_at: string;
 }
 

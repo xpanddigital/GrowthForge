@@ -32,8 +32,12 @@ import {
   Mail,
   Sparkles,
   GraduationCap,
+  ShieldCheck,
+  DollarSign,
+  Clock,
 } from "lucide-react";
 import { useState, useEffect, createContext, useContext } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { OnboardingChecklist } from "@/components/onboarding/onboarding-checklist";
 
 // Sidebar context for mobile toggle from header
@@ -181,9 +185,40 @@ const navigation: NavItem[] = [
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
+const adminNavigation: NavItem[] = [
+  { name: "Overview", href: "/dashboard/admin", icon: ShieldCheck },
+  { name: "Revenue", href: "/dashboard/admin/revenue", icon: DollarSign },
+  { name: "Subscribers", href: "/dashboard/admin/subscribers", icon: Users },
+  { name: "Trials", href: "/dashboard/admin/trials", icon: Clock },
+  { name: "Usage", href: "/dashboard/admin/usage", icon: Activity },
+];
+
 export function Sidebar() {
   const pathname = usePathname();
   const { mobileOpen, setMobileOpen, collapsed, setCollapsed } = useSidebar();
+  const [isPlatformAdmin, setIsPlatformAdmin] = useState(false);
+
+  // Check if user is platform_admin
+  useEffect(() => {
+    async function checkRole() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data } = await supabase
+          .from("users")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        if (data?.role === "platform_admin") {
+          setIsPlatformAdmin(true);
+        }
+      } catch {
+        // Silently fail — don't show admin nav
+      }
+    }
+    checkRole();
+  }, []);
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -295,6 +330,40 @@ export function Sidebar() {
             </div>
           );
         })}
+
+        {/* Platform Admin section */}
+        {isPlatformAdmin && (
+          <>
+            <div className="mx-3 my-3 border-t border-border" />
+            {!collapsed && (
+              <div className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Platform Admin
+              </div>
+            )}
+            {adminNavigation.map((item) => {
+              const isActive =
+                item.href === "/dashboard/admin"
+                  ? pathname === "/dashboard/admin"
+                  : pathname.startsWith(item.href);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  )}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {!collapsed && <span className="truncate">{item.name}</span>}
+                </Link>
+              );
+            })}
+          </>
+        )}
       </nav>
 
       {/* Onboarding checklist */}
