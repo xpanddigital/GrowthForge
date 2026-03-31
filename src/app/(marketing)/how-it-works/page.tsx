@@ -5,7 +5,7 @@ import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "How It Works — AI Visibility in 4 Steps",
   description:
-    "Audit your AI visibility, discover high-authority threads, seed authentic responses, and monitor your share of model across AI models.",
+    "Audit your AI visibility, discover high-authority Reddit and Quora threads, seed authentic responses, and monitor your share of model across ChatGPT and Perplexity.",
   openGraph: {
     title: "How It Works — AI Visibility in 4 Steps | MentionLayer",
     description:

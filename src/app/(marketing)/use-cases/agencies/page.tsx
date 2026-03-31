@@ -5,7 +5,7 @@ import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "For Agencies — Add AI Visibility Services",
   description:
-    "Add AI visibility to your agency. Measurable AI visibility scores, white-label reports, and a multi-client dashboard.",
+    "Add AI visibility to your agency's services. Measurable visibility scores, white-label client reports, multi-client dashboard, and automated citation seeding.",
   openGraph: {
     title: "For Agencies — Add AI Visibility Services | MentionLayer",
     description:

@@ -11,7 +11,7 @@ import { PricingJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Pricing — AI Visibility Platform Plans",
   description:
-    "MentionLayer pricing from $97/mo. Solo, Growth, Agency Light, and Agency Pro plans. Full platform access. 14-day free trial.",
+    "MentionLayer pricing from $97/mo. Solo, Growth, Agency Light, and Agency Pro plans with full platform access, AI monitoring, and a 14-day free trial.",
   openGraph: {
     title: "Pricing — AI Visibility Platform Plans | MentionLayer",
     description:

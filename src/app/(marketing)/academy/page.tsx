@@ -6,7 +6,7 @@ import { CourseJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Academy — Free GEO & AI Visibility Training",
   description:
-    "Learn Generative Engine Optimization from scratch. 6 free courses, 30 lessons on AI visibility, citation seeding, press strategy, and more.",
+    "Learn Generative Engine Optimization from scratch. 6 free courses with 30 lessons covering AI visibility, citation seeding, press strategy, and entity optimization.",
   openGraph: {
     title: "Academy — Free GEO & AI Visibility Training | MentionLayer",
     description:

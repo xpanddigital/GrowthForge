@@ -5,7 +5,7 @@ import { ServiceJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Done-for-You AI Visibility Services",
   description:
-    "Let our team handle your AI visibility strategy. Citation seeding, press campaigns, entity optimization, and AI monitoring — fully managed.",
+    "Let our team handle your entire AI visibility strategy. Citation seeding, press campaigns, entity optimization, and AI monitoring — fully managed for you.",
   openGraph: {
     title: "Done-for-You AI Visibility Services | MentionLayer",
     description:

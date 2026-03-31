@@ -5,7 +5,7 @@ import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "For Brands — Get Recommended by AI",
   description:
-    "Find out if AI recommends your brand. Get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models.",
+    "Find out if AI recommends your brand. Get cited in high-authority Reddit and Quora threads, recommended by ChatGPT, and tracked across all major AI models.",
   openGraph: {
     title: "For Brands — Get Recommended by AI | MentionLayer",
     description:

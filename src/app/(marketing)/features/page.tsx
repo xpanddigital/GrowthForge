@@ -5,7 +5,7 @@ import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 export const metadata: Metadata = {
   title: "Features — AI Visibility Platform",
   description:
-    "10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, Technical GEO, and more.",
+    "10 modules for AI visibility: Citation Engine, AI Monitor, 5-pillar Audits, PressForge, Entity Sync, Reviews, Technical GEO, YouTube GEO, and ROI Reporting.",
   openGraph: {
     title: "Features — AI Visibility Platform | MentionLayer",
     description:
