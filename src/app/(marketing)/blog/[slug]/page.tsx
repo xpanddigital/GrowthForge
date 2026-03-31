@@ -2,11 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categoryLabels } from "@/lib/blog/types";
+import { AUTHORS } from "@/lib/blog/types";
 import { blogPosts } from "@/lib/blog/posts";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
 
 // Revalidate every 12 hours so scheduled posts go live without a deploy
 export const revalidate = 43200;
@@ -27,14 +30,38 @@ export function generateStaticParams() {
 }
 
 function getOgImageUrl(post: { title: string; category: string }) {
-  const base =
-    process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
   const params = new URLSearchParams({
     title: post.title,
     category: post.category,
   });
-  return `${base}/api/og?${params.toString()}`;
+  return `${BASE_URL}/api/og?${params.toString()}`;
 }
+
+function getWordCount(post: { sections: Array<{ content: string }>; keyTakeaway: string; summary: string }) {
+  const allText = [
+    post.summary,
+    post.keyTakeaway,
+    ...post.sections.map((s) => s.content),
+  ].join(" ");
+  return allText.split(/\s+/).length;
+}
+
+function resolveAuthor(postAuthor: { name: string; role: string }) {
+  // Match post author to AUTHORS registry by name
+  const entry = Object.values(AUTHORS).find(
+    (a) => a.name === postAuthor.name,
+  );
+  return entry || {
+    name: postAuthor.name,
+    role: postAuthor.role,
+    bio: "",
+    url: "",
+    image: undefined,
+    sameAs: [],
+  };
+}
+
+// ─── Metadata (title, OG, Twitter, canonical) ────────────
 
 export async function generateMetadata({
   params,
@@ -44,18 +71,27 @@ export async function generateMetadata({
   if (!post) return { title: "Not Found" };
 
   const ogImage = getOgImageUrl(post);
+  const postUrl = `${BASE_URL}/blog/${post.slug}`;
 
   return {
-    title: post.metaTitle,
+    // Use raw title — root layout template adds "| MentionLayer"
+    title: post.metaTitle.replace(/\s*\|\s*MentionLayer\s*$/i, ""),
     description: post.metaDescription,
     keywords: [post.targetKeyword],
+    alternates: {
+      canonical: postUrl,
+    },
     openGraph: {
       title: post.metaTitle,
       description: post.metaDescription,
       type: "article",
+      url: postUrl,
+      siteName: "MentionLayer",
       publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
+      modifiedTime: post.updatedAt || post.publishedAt,
       authors: [post.author.name],
+      section: categoryLabels[post.category],
+      tags: [post.targetKeyword, post.category],
       images: [
         {
           url: ogImage,
@@ -74,67 +110,138 @@ export async function generateMetadata({
   };
 }
 
+// ─── Page Component ──────────────────────────────────────
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) notFound();
 
+  const author = resolveAuthor(post.author);
+  const postUrl = `${BASE_URL}/blog/${post.slug}`;
+  const ogImage = getOgImageUrl(post);
+  const wordCount = getWordCount(post);
+
   const relatedPosts = post.relatedSlugs
     .map((s) => blogPosts.find((p) => p.slug === s))
     .filter(Boolean);
 
-  const ogImage = getOgImageUrl(post);
+  // ─── JSON-LD: BlogPosting (full spec) ────────────────
 
-  const jsonLd = {
+  const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": postUrl,
+    },
     headline: post.title,
     description: post.summary,
     image: ogImage,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
+    wordCount,
+    articleSection: categoryLabels[post.category],
+    keywords: post.targetKeyword,
+    inLanguage: "en-US",
     author: {
       "@type": "Person",
-      name: post.author.name,
-      jobTitle: post.author.role,
-      url: "https://joelhouse.com/about",
-      sameAs: [
-        "https://joelhouse.com/about",
-        "https://www.linkedin.com/in/joelhouse",
-        "https://mentionlayer.com",
-      ],
+      name: author.name,
+      jobTitle: author.role,
+      url: author.url,
+      ...(author.image && { image: author.image }),
+      sameAs: author.sameAs,
       worksFor: {
         "@type": "Organization",
         name: "MentionLayer",
-        url: "https://mentionlayer.com",
+        url: BASE_URL,
       },
-      description: "AI marketing expert, author of AI for Revenue, and founder of MentionLayer. Joel House helps brands get recommended by AI through Generative Engine Optimization.",
+      description: author.bio,
     },
     publisher: {
       "@type": "Organization",
       name: "MentionLayer",
-      url: "https://mentionlayer.com",
+      url: BASE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${BASE_URL}/logo.png`,
+      },
+    },
+    isPartOf: {
+      "@type": "Blog",
+      name: "MentionLayer Blog",
+      url: `${BASE_URL}/blog`,
+    },
+    // Speakable: marks key takeaway + summary for AI voice/citation extraction
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [
+        "[data-speakable='key-takeaway']",
+        "[data-speakable='summary']",
+      ],
     },
   };
 
-  const faqJsonLd = post.faqs.length > 0 ? {
+  // ─── JSON-LD: BreadcrumbList ─────────────────────────
+
+  const breadcrumbJsonLd = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: post.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: BASE_URL,
       },
-    })),
-  } : null;
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${BASE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: categoryLabels[post.category],
+        item: `${BASE_URL}/blog?category=${post.category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
+
+  // ─── JSON-LD: FAQPage ───────────────────────────────
+
+  const faqJsonLd =
+    post.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: post.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {faqJsonLd && (
         <script
@@ -145,7 +252,11 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <article className="mx-auto max-w-3xl px-4 py-10">
         {/* Breadcrumb */}
-        <nav className="mb-6 text-sm text-muted-foreground">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-muted-foreground">
+          <Link href="/" className="hover:text-foreground">
+            Home
+          </Link>
+          <span className="mx-2">/</span>
           <Link href="/blog" className="hover:text-foreground">
             Blog
           </Link>
@@ -157,34 +268,75 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* Header */}
         <header className="mb-8">
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
             <span className="rounded bg-[#6C5CE7]/10 px-2 py-0.5 font-medium text-[#6C5CE7]">
               {categoryLabels[post.category]}
             </span>
             <span>{post.estimatedReadTime} min read</span>
-            <time dateTime={post.publishedAt}>
+            <span>&middot;</span>
+            <span>{wordCount.toLocaleString()} words</span>
+          </div>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            {post.title}
+          </h1>
+          <p className="mt-3 text-base text-muted-foreground" data-speakable="summary">
+            {post.summary}
+          </p>
+
+          {/* Author + dates row */}
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              {author.image ? (
+                <img
+                  src={author.image}
+                  alt={author.name}
+                  className="h-8 w-8 rounded-full object-cover"
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#6C5CE7]/10 text-xs font-bold text-[#6C5CE7]">
+                  {author.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </span>
+              )}
+              <a
+                href={author.url}
+                target="_blank"
+                rel="noopener noreferrer author"
+                className="font-medium text-foreground hover:text-[#6C5CE7]"
+              >
+                {author.name}
+              </a>
+            </div>
+            <time dateTime={post.publishedAt} className="text-xs">
+              Published{" "}
               {new Date(post.publishedAt).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
                 year: "numeric",
               })}
             </time>
-          </div>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-            {post.title}
-          </h1>
-          <p className="mt-3 text-base text-muted-foreground">{post.summary}</p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">
-              {post.author.name}
-            </span>
-            <span>&middot;</span>
-            <span>{post.author.role}</span>
+            {post.updatedAt && post.updatedAt !== post.publishedAt && (
+              <time dateTime={post.updatedAt} className="text-xs">
+                Updated{" "}
+                {new Date(post.updatedAt).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </time>
+            )}
           </div>
         </header>
 
-        {/* Key Takeaway */}
-        <div className="mb-8 rounded-lg border border-[#6C5CE7]/30 bg-[#6C5CE7]/5 p-4">
+        {/* Key Takeaway (speakable for AI extraction) */}
+        <div
+          className="mb-8 rounded-lg border border-[#6C5CE7]/30 bg-[#6C5CE7]/5 p-4"
+          data-speakable="key-takeaway"
+        >
           <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#6C5CE7]">
             Key Takeaway
           </div>
@@ -194,7 +346,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* Table of Contents */}
-        <div className="mb-10 rounded-lg border border-border bg-card p-4">
+        <nav className="mb-10 rounded-lg border border-border bg-card p-4" aria-label="Table of contents">
           <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             In this article
           </h2>
@@ -220,7 +372,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               </li>
             )}
           </ul>
-        </div>
+        </nav>
 
         {/* Sections */}
         {post.sections.map((section) => (
@@ -338,46 +490,81 @@ export default async function BlogPostPage({ params }: PageProps) {
             </h2>
             <div className="space-y-4">
               {post.faqs.map((faq, i) => (
-                <div
+                <details
                   key={i}
-                  className="rounded-lg border border-border bg-card p-4"
+                  className="group rounded-lg border border-border bg-card"
                 >
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <summary className="cursor-pointer list-none p-4 text-sm font-semibold text-foreground">
                     {faq.question}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  </summary>
+                  <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
                     {faq.answer}
                   </p>
-                </div>
+                </details>
               ))}
             </div>
           </section>
         )}
 
         {/* Author Bio */}
-        <div className="mb-10 rounded-lg border border-border bg-card p-5">
+        <aside className="mb-10 rounded-lg border border-border bg-card p-5" aria-label="About the author">
           <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#6C5CE7]/10 text-lg font-bold text-[#6C5CE7]">
-              JH
-            </div>
+            {author.image ? (
+              <img
+                src={author.image}
+                alt={author.name}
+                className="h-12 w-12 flex-shrink-0 rounded-full object-cover"
+                width={48}
+                height={48}
+              />
+            ) : (
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#6C5CE7]/10 text-lg font-bold text-[#6C5CE7]">
+                {author.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </div>
+            )}
             <div>
               <a
-                href="https://joelhouse.com/about"
+                href={author.url}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer author"
                 className="text-sm font-semibold text-foreground hover:text-[#6C5CE7]"
               >
-                {post.author.name}
+                {author.name}
               </a>
-              <p className="text-xs text-muted-foreground">{post.author.role}</p>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Joel House is an AI marketing expert, author of{" "}
-                <em>AI for Revenue</em>, and founder of MentionLayer. He helps brands and agencies get recommended by AI
-                through Generative Engine Optimization.
-              </p>
+              <p className="text-xs text-muted-foreground">{author.role}</p>
+              {author.bio && (
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  {author.bio}
+                </p>
+              )}
+              {author.sameAs.length > 0 && (
+                <div className="mt-2 flex gap-3">
+                  {author.sameAs.map((url) => {
+                    const label = url.includes("linkedin")
+                      ? "LinkedIn"
+                      : url.includes("joelhouse")
+                        ? "Website"
+                        : "Profile";
+                    return (
+                      <a
+                        key={url}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-[#6C5CE7] hover:underline"
+                      >
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </aside>
 
         {/* CTA */}
         <div className="mb-10 rounded-xl border border-[#6C5CE7]/30 bg-[#6C5CE7]/5 p-6 text-center">
@@ -389,10 +576,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             Citations, AI Presence, Entities, Reviews, and Press.
           </p>
           <Link
-            href="/signup"
+            href="/free-audit"
             className="mt-4 inline-block rounded-md bg-[#6C5CE7] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
           >
-            Run Free Audit →
+            Run Free Audit &rarr;
           </Link>
         </div>
 
@@ -429,7 +616,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             href="/blog"
             className="text-sm text-[#6C5CE7] hover:underline"
           >
-            ← Back to Blog
+            &larr; Back to Blog
           </Link>
         </div>
       </article>

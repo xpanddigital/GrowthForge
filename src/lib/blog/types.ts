@@ -1,3 +1,27 @@
+export interface BlogAuthor {
+  name: string;
+  role: string;
+  bio: string;
+  url: string;
+  image?: string;
+  sameAs: string[];
+}
+
+export const AUTHORS: Record<string, BlogAuthor> = {
+  "joel-house": {
+    name: "Joel House",
+    role: "Founder, MentionLayer",
+    bio: "AI marketing expert, author of AI for Revenue, and founder of MentionLayer. Joel House helps brands and agencies get recommended by AI through Generative Engine Optimization.",
+    url: "https://joelhouse.com/about",
+    image: "https://mentionlayer.com/authors/joel-house.jpg",
+    sameAs: [
+      "https://joelhouse.com/about",
+      "https://www.linkedin.com/in/joelhouse",
+      "https://mentionlayer.com",
+    ],
+  },
+};
+
 export interface BlogPost {
   slug: string;
   title: string;
