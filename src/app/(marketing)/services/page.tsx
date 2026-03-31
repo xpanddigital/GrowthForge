@@ -1,10 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ServiceJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Done-for-You AI Visibility Services | MentionLayer",
+  title: "Done-for-You AI Visibility Services",
   description:
-    "Let our team handle your entire AI visibility strategy. Citation seeding, press campaigns, entity optimization, and ongoing AI monitoring — fully managed.",
+    "Let our team handle your AI visibility strategy. Citation seeding, press campaigns, entity optimization, and AI monitoring — fully managed.",
+  openGraph: {
+    title: "Done-for-You AI Visibility Services | MentionLayer",
+    description:
+      "Fully managed AI visibility. Citation seeding, press campaigns, entity optimization, and ongoing monitoring.",
+    images: ["/api/og?title=Done-for-You+Services"],
+  },
 };
 
 const services = [
@@ -57,6 +64,12 @@ const services = [
 export default function ServicesPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
+      <ServiceJsonLd
+        name="Done-for-You AI Visibility Services"
+        description="Let our team handle your entire AI visibility strategy. Citation seeding, press campaigns, entity optimization, and ongoing AI monitoring — fully managed."
+        url="/services"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Services", url: "/services" }]} />
       {/* Hero */}
       <div className="text-center">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
@@ -106,12 +119,12 @@ export default function ServicesPage() {
                 <p className="mt-3 text-sm text-muted-foreground">
                   {service.ideal}
                 </p>
-                <a
-                  href="mailto:joel@xpanddigital.com?subject=Done-for-You AI Visibility Services"
+                <Link
+                  href="/services/inquiry"
                   className="mt-6 inline-block rounded-md bg-[#6C5CE7] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
                 >
                   {service.cta}
-                </a>
+                </Link>
               </div>
             </div>
           </div>

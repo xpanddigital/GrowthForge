@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { createClient } from "@supabase/supabase-js";
 import { blogPosts } from "@/lib/blog/posts";
 import { helpArticles } from "@/lib/help/articles";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   // Static marketing pages
@@ -15,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/pricing`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE_URL}/use-cases/agencies`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/use-cases/brands`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/academy`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${BASE_URL}/help`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
@@ -38,5 +41,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...publishedBlogPosts, ...helpPages];
+  // Published press releases (from Supabase)
+  let pressPages: MetadataRoute.Sitemap = [];
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      });
+      const { data: releases } = await supabase
+        .from("press_releases")
+        .select("public_slug, created_at")
+        .eq("is_current", true)
+        .eq("status", "approved")
+        .not("public_slug", "is", null);
+
+      if (releases) {
+        pressPages = releases.map((r) => ({
+          url: `${BASE_URL}/press/${r.public_slug}`,
+          lastModified: r.created_at,
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+        }));
+      }
+    }
+  } catch {
+    // Silently skip press releases if DB is unavailable (build time)
+  }
+
+  return [...staticPages, ...publishedBlogPosts, ...helpPages, ...pressPages];
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SoftwareApplicationJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 /* ─── Inline SVG Icon Components ─── */
 
@@ -128,6 +129,8 @@ function ModelBar({ model, percentage, color }: { model: string; percentage: num
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SoftwareApplicationJsonLd />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }]} />
       {/* ─── Navigation ─── */}
       <nav className="sticky top-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -702,7 +705,7 @@ export default function HomePage() {
 
           <p className="text-center text-sm text-muted-foreground mt-8">
             Enterprise plans with custom limits available.{" "}
-            <a href="mailto:joel@xpanddigital.com" className="text-[#6C5CE7] hover:underline">
+            <a href="mailto:joel@xpanddigital.io" className="text-[#6C5CE7] hover:underline">
               Contact us
             </a>
           </p>

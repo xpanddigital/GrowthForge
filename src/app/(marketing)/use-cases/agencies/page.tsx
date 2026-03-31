@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "For Agencies | MentionLayer — Add AI Visibility to Your Service Offering",
+  title: "For Agencies — Add AI Visibility Services",
   description:
-    "Add AI visibility as a service offering. MentionLayer gives agencies measurable AI visibility scores, white-label reports, and a multi-client dashboard.",
+    "Add AI visibility to your agency. Measurable AI visibility scores, white-label reports, and a multi-client dashboard.",
+  openGraph: {
+    title: "For Agencies — Add AI Visibility Services | MentionLayer",
+    description:
+      "Add AI visibility to your service offering with measurable scores, white-label reports, and multi-client management.",
+    images: ["/api/og?title=For+Agencies"],
+  },
 };
 
 export default function AgenciesUseCasePage() {
   return (
     <div className="bg-background text-foreground">
+      <WebPageJsonLd
+        title="For Agencies | MentionLayer"
+        description="Add AI visibility as a service offering. MentionLayer gives agencies measurable AI visibility scores, white-label reports, and a multi-client dashboard."
+        url="/use-cases/agencies"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Use Cases", url: "/use-cases/agencies" }, { name: "For Agencies", url: "/use-cases/agencies" }]} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-[#6C5CE7]/10 via-transparent to-[#00D2D3]/5" />

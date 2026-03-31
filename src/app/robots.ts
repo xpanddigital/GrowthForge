@@ -8,7 +8,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard/", "/login", "/signup"],
+        disallow: [
+          "/api/",
+          "/dashboard/",
+          "/login",
+          "/signup",
+          "/reset-password",
+          "/callback",
+          "/free-audit",
+        ],
       },
       // Allow AI retrieval bots to crawl public content
       {
@@ -41,6 +49,14 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "Google-Extended",
+        disallow: ["/"],
+      },
+      {
+        userAgent: "Bytespider",
+        disallow: ["/"],
+      },
+      {
+        userAgent: "anthropic-ai",
         disallow: ["/"],
       },
     ],

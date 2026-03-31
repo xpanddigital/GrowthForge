@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title:
-    "For Brands | MentionLayer — Get Recommended by ChatGPT, Perplexity & Gemini",
+  title: "For Brands — Get Recommended by AI",
   description:
-    "Find out if AI recommends your brand. MentionLayer helps brands get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models.",
+    "Find out if AI recommends your brand. Get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models.",
+  openGraph: {
+    title: "For Brands — Get Recommended by AI | MentionLayer",
+    description:
+      "Get your brand cited in Reddit threads, recommended by ChatGPT, Perplexity, and Gemini, and tracked across all AI models.",
+    images: ["/api/og?title=For+Brands"],
+  },
 };
 
 function ArrowRightIcon({ className }: { className?: string }) {
@@ -140,6 +146,12 @@ function ShieldIcon({ className }: { className?: string }) {
 export default function BrandsUseCasePage() {
   return (
     <div className="relative">
+      <WebPageJsonLd
+        title="For Brands | MentionLayer"
+        description="Find out if AI recommends your brand. MentionLayer helps brands get cited in Reddit threads, recommended by ChatGPT, and tracked across all AI models."
+        url="/use-cases/brands"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Use Cases", url: "/use-cases/brands" }, { name: "For Brands", url: "/use-cases/brands" }]} />
       {/* Hero */}
       <section className="relative overflow-hidden px-4 pb-20 pt-24 sm:pt-32">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#6C5CE7]/5 via-transparent to-transparent" />

@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "How It Works | MentionLayer — AI Visibility in 4 Steps",
+  title: "How It Works — AI Visibility in 4 Steps",
   description:
-    "Audit your AI visibility, discover high-authority threads, seed authentic responses, and monitor your share of model across ChatGPT, Perplexity, Gemini, and Claude.",
+    "Audit your AI visibility, discover high-authority threads, seed authentic responses, and monitor your share of model across AI models.",
+  openGraph: {
+    title: "How It Works — AI Visibility in 4 Steps | MentionLayer",
+    description:
+      "Audit, discover, seed, and monitor. Four steps to get your brand recommended by ChatGPT, Perplexity, Gemini, and Claude.",
+    images: ["/api/og?title=How+It+Works"],
+  },
 };
 
 const steps = [
@@ -105,6 +112,12 @@ const steps = [
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-6xl px-4">
+      <WebPageJsonLd
+        title="How It Works | MentionLayer"
+        description="Audit your AI visibility, discover high-authority threads, seed authentic responses, and monitor your share of model across ChatGPT, Perplexity, Gemini, and Claude."
+        url="/how-it-works"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "How It Works", url: "/how-it-works" }]} />
       {/* Hero */}
       <section className="pb-16 pt-20 text-center md:pb-24 md:pt-28">
         <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">

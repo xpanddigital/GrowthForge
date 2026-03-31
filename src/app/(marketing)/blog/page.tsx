@@ -2,14 +2,21 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { categoryLabels } from "@/lib/blog/types";
 import { blogPosts } from "@/lib/blog/posts";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 // Revalidate every 12 hours so scheduled posts go live without a deploy
 export const revalidate = 43200;
 
 export const metadata: Metadata = {
-  title: "Blog | MentionLayer — AI Visibility & GEO Insights",
+  title: "Blog — AI Visibility & GEO Insights",
   description:
-    "Learn how to get your brand recommended by AI. Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and more.",
+    "Learn how to get your brand recommended by AI. Guides on GEO, citation seeding, share of model, AI audits, and more.",
+  openGraph: {
+    title: "Blog — AI Visibility & GEO Insights | MentionLayer",
+    description:
+      "Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and AI visibility strategy.",
+    images: ["/api/og?title=Blog"],
+  },
 };
 
 function getOgImageUrl(post: { title: string; category: string }) {
@@ -48,6 +55,12 @@ export default function BlogIndexPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
+      <WebPageJsonLd
+        title="Blog | MentionLayer"
+        description="Learn how to get your brand recommended by AI. Guides on Generative Engine Optimization, citation seeding, share of model, AI audits, and more."
+        url="/blog"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Blog", url: "/blog" }]} />
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

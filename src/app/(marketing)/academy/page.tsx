@@ -1,11 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { courses } from "@/../content/academy/courses";
+import { CourseJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Academy | MentionLayer — Free GEO & AI Visibility Training",
+  title: "Academy — Free GEO & AI Visibility Training",
   description:
-    "Learn Generative Engine Optimization from scratch. 6 free courses, 30 lessons — master AI visibility, citation seeding, press strategy, and more.",
+    "Learn Generative Engine Optimization from scratch. 6 free courses, 30 lessons on AI visibility, citation seeding, press strategy, and more.",
+  openGraph: {
+    title: "Academy — Free GEO & AI Visibility Training | MentionLayer",
+    description:
+      "6 free courses, 30 lessons. Master AI visibility, citation seeding, press strategy, and Generative Engine Optimization.",
+    images: ["/api/og?title=Academy"],
+  },
 };
 
 const iconMap: Record<string, string> = {
@@ -27,6 +34,12 @@ export default function AcademyPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
+      <CourseJsonLd
+        name="MentionLayer Academy — Free GEO & AI Visibility Training"
+        description="Learn Generative Engine Optimization from scratch. 6 free courses, 30 lessons — master AI visibility, citation seeding, press strategy, and more."
+        url="/academy"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Academy", url: "/academy" }]} />
       {/* Hero */}
       <div className="text-center">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">

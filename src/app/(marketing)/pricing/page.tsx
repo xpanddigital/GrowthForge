@@ -6,11 +6,18 @@ import {
   formatLimit,
   isUnlimited,
 } from "@/lib/billing/plans";
+import { PricingJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Pricing | MentionLayer — AI Visibility Platform Plans",
+  title: "Pricing — AI Visibility Platform Plans",
   description:
-    "MentionLayer pricing: Solo ($97/mo), Growth ($297/mo), Agency Light ($497/mo), and Agency Pro ($997/mo). AI visibility for agencies. 14-day free trial.",
+    "MentionLayer pricing from $97/mo. Solo, Growth, Agency Light, and Agency Pro plans. Full platform access. 14-day free trial.",
+  openGraph: {
+    title: "Pricing — AI Visibility Platform Plans | MentionLayer",
+    description:
+      "Plans from $97/mo. Every feature on every plan. 14-day free trial included.",
+    images: ["/api/og?title=Pricing"],
+  },
 };
 
 const checkIcon = (
@@ -216,6 +223,14 @@ export default function PricingPage() {
 
   return (
     <div className="bg-background">
+      <PricingJsonLd
+        plans={visiblePlans.map((p) => ({
+          name: p.name,
+          description: p.tagline,
+          price: p.priceMonthly,
+        }))}
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Pricing", url: "/pricing" }]} />
       {/* Hero */}
       <section className="px-4 pb-16 pt-20 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">

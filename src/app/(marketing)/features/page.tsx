@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Features | MentionLayer — AI Visibility Platform",
+  title: "Features — AI Visibility Platform",
   description:
-    "10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, Technical GEO, YouTube GEO, Mention Gaps, and ROI Reporting.",
+    "10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, Technical GEO, and more.",
+  openGraph: {
+    title: "Features — AI Visibility Platform | MentionLayer",
+    description:
+      "10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, and more.",
+    images: ["/api/og?title=Features"],
+  },
 };
 
 const features = [
@@ -151,6 +158,12 @@ const features = [
 export default function FeaturesPage() {
   return (
     <>
+      <WebPageJsonLd
+        title="Features | MentionLayer"
+        description="10 modules for AI visibility: Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, Reviews, Technical GEO, YouTube GEO, Mention Gaps, and ROI Reporting."
+        url="/features"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Features", url: "/features" }]} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-b from-[#6C5CE7]/5 to-transparent" />

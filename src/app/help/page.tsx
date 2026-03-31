@@ -1,11 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { helpArticles } from "@/lib/help/articles";
+import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Help Center | MentionLayer",
+  title: "Help Center",
   description:
-    "Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more.",
+    "Learn how to use MentionLayer to improve your AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, and more.",
+  openGraph: {
+    title: "Help Center | MentionLayer",
+    description:
+      "Guides for Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more.",
+    images: ["/api/og?title=Help+Center"],
+  },
 };
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -86,6 +93,12 @@ export default function HelpIndexPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
+      <WebPageJsonLd
+        title="Help Center | MentionLayer"
+        description="Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more."
+        url="/help"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Help Center", url: "/help" }]} />
       <div className="mb-12 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           MentionLayer Help Center
@@ -139,7 +152,7 @@ export default function HelpIndexPage() {
           Reach out to our team and we&apos;ll get back to you within 24 hours.
         </p>
         <a
-          href="mailto:joel@xpanddigital.com"
+          href="mailto:joel@xpanddigital.io"
           className="mt-4 inline-block rounded-md bg-[#6C5CE7] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
         >
           Contact Support
