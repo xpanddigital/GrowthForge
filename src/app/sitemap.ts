@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { blogPosts } from "@/lib/blog/posts";
 import { helpArticles } from "@/lib/help/articles";
+import { AUTHORS } from "@/lib/blog/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
 
@@ -32,6 +33,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     }));
+
+  // Author pages
+  const authorPages: MetadataRoute.Sitemap = Object.values(AUTHORS).map((author) => ({
+    url: `${BASE_URL}/author/${author.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
   // Help articles
   const helpPages: MetadataRoute.Sitemap = helpArticles.map((article) => ({
@@ -70,5 +79,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Silently skip press releases if DB is unavailable (build time)
   }
 
-  return [...staticPages, ...publishedBlogPosts, ...helpPages, ...pressPages];
+  return [...staticPages, ...authorPages, ...publishedBlogPosts, ...helpPages, ...pressPages];
 }

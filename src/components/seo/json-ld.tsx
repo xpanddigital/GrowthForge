@@ -308,6 +308,78 @@ export function ServiceJsonLd({
   );
 }
 
+// ─── ProfilePage (author pages) ──────────────────────────
+
+export function ProfilePageJsonLd({
+  slug,
+  name,
+  jobTitle,
+  bio,
+  image,
+  hub,
+  knowsAbout,
+  sameAs,
+  worksForName,
+  worksForUrl,
+}: {
+  slug: string;
+  name: string;
+  jobTitle: string;
+  bio: string;
+  image?: string;
+  hub: string;
+  knowsAbout: string[];
+  sameAs: string[];
+  worksForName: string;
+  worksForUrl: string;
+}) {
+  const authorUrl = `${BASE_URL}/author/${slug}`;
+
+  const profilePage = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": authorUrl,
+    url: authorUrl,
+    name: `${name} — Author at MentionLayer`,
+    mainEntity: {
+      "@type": "Person",
+      "@id": hub,
+      name,
+      jobTitle,
+      description: bio,
+      url: authorUrl,
+      ...(image && {
+        image: {
+          "@type": "ImageObject",
+          url: image.startsWith("http") ? image : `${BASE_URL}${image}`,
+        },
+      }),
+      sameAs,
+      knowsAbout,
+      worksFor: {
+        "@type": "Organization",
+        name: worksForName,
+        url: worksForUrl,
+      },
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "Authors", item: `${BASE_URL}/author` },
+        { "@type": "ListItem", position: 3, name, item: authorUrl },
+      ],
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePage) }}
+    />
+  );
+}
+
 // ─── Pricing / Offer Catalog ─────────────────────────────
 
 export function PricingJsonLd({

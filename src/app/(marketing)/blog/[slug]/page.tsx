@@ -148,7 +148,11 @@ export default async function BlogPostPage({ params }: PageProps) {
       "@type": "Person",
       name: author.name,
       jobTitle: author.role,
-      url: author.url,
+      url: author.url
+        ? author.url.startsWith("http")
+          ? author.url
+          : `${BASE_URL}${author.url}`
+        : undefined,
       ...(author.image && { image: author.image }),
       sameAs: author.sameAs,
       worksFor: {
@@ -302,14 +306,13 @@ export default async function BlogPostPage({ params }: PageProps) {
                     .join("")}
                 </span>
               )}
-              <a
-                href={author.url}
-                target="_blank"
-                rel="noopener noreferrer author"
+              <Link
+                href={author.url || "#"}
+                rel="author"
                 className="font-medium text-foreground hover:text-[#6C5CE7]"
               >
                 {author.name}
-              </a>
+              </Link>
             </div>
             <time dateTime={post.publishedAt} className="text-xs">
               Published{" "}
@@ -526,14 +529,13 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             )}
             <div>
-              <a
-                href={author.url}
-                target="_blank"
-                rel="noopener noreferrer author"
+              <Link
+                href={author.url || "#"}
+                rel="author"
                 className="text-sm font-semibold text-foreground hover:text-[#6C5CE7]"
               >
                 {author.name}
-              </a>
+              </Link>
               <p className="text-xs text-muted-foreground">{author.role}</p>
               {author.bio && (
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
