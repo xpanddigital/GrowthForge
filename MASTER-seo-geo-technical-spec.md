@@ -38,7 +38,7 @@ joelhouse.com/about                          <-- CENTRAL HUB (Person schema, sam
   |-- mentionlayer.com/author/joel-house     <-- Spoke (ProfilePage schema, sameAs back to hub)
   |-- project2.com/author/joel-house         <-- Spoke
   |-- project3.com/author/joel-house         <-- Spoke
-  |-- linkedin.com/in/joelhouse              <-- Social spoke
+  |-- linkedin.com/in/joel-house-seo              <-- Social spoke
   +-- wikipedia (if eligible)                <-- Ultimate entity validation
 ```
 
@@ -88,7 +88,7 @@ export const AUTHORS: Record<string, BlogAuthor> = {
     ],
     sameAs: [
       "https://joelhouse.com/about",
-      "https://www.linkedin.com/in/joelhouse",
+      "https://www.linkedin.com/in/joel-house-seo",
       // Add all other spoke site author URLs here
     ],
   },

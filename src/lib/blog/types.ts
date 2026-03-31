@@ -41,7 +41,7 @@ Joel is based in Australia and works with brands and agencies globally. He speak
     ],
     sameAs: [
       "https://joelhouse.com/about",
-      "https://www.linkedin.com/in/joelhouse",
+      "https://www.linkedin.com/in/joel-house-seo",
       "https://mentionlayer.com/author/joel-house",
     ],
   },

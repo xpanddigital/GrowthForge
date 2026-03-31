@@ -10,6 +10,78 @@ Audit and upgrade the blog post template in this project to meet every item in t
 
 ---
 
+## 0. Author Architecture (Hub-and-Spoke Model)
+
+Before touching the blog template, set up the author infrastructure. This is the foundation that makes every other SEO/GEO signal work.
+
+### The Pattern
+
+Every project Joel owns must follow this hub-and-spoke model:
+
+```
+joelhouse.com/about                          ← CENTRAL HUB (Person schema, sameAs to all spokes)
+  ├── mentionlayer.com/author/joel-house     ← Spoke (ProfilePage schema, sameAs back to hub)
+  ├── project2.com/author/joel-house         ← Spoke
+  ├── project3.com/author/joel-house         ← Spoke
+  ├── linkedin.com/in/joel-house-seo              ← Social spoke
+  └── wikipedia (if eligible)                ← Ultimate entity validation
+```
+
+### Why Both (Not One or the Other)
+
+- **E-E-A-T is evaluated per-domain.** Google needs to see author credibility on the same domain as the content. An external-only link creates a hop that weakens the signal.
+- **AI models cite the domain, not the author's personal site.** When Perplexity cites `yoursite.com/blog/post`, the author authority needs to exist on `yoursite.com` so the AI can associate content with a credible named author on the domain it's citing.
+- **Entity consolidation via sameAs.** Every spoke links back to the hub (`joelhouse.com/about`). This tells Google's Knowledge Graph all the "Joel House" mentions across different domains are the same person, raising entity confidence score.
+- **Authors with cross-platform presence are 2.8x more likely to be cited by AI** vs anonymous content.
+
+### Per-Project Author Page Requirements
+
+Create `/author/joel-house` (or equivalent) on every project with:
+
+- [ ] 200-500 word bio written in **third person**
+- [ ] Author headshot (consistent across all sites)
+- [ ] Current role at this specific company
+- [ ] `ProfilePage` + `Person` JSON-LD schema with:
+  - `sameAs` pointing to: hub (joelhouse.com), LinkedIn, all other spoke sites
+  - `worksFor` linking to the Organization of this specific site
+  - `knowsAbout` listing relevant expertise areas
+- [ ] List of articles written on *this* site (auto-generated)
+- [ ] Links to LinkedIn, personal site, book (AI for Revenue)
+- [ ] Canonical URL: `https://thissite.com/author/joel-house`
+
+### Blog Post Author Linking Rule
+
+- Blog posts link author name to the **local** `/author/joel-house` page (same domain)
+- They do NOT link directly to the external `joelhouse.com/about`
+- The local author page then links out to the hub and social profiles
+- JSON-LD `author.url` in BlogPosting points to the local author page
+- JSON-LD `author.sameAs` array includes the hub + LinkedIn + other spokes
+
+### AUTHORS Registry
+
+Every project must have a centralized authors config (not hardcoded per post):
+
+```typescript
+export const AUTHORS = {
+  "joel-house": {
+    name: "Joel House",
+    slug: "joel-house",
+    role: "Founder, [CompanyName]",
+    bio: "AI marketing expert, author of AI for Revenue, and founder of [CompanyName]. Joel House helps brands and agencies get recommended by AI through Generative Engine Optimization.",
+    url: "/author/joel-house",           // LOCAL author page
+    image: "/authors/joel-house.jpg",    // LOCAL headshot
+    hub: "https://joelhouse.com/about",  // CENTRAL HUB
+    sameAs: [
+      "https://joelhouse.com/about",
+      "https://www.linkedin.com/in/joel-house-seo",
+      // Add all other project URLs here as spokes grow
+    ],
+  },
+};
+```
+
+---
+
 ## 1. Page Metadata (Next.js `generateMetadata` / `<head>`)
 
 ### Title
@@ -71,11 +143,11 @@ Required properties:
 - [ ] `@type`: "Person"
 - [ ] `name`: full name
 - [ ] `jobTitle`: role/title
-- [ ] `url`: link to author's personal site or bio page
-- [ ] `image`: author headshot URL
+- [ ] `url`: link to **local** author page on this site (`/author/joel-house`), NOT the external hub
+- [ ] `image`: author headshot URL (hosted locally)
 - [ ] `description`: 1-2 sentence bio
-- [ ] `sameAs`: array of profile URLs (LinkedIn, personal site, company site)
-- [ ] `worksFor`: Organization entity with name and URL
+- [ ] `sameAs`: array of profile URLs — hub (joelhouse.com/about), LinkedIn, all other spoke sites
+- [ ] `worksFor`: Organization entity with name and URL of THIS site
 
 ### Publisher (Organization)
 - [ ] `@type`: "Organization"
@@ -103,16 +175,17 @@ Required properties:
 ## 3. Visible On-Page SEO Elements
 
 ### Author Display
-- [ ] Author name is visible and clickable (links to author bio/profile page)
+- [ ] Author name is visible and clickable — links to **local** `/author/joel-house` page (same domain), NOT external site
 - [ ] Link has `rel="author"` attribute
 - [ ] Author avatar/image displayed (headshot or initials fallback)
 - [ ] Author role/title displayed
-- [ ] Author bio section at bottom of article with:
-  - Name (linked)
+- [ ] Author bio section at bottom of article (`<aside aria-label="About the author">`) with:
+  - Name (linked to local author page)
   - Role
   - 1-2 sentence bio
-  - Links to LinkedIn, personal site
+  - Links to LinkedIn, personal site (hub), and other profiles
 - [ ] Author data comes from a centralized AUTHORS registry (not hardcoded per post)
+- [ ] Dedicated `/author/joel-house` page exists on this site with ProfilePage schema (see Section 0)
 
 ### Dates
 - [ ] Published date visible with `<time datetime="YYYY-MM-DD">` element
@@ -221,13 +294,13 @@ These are what separate a "good SEO blog" from a blog that actually gets cited b
       "@type": "Person",
       "name": "Author Name",
       "jobTitle": "Founder, Company",
-      "url": "https://authorsite.com/about",
+      "url": "https://domain.com/author/author-slug",
       "image": "https://domain.com/authors/author.jpg",
       "description": "Short bio of the author.",
       "sameAs": [
-        "https://authorsite.com/about",
+        "https://authorhub.com/about",
         "https://linkedin.com/in/author",
-        "https://domain.com"
+        "https://otherproject.com/author/author-slug"
       ],
       "worksFor": {
         "@type": "Organization",
@@ -294,5 +367,9 @@ After implementation, verify:
 3. Check that `<title>` does not have the brand name doubled
 4. Check that canonical URL points to the actual post (not `/` or `/blog`)
 5. Check that both published and modified dates are visible when different
-6. Check that the author name links to an external profile with `rel="author"`
+6. Check that the author name links to the **local** `/author/` page with `rel="author"` (not directly to external hub)
 7. Check that speakable elements have `data-speakable` attributes in the DOM
+8. Check that `/author/joel-house` page exists and has `ProfilePage` + `Person` JSON-LD
+9. Check that author `sameAs` in JSON-LD includes the hub (joelhouse.com/about) + LinkedIn + other spokes
+10. Check that the local author page lists articles written on this site
+11. Verify the hub-spoke chain: blog post -> local author page -> hub + social profiles
