@@ -14,7 +14,7 @@ export const posts61to65: BlogPost[] = [
     metaDescription:
       "Comparison and versus content is AI models\\' most-cited format for purchase recommendations. Structure, optimization, and examples for maximum AI citations.",
     targetKeyword: "comparison content AI recommendations",
-    publishedAt: "2026-05-31",
+    publishedAt: "2026-06-29",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -80,7 +80,7 @@ export const posts61to65: BlogPost[] = [
     metaDescription:
       "How Google\\'s E-E-A-T framework applies to AI citations. The specific experience, expertise, authority, and trust signals that AI models use to decide which brands to cite.",
     targetKeyword: "EEAT AI search",
-    publishedAt: "2026-06-01",
+    publishedAt: "2026-07-01",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -174,7 +174,7 @@ export const posts61to65: BlogPost[] = [
     metaDescription:
       "E-E-A-T: Experience, Expertise, Authoritativeness, Trustworthiness. How Google\\'s quality framework applies to AI model citation decisions.",
     targetKeyword: "EEAT framework definition",
-    publishedAt: "2026-06-02",
+    publishedAt: "2026-07-03",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -240,7 +240,7 @@ export const posts61to65: BlogPost[] = [
     metaDescription:
       "Tactical guide to building E-E-A-T signals AI models use for citation decisions. Author entities, credibility markers, schema, and external validation strategies.",
     targetKeyword: "E-E-A-T signals AI visibility",
-    publishedAt: "2026-06-03",
+    publishedAt: "2026-07-05",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -317,7 +317,7 @@ export const posts61to65: BlogPost[] = [
     metaDescription:
       "Personal brand authority drives company AI citations. How executive thought leadership content gets your company cited by ChatGPT, Perplexity, and Gemini.",
     targetKeyword: "thought leadership AI visibility",
-    publishedAt: "2026-06-04",
+    publishedAt: "2026-07-07",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",

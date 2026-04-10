@@ -14,7 +14,7 @@ export const posts26to30: BlogPost[] = [
     metaDescription:
       "The consensus layer is how AI models triangulate brand recommendations from multiple sources. Learn how it works, why multi-source mentions matter, and how to build consensus for your brand.",
     targetKeyword: "consensus layer AI search",
-    publishedAt: "2026-04-26",
+    publishedAt: "2026-04-20",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -81,7 +81,7 @@ export const posts26to30: BlogPost[] = [
     metaDescription:
       "The 10 most effective tactics to get ChatGPT, Perplexity, and Gemini to recommend your brand. Ranked by impact with implementation steps, timelines, and real campaign data.",
     targetKeyword: "best ways to get recommended by AI",
-    publishedAt: "2026-04-27",
+    publishedAt: "2026-04-22",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -158,7 +158,7 @@ export const posts26to30: BlogPost[] = [
     metaDescription:
       "76% of businesses have no AI search strategy while AI referral traffic grows 527% YoY. Data analysis of who\\'s exploiting the gap, what early movers are doing differently, and the cost of waiting.",
     targetKeyword: "AI visibility gap businesses",
-    publishedAt: "2026-04-28",
+    publishedAt: "2026-04-24",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -235,7 +235,7 @@ export const posts26to30: BlogPost[] = [
     metaDescription:
       "ChatGPT recommends your competitors but not you? Four traceable causes and specific fixes. Learn what signals ChatGPT uses to choose which brands to recommend and how to shift the answer.",
     targetKeyword: "ChatGPT recommends competitors not me",
-    publishedAt: "2026-04-29",
+    publishedAt: "2026-04-26",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "decision",
@@ -307,7 +307,7 @@ export const posts26to30: BlogPost[] = [
     metaDescription:
       "Share of Model tracks AI recommendation visibility. Share of Voice tracks traditional media presence. Learn how they differ, why you need both, and how to measure each in 2026.",
     targetKeyword: "share of model vs share of voice",
-    publishedAt: "2026-04-30",
+    publishedAt: "2026-04-28",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "consideration",

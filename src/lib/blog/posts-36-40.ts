@@ -14,7 +14,7 @@ export const posts36to40: BlogPost[] = [
     metaDescription:
       "Information gain measures the unique value your content adds beyond existing sources. Learn why AI models prioritize high-information-gain content and how to create it.",
     targetKeyword: "information gain AI search",
-    publishedAt: "2026-05-06",
+    publishedAt: "2026-05-10",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -80,7 +80,7 @@ export const posts36to40: BlogPost[] = [
     metaDescription:
       "76.4% of ChatGPT\\'s cited pages were updated within 30 days. The refresh playbook: when to update, what to change, and the monthly cadence that maintains AI citation velocity.",
     targetKeyword: "content refresh AI citations",
-    publishedAt: "2026-05-07",
+    publishedAt: "2026-05-12",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -157,7 +157,7 @@ export const posts36to40: BlogPost[] = [
     metaDescription:
       "How glossary definition pages build topical authority and earn AI citations. The strategy behind \"what is\" content, internal link architecture, and comprehensive topic coverage signals.",
     targetKeyword: "glossary pages topical authority AI",
-    publishedAt: "2026-05-08",
+    publishedAt: "2026-05-14",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -223,7 +223,7 @@ export const posts36to40: BlogPost[] = [
     metaDescription:
       "Domain authority measures backlinks. Topical authority measures content expertise. For AI visibility, one matters significantly more. Data-backed comparison with practical guidance.",
     targetKeyword: "topical authority vs domain authority",
-    publishedAt: "2026-05-09",
+    publishedAt: "2026-05-16",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -300,7 +300,7 @@ export const posts36to40: BlogPost[] = [
     metaDescription:
       "Semantic SEO optimizes for meaning and entity relationships, not just keywords. Learn how NLP-aligned content earns more AI citations and how to implement semantic optimization.",
     targetKeyword: "semantic SEO AI citations",
-    publishedAt: "2026-05-10",
+    publishedAt: "2026-05-18",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "awareness",

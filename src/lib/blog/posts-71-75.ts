@@ -14,7 +14,7 @@ export const posts71to75: BlogPost[] = [
     metaDescription:
       "Google AI Overviews slash organic CTR by 61%. The data on which industries are hit hardest and the strategic pivot to maintain search-driven revenue.",
     targetKeyword: "AI Overviews CTR impact",
-    publishedAt: "2026-06-10",
+    publishedAt: "2026-07-19",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -91,7 +91,7 @@ export const posts71to75: BlogPost[] = [
     metaDescription:
       "AI brand sentiment is how AI models describe your brand — positive, neutral, or negative. Learn why it matters and how to influence it for better AI recommendations.",
     targetKeyword: "AI brand sentiment",
-    publishedAt: "2026-06-11",
+    publishedAt: "2026-07-21",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -157,7 +157,7 @@ export const posts71to75: BlogPost[] = [
     metaDescription:
       "Structure case study pages that AI models cite. Headline format, results presentation, and schema markup for case studies that validate AI recommendations.",
     targetKeyword: "case study content AI citations",
-    publishedAt: "2026-06-12",
+    publishedAt: "2026-07-23",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -223,7 +223,7 @@ export const posts71to75: BlogPost[] = [
     metaDescription:
       "Statistics pages are among the most-cited content by AI models. How to create, structure, and maintain data compilation pages that AI models cannot ignore.",
     targetKeyword: "statistics pages AI citations",
-    publishedAt: "2026-06-13",
+    publishedAt: "2026-07-25",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -289,7 +289,7 @@ export const posts71to75: BlogPost[] = [
     metaDescription:
       "The complete guide to entity SEO. Build a clear, consistent brand identity that Google and AI models understand, trust, and cite. Knowledge graphs, schema, and entity signals.",
     targetKeyword: "entity SEO AI visibility",
-    publishedAt: "2026-06-14",
+    publishedAt: "2026-07-27",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "awareness",

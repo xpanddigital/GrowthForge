@@ -14,7 +14,7 @@ export const posts51to55: BlogPost[] = [
     metaDescription:
       "Citation seeding vs content marketing for AI visibility: which gets results faster? Speed, ROI, and allocation data for each approach in 2026.",
     targetKeyword: "citation seeding vs content marketing",
-    publishedAt: "2026-05-21",
+    publishedAt: "2026-06-09",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -91,7 +91,7 @@ export const posts51to55: BlogPost[] = [
     metaDescription:
       "LinkedIn is the #2 most-cited domain for B2B AI queries. Optimize your LinkedIn articles, posts, and profile for AI model citations with these specific strategies.",
     targetKeyword: "LinkedIn AI visibility",
-    publishedAt: "2026-05-22",
+    publishedAt: "2026-06-11",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -168,7 +168,7 @@ export const posts51to55: BlogPost[] = [
     metaDescription:
       "Structure content in self-contained citable units that AI models extract independently. Section length, heading hierarchy, and formatting for maximum AI citations.",
     targetKeyword: "citable content structure AI",
-    publishedAt: "2026-05-23",
+    publishedAt: "2026-06-13",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -234,7 +234,7 @@ export const posts51to55: BlogPost[] = [
     metaDescription:
       "Third-party publishing on Medium, industry blogs, and guest sites builds the multi-source layer AI models need. Platform selection and optimization strategies.",
     targetKeyword: "third-party publishing AI visibility",
-    publishedAt: "2026-05-24",
+    publishedAt: "2026-06-15",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -311,7 +311,7 @@ export const posts51to55: BlogPost[] = [
     metaDescription:
       "Brand mentions correlate 3x more than backlinks with AI visibility. The data, the mechanism, and what it means for your SEO strategy in 2026.",
     targetKeyword: "brand mentions vs backlinks AI",
-    publishedAt: "2026-05-25",
+    publishedAt: "2026-06-17",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",

@@ -14,7 +14,7 @@ export const posts46to50: BlogPost[] = [
     metaDescription:
       "Optimize Quora answers to get cited by AI models. Specific strategies for structure, authority signals, and content format that earn ChatGPT and Perplexity citations.",
     targetKeyword: "Quora AI SEO strategy",
-    publishedAt: "2026-05-16",
+    publishedAt: "2026-05-30",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -98,7 +98,7 @@ export const posts46to50: BlogPost[] = [
     metaDescription:
       "Data analysis of which Reddit posts get cited by AI models. Post type, subreddit, engagement, age, and structural patterns that predict AI citations.",
     targetKeyword: "Reddit posts AI cites most",
-    publishedAt: "2026-05-17",
+    publishedAt: "2026-06-01",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -181,7 +181,7 @@ export const posts46to50: BlogPost[] = [
     metaDescription:
       "LLM seeding vs link building: which drives more value in 2026? Data-driven ROI comparison, when to use each strategy, and how they work together.",
     targetKeyword: "LLM seeding vs link building",
-    publishedAt: "2026-05-18",
+    publishedAt: "2026-06-03",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -258,7 +258,7 @@ export const posts46to50: BlogPost[] = [
     metaDescription:
       "The 7 best platforms for LLM seeding ranked by AI citation impact. Reddit, Quora, YouTube, LinkedIn, and more — with specific strategies for each.",
     targetKeyword: "best platforms for LLM seeding",
-    publishedAt: "2026-05-19",
+    publishedAt: "2026-06-05",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -341,7 +341,7 @@ export const posts46to50: BlogPost[] = [
     metaDescription:
       "YouTube is the #1 social citation source in AI search. Learn video optimization strategies for AI model citations — transcripts, descriptions, and content structure.",
     targetKeyword: "YouTube AI search visibility",
-    publishedAt: "2026-05-20",
+    publishedAt: "2026-06-07",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",

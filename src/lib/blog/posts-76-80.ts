@@ -14,7 +14,7 @@ export const posts76to80: BlogPost[] = [
     metaDescription:
       "A knowledge graph is a database of entities and relationships that powers AI recommendations. Why your brand\\'s knowledge graph presence matters for AI visibility.",
     targetKeyword: "knowledge graph definition",
-    publishedAt: "2026-06-15",
+    publishedAt: "2026-07-29",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -80,7 +80,7 @@ export const posts76to80: BlogPost[] = [
     metaDescription:
       "Wikipedia is 47.9% of ChatGPT\\'s top citations. The ethical strategy for Wikipedia and Wikidata presence — notability, Wikidata entries, and editorial requirements.",
     targetKeyword: "Wikipedia Wikidata AI visibility",
-    publishedAt: "2026-06-16",
+    publishedAt: "2026-07-31",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "consideration",
@@ -157,7 +157,7 @@ export const posts76to80: BlogPost[] = [
     metaDescription:
       "Trigger and optimize your Google Knowledge Panel for AI search. The entity signals that create Knowledge Panels and how to maximize their AI citation impact.",
     targetKeyword: "Google Knowledge Panel optimization",
-    publishedAt: "2026-06-17",
+    publishedAt: "2026-08-02",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "consideration",
@@ -234,7 +234,7 @@ export const posts76to80: BlogPost[] = [
     metaDescription:
       "Copy-paste JSON-LD schema templates optimized for AI search. Organization, Person, Article, FAQ, Product, and Review schema with AI-specific properties.",
     targetKeyword: "JSON-LD schema AI search",
-    publishedAt: "2026-06-18",
+    publishedAt: "2026-08-04",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "consideration",
@@ -311,7 +311,7 @@ export const posts76to80: BlogPost[] = [
     metaDescription:
       "Structured data is machine-readable code that tells AI models what your content is about. Why it provides a 2.5x AI citation advantage and how to implement it.",
     targetKeyword: "structured data definition AI",
-    publishedAt: "2026-06-19",
+    publishedAt: "2026-08-06",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",

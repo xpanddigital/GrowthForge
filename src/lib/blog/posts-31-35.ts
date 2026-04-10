@@ -14,7 +14,7 @@ export const posts31to35: BlogPost[] = [
     metaDescription:
       "Build topical authority that Google and AI models trust. Content clusters, pillar pages, internal linking, information gain, and the signals AI uses to determine niche expertise.",
     targetKeyword: "topical authority",
-    publishedAt: "2026-05-01",
+    publishedAt: "2026-04-30",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -193,7 +193,7 @@ export const posts31to35: BlogPost[] = [
     metaDescription:
       "Step-by-step guide to building topical authority that earns AI citations. Cluster planning, content creation, internal linking, and the off-site signals that validate expertise.",
     targetKeyword: "topical authority for AI search",
-    publishedAt: "2026-05-03",
+    publishedAt: "2026-05-04",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -278,7 +278,7 @@ export const posts31to35: BlogPost[] = [
     metaDescription:
       "Structure pillar pages and topic clusters that Google ranks and AI models cite. Templates, linking patterns, and formatting that maximizes AI citation probability.",
     targetKeyword: "topic clusters AI authority",
-    publishedAt: "2026-05-04",
+    publishedAt: "2026-05-06",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -361,7 +361,7 @@ export const posts31to35: BlogPost[] = [
     metaDescription:
       "The 5-layer internal linking framework that builds topical authority for both Google and AI. Anchor text strategy, orphan page detection, and linking patterns that boost AI citations.",
     targetKeyword: "internal linking AI search",
-    publishedAt: "2026-05-05",
+    publishedAt: "2026-05-08",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "technical",
     buyingStage: "consideration",

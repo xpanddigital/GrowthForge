@@ -14,7 +14,7 @@ export const posts66to70: BlogPost[] = [
     metaDescription:
       "Entity authority measures how much search engines and AI models trust your brand. Built through identity consistency, knowledge graphs, and multi-source validation.",
     targetKeyword: "entity authority AI search",
-    publishedAt: "2026-06-05",
+    publishedAt: "2026-07-09",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -80,7 +80,7 @@ export const posts66to70: BlogPost[] = [
     metaDescription:
       "Executive visibility drives company AI citations. AI models transfer CEO authority to brand authority. The specific branding strategy that accelerates AI visibility.",
     targetKeyword: "CEO branding AI visibility",
-    publishedAt: "2026-06-06",
+    publishedAt: "2026-07-11",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -157,7 +157,7 @@ export const posts66to70: BlogPost[] = [
     metaDescription:
       "Consistent brand messaging across platforms triggers AI recommendations. How to engineer brand consensus that AI models detect and reward.",
     targetKeyword: "brand consensus AI recommendations",
-    publishedAt: "2026-06-07",
+    publishedAt: "2026-07-13",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -223,7 +223,7 @@ export const posts66to70: BlogPost[] = [
     metaDescription:
       "Human-written vs AI-generated content in AI search: which gets cited more? Data on what AI models prefer and the optimal content creation approach.",
     targetKeyword: "human vs AI content AI search",
-    publishedAt: "2026-06-08",
+    publishedAt: "2026-07-15",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -300,7 +300,7 @@ export const posts66to70: BlogPost[] = [
     metaDescription:
       "Which review platforms do AI models trust most? Review volume, recency, and collection strategies that maximize AI brand recommendation rates.",
     targetKeyword: "online reviews AI visibility",
-    publishedAt: "2026-06-09",
+    publishedAt: "2026-07-17",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",

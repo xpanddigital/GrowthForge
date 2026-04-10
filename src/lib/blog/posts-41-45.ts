@@ -14,7 +14,7 @@ export const posts41to45: BlogPost[] = [
     metaDescription:
       "Content clusters are groups of interlinked pages covering a topic comprehensively. Learn why AI models use cluster depth to decide which brands to cite.",
     targetKeyword: "content cluster definition",
-    publishedAt: "2026-05-11",
+    publishedAt: "2026-05-20",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -87,7 +87,7 @@ export const posts41to45: BlogPost[] = [
     metaDescription:
       "Content marketing strategy for 2026 must account for AI search. Learn the formats, channels, and metrics that drive results when AI mediates 37% of consumer searches.",
     targetKeyword: "content marketing strategy AI 2026",
-    publishedAt: "2026-05-12",
+    publishedAt: "2026-05-22",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -179,7 +179,7 @@ export const posts41to45: BlogPost[] = [
     metaDescription:
       "AI models recommend brands that appear across multiple independent sources. Learn the multi-source consensus strategy that triggers AI citations.",
     targetKeyword: "multi-source consensus AI",
-    publishedAt: "2026-05-13",
+    publishedAt: "2026-05-24",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -245,7 +245,7 @@ export const posts41to45: BlogPost[] = [
     metaDescription:
       "The complete guide to content seeding — placing authentic brand mentions in AI-cited forum threads. Platform selection, thread finding, response writing, and measurement.",
     targetKeyword: "content seeding strategy",
-    publishedAt: "2026-05-14",
+    publishedAt: "2026-05-26",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -351,7 +351,7 @@ export const posts41to45: BlogPost[] = [
     metaDescription:
       "Content seeding places authentic brand mentions in AI-cited community discussions. Learn how it works, why it drives AI visibility, and how it differs from link building.",
     targetKeyword: "content seeding definition",
-    publishedAt: "2026-05-15",
+    publishedAt: "2026-05-28",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",

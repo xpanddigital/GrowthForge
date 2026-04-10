@@ -14,7 +14,7 @@ export const posts56to60: BlogPost[] = [
     metaDescription:
       "Ranked guide to content formats AI models cite most. Comparison articles, FAQ pages, data compilations, and expert roundups with optimization tips for each.",
     targetKeyword: "best content formats AI citations",
-    publishedAt: "2026-05-26",
+    publishedAt: "2026-06-19",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -80,7 +80,7 @@ export const posts56to60: BlogPost[] = [
     metaDescription:
       "Does Reddit activity drive AI brand recommendations? Data on the connection between Reddit mentions and AI model citations, plus what actually works.",
     targetKeyword: "Reddit activity AI recommendations",
-    publishedAt: "2026-05-27",
+    publishedAt: "2026-06-21",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -146,7 +146,7 @@ export const posts56to60: BlogPost[] = [
     metaDescription:
       "FAQ pages with schema are 3.2x more likely to appear in AI Overviews. Structure, write, and optimize FAQ content that AI models extract and cite.",
     targetKeyword: "FAQ optimization for AI search",
-    publishedAt: "2026-05-28",
+    publishedAt: "2026-06-23",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "consideration",
@@ -223,7 +223,7 @@ export const posts56to60: BlogPost[] = [
     metaDescription:
       "List content gets cited 74% more by AI models. Optimization strategies for ranked listicles, comparison lists, and resource compilations for AI search.",
     targetKeyword: "listicle optimization AI",
-    publishedAt: "2026-05-29",
+    publishedAt: "2026-06-25",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "awareness",
@@ -289,7 +289,7 @@ export const posts56to60: BlogPost[] = [
     metaDescription:
       "AI referral traffic converts 4.4x better than organic search. The data, the mechanism, and how to capture high-converting AI search traffic for your brand.",
     targetKeyword: "AI search traffic conversion rate",
-    publishedAt: "2026-05-30",
+    publishedAt: "2026-06-27",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",

@@ -14,7 +14,7 @@ export const posts21to25: BlogPost[] = [
     metaDescription:
       "Track what ChatGPT, Perplexity, Gemini, and Claude say about your brand. Free and paid monitoring methods, prompt templates, and a weekly cadence that catches AI visibility changes early.",
     targetKeyword: "monitor AI brand mentions",
-    publishedAt: "2026-04-21",
+    publishedAt: "2026-04-10",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "tools",
     buyingStage: "consideration",
@@ -103,7 +103,7 @@ export const posts21to25: BlogPost[] = [
     metaDescription:
       "An AI visibility score measures how often your brand appears in ChatGPT, Perplexity, and Gemini answers. Learn how it\\'s calculated, what good looks like, and how to improve.",
     targetKeyword: "AI visibility score definition",
-    publishedAt: "2026-04-22",
+    publishedAt: "2026-04-12",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -175,7 +175,7 @@ export const posts21to25: BlogPost[] = [
     metaDescription:
       "The 25 most important AI SEO statistics for 2026. AI adoption rates, citation data, conversion benchmarks, platform preferences, and what it all means for your search strategy.",
     targetKeyword: "AI SEO statistics 2026",
-    publishedAt: "2026-04-23",
+    publishedAt: "2026-04-14",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "awareness",
@@ -263,7 +263,7 @@ export const posts21to25: BlogPost[] = [
     metaDescription:
       "Six specific reasons AI models skip your brand when recommending products in your category, plus the exact fixes for each. Diagnose and resolve your AI invisibility in 30 days.",
     targetKeyword: "brand not appearing AI search",
-    publishedAt: "2026-04-24",
+    publishedAt: "2026-04-16",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "strategy",
     buyingStage: "decision",
@@ -346,7 +346,7 @@ export const posts21to25: BlogPost[] = [
     metaDescription:
       "Perplexity averages 21.87 citations per response vs Google\\'s 10 blue links. Compare traffic quality, conversion rates, and optimization strategies for both search platforms.",
     targetKeyword: "Perplexity vs Google",
-    publishedAt: "2026-04-25",
+    publishedAt: "2026-04-18",
     author: { name: "Joel House", role: "Founder, MentionLayer" },
     category: "fundamentals",
     buyingStage: "consideration",
