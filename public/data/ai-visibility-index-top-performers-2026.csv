@@ -1,0 +1,51 @@
+industry,rank,business_name,website_url,visibility_score,visibility_tier,model_count,chatgpt,perplexity,gemini,claude,google_aio
+saas_project_management,1,"Asana",https://asana.com/uses/project-management,91,dominant,5,Y,Y,Y,Y,Y
+saas_project_management,2,"Jira",https://www.atlassian.com/software/jira,86,dominant,5,Y,Y,Y,Y,Y
+saas_project_management,3,"Monday",https://monday.com/partners/projectmanagement,85,dominant,5,Y,Y,Y,Y,Y
+saas_project_management,4,"Monday.com",https://monday.com/partners/projectmanagement,84,dominant,5,Y,Y,Y,Y,Y
+saas_project_management,5,"ClickUp",https://clickup.com/teams/project-management,83,dominant,5,Y,Y,Y,Y,Y
+saas_crm,1,"Zoho CRM",https://www.zoho.com/crm,87,dominant,5,Y,Y,Y,Y,Y
+saas_crm,2,"Pipedrive",https://www.pipedrive.com/en/industries/saas-crm,85,dominant,5,Y,Y,Y,Y,Y
+saas_crm,3,"HubSpot CRM",https://www.hubspot.com/products/crm,84,dominant,5,Y,Y,Y,Y,Y
+saas_crm,4,"Freshsales",https://www.freshworks.com/crm/sales,64,high,5,Y,Y,Y,Y,Y
+saas_crm,5,"Monday CRM",https://monday.com/crm,58,high,4,Y,Y,N,Y,Y
+digital_marketing,1,"WebFX",https://www.reddit.com/r/antiMLM/comments/tla2p0/webfx_legit_or_a_mlm/,81,dominant,5,Y,Y,Y,Y,Y
+digital_marketing,2,"Disruptive Advertising",https://disruptiveadvertising.com,76,high,5,Y,Y,Y,Y,Y
+digital_marketing,3,"Thrive Internet Marketing",https://thriveagency.com,71,high,5,Y,Y,Y,Y,Y
+digital_marketing,4,"Thrive Internet Marketing Agency",https://thriveagency.com/,70,high,5,Y,Y,Y,Y,Y
+digital_marketing,5,"Ignite Visibility",https://ignitevisibility.com,66,high,5,Y,Y,Y,Y,Y
+personal_injury_law,1,"The Dominguez Firm",https://dominguezfirm.com,73,high,5,Y,Y,Y,Y,Y
+personal_injury_law,2,"Greene Broillet & Wheeler, LLP",https://www.gbw.law,62,high,4,N,Y,Y,Y,Y
+personal_injury_law,3,"Wilshire Law Firm",https://wilshirelawfirm.com,50,moderate,5,Y,Y,Y,Y,Y
+personal_injury_law,4,"Panish | Shea | Ravipudi LLP",https://www.panish.law,49,moderate,3,N,Y,Y,N,Y
+personal_injury_law,5,"Jacoby & Meyers",https://www.jacobyandmeyers.com,46,moderate,4,Y,Y,Y,N,Y
+home_services,1,"Mike Diamond Services",https://mikediamondservices.com,71,high,5,Y,Y,Y,Y,Y
+home_services,2,"Monkey Wrench Plumbing, Heating, Air & Electric",https://www.monkeywrenchplumbers.com,50,moderate,5,Y,Y,Y,Y,Y
+home_services,3,"Red Lilly Plumbing",https://www.redlillyplumbing.com,44,moderate,2,Y,Y,N,N,N
+home_services,4,"Lincoln Heights Drains",https://mikediamondservices.com/plumbing-electrical-hvac-services-lincoln-heights-ca,43,moderate,1,Y,N,N,N,N
+home_services,5,"Advantage Plumbing & Rooter",https://advantageplumbingrooter.com,43,moderate,2,N,Y,N,N,Y
+accounting,1,"EY",https://www.ey.com/en_us/locations/united-states,66,high,5,Y,Y,Y,Y,Y
+accounting,2,"HCVT",https://www.hcvt.com,65,high,4,Y,Y,Y,N,Y
+accounting,3,"Moss Adams",https://www.mossadams.com,60,high,3,Y,N,Y,Y,N
+accounting,4,"Deloitte",https://www.deloitte.com/us/en/offices/us-locations/los-angeles.html,60,high,5,Y,Y,Y,Y,Y
+accounting,5,"PwC",https://www.pwc.com/us/en/about-us/pwc-office-locations.html,59,high,5,Y,Y,Y,Y,Y
+real_estate,1,"Aaron Kirman",https://aaronkirman.com,66,high,5,Y,Y,Y,Y,Y
+real_estate,2,"Compass",https://www.compass.com/homes-for-sale/los-angeles-ca,65,high,5,Y,Y,Y,Y,Y
+real_estate,3,"The Agency",https://www.theagencyre.com,62,high,5,Y,Y,Y,Y,Y
+real_estate,4,"Altman Brothers",https://www.thealtmanbrothers.com,62,high,5,Y,Y,Y,Y,Y
+real_estate,5,"Douglas Elliman",https://www.elliman.com/sales/los-angeles-ca,59,high,4,Y,Y,Y,Y,N
+financial_advisors,1,"Vanguard Personal Advisor Services",https://investor.vanguard.com/advice/personal-hybrid-robo-advisor,64,high,4,Y,N,Y,Y,Y
+financial_advisors,2,"Betterment",https://www.betterment.com/financial-experts,57,high,5,Y,Y,Y,Y,Y
+financial_advisors,3,"Charles Schwab Intelligent Portfolios",https://www.schwab.com/intelligent-portfolios,55,high,4,Y,Y,N,Y,Y
+financial_advisors,4,"Edelman Financial Engines",https://www.edelmanfinancialengines.com,53,high,5,Y,Y,Y,Y,Y
+financial_advisors,5,"Fidelity Investments",https://www.fidelity.com/wealth/wealth-management-offerings,52,high,4,Y,Y,N,Y,Y
+med_spa,1,"Cienega Med S",https://cienegaspa.com,58,high,3,Y,Y,N,N,Y
+med_spa,2,"Beverly Hills Rejuvenation Center",https://www.bhrcenter.com/?srsltid=AfmBOor_o8_nx3xVE4I8kC1VKPycwOSC5eEI33_qeCoZ9hyokcQEPyx2,52,high,2,Y,N,N,Y,N
+med_spa,3,"Beverly Hills Med S",https://www.beverlyhillsmedspa.com,47,moderate,4,N,Y,Y,Y,Y
+med_spa,4,"SkinSpirit Beverly Hills",https://www.skinspirit.com/locations/beverly-hills,43,moderate,1,Y,N,N,N,N
+med_spa,5,"Marina Meds",https://www.marinamedspa.com/marina-club-membership,43,moderate,1,N,Y,N,N,N
+dental,1,"Century City Dental",https://www.centurycityaesthetic.com,52,high,2,Y,N,N,Y,N
+dental,2,"Blue Pearl Dentistry",https://bluepearldentistry.com,49,moderate,2,N,Y,N,N,Y
+dental,3,"Smile Again Dental Group",https://smileagaindentalgroup.com,48,moderate,2,N,Y,N,N,Y
+dental,4,"Dr. Joseph Goodman",https://topbeverlyhillsdentist.com,48,moderate,2,Y,Y,N,N,N
+dental,5,"Larchmont Dental Associates",https://www.larchmontdentists.com,46,moderate,2,N,Y,N,N,Y
