@@ -21,6 +21,92 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Agency } from "@/types/database";
 
+const DEFAULT_PREFS: Record<string, boolean> = {
+  discovery_scan: true,
+  responses_ready: true,
+  audit_completed: true,
+  weekly_digest: false,
+  credit_alerts: true,
+};
+
+const PREF_META: Array<{ key: string; label: string; description: string }> = [
+  { key: "discovery_scan", label: "Discovery scan completed", description: "Get notified when a scheduled or manual scan finishes" },
+  { key: "responses_ready", label: "Responses ready for review", description: "New AI-generated responses are ready in the queue" },
+  { key: "audit_completed", label: "Audit completed", description: "AI Visibility Audit results are ready" },
+  { key: "weekly_digest", label: "Weekly performance digest", description: "Summary of citation activity and metrics" },
+  { key: "credit_alerts", label: "Credit usage alerts", description: "Warnings when credit balance drops below threshold" },
+];
+
+function NotificationToggles() {
+  const [prefs, setPrefs] = useState<Record<string, boolean>>(DEFAULT_PREFS);
+  const [savingNotif, setSavingNotif] = useState(false);
+  const [savedNotif, setSavedNotif] = useState(false);
+
+  function toggle(key: string) {
+    setPrefs((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  async function handleSaveNotifications() {
+    setSavingNotif(true);
+    // Persist to localStorage until a notifications table is added
+    localStorage.setItem("ml_notification_prefs", JSON.stringify(prefs));
+    await new Promise((r) => setTimeout(r, 300));
+    setSavingNotif(false);
+    setSavedNotif(true);
+    setTimeout(() => setSavedNotif(false), 2000);
+  }
+
+  useEffect(() => {
+    const stored = localStorage.getItem("ml_notification_prefs");
+    if (stored) {
+      try { setPrefs(JSON.parse(stored)); } catch { /* ignore */ }
+    }
+  }, []);
+
+  return (
+    <div className="space-y-4">
+      {PREF_META.map((pref) => (
+        <div
+          key={pref.key}
+          className="flex items-center justify-between rounded-md border border-border bg-background p-4"
+        >
+          <div>
+            <p className="text-sm font-medium">{pref.label}</p>
+            <p className="text-xs text-muted-foreground">{pref.description}</p>
+          </div>
+          <button
+            onClick={() => toggle(pref.key)}
+            className={`relative h-6 w-11 rounded-full transition-colors ${
+              prefs[pref.key] ? "bg-primary" : "bg-muted"
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
+                prefs[pref.key] ? "left-[22px]" : "left-0.5"
+              }`}
+            />
+          </button>
+        </div>
+      ))}
+      <Button
+        onClick={handleSaveNotifications}
+        disabled={savingNotif}
+        size="sm"
+        className="bg-primary hover:bg-primary/90"
+      >
+        {savingNotif ? (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        ) : savedNotif ? (
+          <CheckCircle2 className="mr-2 h-4 w-4" />
+        ) : (
+          <Save className="mr-2 h-4 w-4" />
+        )}
+        {savingNotif ? "Saving..." : savedNotif ? "Saved" : "Save Preferences"}
+      </Button>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   useEffect(() => { document.title = "Settings — MentionLayer"; }, []);
 
@@ -521,65 +607,11 @@ export default function SettingsPage() {
               Configure how and when you receive notifications.
             </p>
 
-            <div className="space-y-4">
-              {[
-                {
-                  label: "Discovery scan completed",
-                  description:
-                    "Get notified when a scheduled or manual scan finishes",
-                  enabled: true,
-                },
-                {
-                  label: "Responses ready for review",
-                  description:
-                    "New AI-generated responses are ready in the queue",
-                  enabled: true,
-                },
-                {
-                  label: "Audit completed",
-                  description: "AI Visibility Audit results are ready",
-                  enabled: true,
-                },
-                {
-                  label: "Weekly performance digest",
-                  description: "Summary of citation activity and metrics",
-                  enabled: false,
-                },
-                {
-                  label: "Credit usage alerts",
-                  description:
-                    "Warnings when credit balance drops below threshold",
-                  enabled: true,
-                },
-              ].map((pref) => (
-                <div
-                  key={pref.label}
-                  className="flex items-center justify-between rounded-md border border-border bg-background p-4"
-                >
-                  <div>
-                    <p className="text-sm font-medium">{pref.label}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {pref.description}
-                    </p>
-                  </div>
-                  <button
-                    className={`relative h-6 w-11 rounded-full transition-colors ${
-                      pref.enabled ? "bg-primary" : "bg-muted"
-                    }`}
-                  >
-                    <span
-                      className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
-                        pref.enabled ? "left-[22px]" : "left-0.5"
-                      }`}
-                    />
-                  </button>
-                </div>
-              ))}
-            </div>
+            <NotificationToggles />
 
             <p className="mt-4 text-xs text-muted-foreground">
-              Email notifications powered by Resend. Slack integration coming in
-              Phase 2.
+              Email notifications powered by Resend. Slack integration coming
+              soon.
             </p>
           </div>
         </TabsContent>

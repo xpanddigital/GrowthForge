@@ -20,13 +20,11 @@ export const metadata: Metadata = {
 };
 
 function getOgImageUrl(post: { title: string; category: string }) {
-  const base =
-    process.env.NEXT_PUBLIC_APP_URL || "https://mentionlayer.com";
   const params = new URLSearchParams({
     title: post.title,
     category: post.category,
   });
-  return `${base}/api/og?${params.toString()}`;
+  return `/api/og?${params.toString()}`;
 }
 
 function getPublishedPosts() {

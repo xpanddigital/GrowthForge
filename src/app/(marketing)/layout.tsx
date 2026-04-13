@@ -99,7 +99,7 @@ export default function MarketingLayout({
             <div>
               <h3 className="text-sm font-semibold text-foreground">Company</h3>
               <ul className="mt-3 space-y-2">
-                <li><a href="mailto:joel@xpanddigital.com" className="text-sm text-muted-foreground hover:text-foreground">Contact</a></li>
+                <li><a href="mailto:joel@xpanddigital.io" className="text-sm text-muted-foreground hover:text-foreground">Contact</a></li>
                 <li><a href="https://mentionlayer.com" className="text-sm text-muted-foreground hover:text-foreground">MentionLayer</a></li>
               </ul>
             </div>

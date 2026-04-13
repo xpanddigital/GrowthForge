@@ -46,7 +46,7 @@ export default function HelpLayout({
               Dashboard
             </Link>
             <Link
-              href="mailto:joel@xpanddigital.com"
+              href="mailto:joel@xpanddigital.io"
               className="rounded-md bg-[#6C5CE7] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#5A4BD1]"
             >
               Contact Support

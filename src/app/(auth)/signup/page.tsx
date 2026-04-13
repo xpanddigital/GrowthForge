@@ -22,8 +22,6 @@ function SignupForm() {
   const router = useRouter();
   const plan = searchParams.get("plan");
 
-  useEffect(() => { document.title = "Sign Up \u2014 MentionLayer"; }, []);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -34,8 +32,14 @@ function SignupForm() {
   const supabase = createClient();
 
   // Redirect to plan selection if no plan chosen
+  useEffect(() => {
+    document.title = "Sign Up \u2014 MentionLayer";
+    if (!plan) {
+      router.push("/signup/plan");
+    }
+  }, [plan, router]);
+
   if (!plan) {
-    router.push("/signup/plan");
     return null;
   }
 

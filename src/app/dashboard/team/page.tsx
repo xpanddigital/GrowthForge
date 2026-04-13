@@ -141,21 +141,68 @@ export default function TeamPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [inviteMessage, setInviteMessage] = useState("");
+  const [inviteError, setInviteError] = useState(false);
+
   async function handleInvite() {
     if (!inviteEmail.trim() || !agency) return;
     setInviting(true);
+    setInviteMessage("");
+    setInviteError(false);
 
-    // In a real implementation, this would:
-    // 1. Create an invitation record
-    // 2. Send an email via Resend
-    // 3. The invited user would sign up and be added to the agency
-    // For now, we'll just show a success state
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const res = await fetch("/api/team/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inviteEmail.trim(), role: inviteRole }),
+      });
 
-    setInviting(false);
-    setShowInvite(false);
-    setInviteEmail("");
-    setInviteRole("member");
+      const result = await res.json();
+
+      if (!res.ok) {
+        setInviteMessage(result.error || "Failed to send invite");
+        setInviteError(true);
+        setInviting(false);
+        return;
+      }
+
+      setInviteMessage(
+        result.data?.status === "added"
+          ? `${inviteEmail} has been added to your team.`
+          : `Invitation sent to ${inviteEmail}.`
+      );
+      setInviteError(false);
+      setInviteEmail("");
+      setInviteRole("member");
+      setInviting(false);
+
+      // Refresh team members list
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: userData } = await supabase
+          .from("users")
+          .select("agency_id")
+          .eq("id", user.id)
+          .single();
+        if (userData) {
+          const { data: teamData } = await supabase
+            .from("users")
+            .select("*")
+            .eq("agency_id", userData.agency_id)
+            .order("created_at", { ascending: true });
+          if (teamData) setMembers(teamData);
+        }
+      }
+
+      setTimeout(() => {
+        setShowInvite(false);
+        setInviteMessage("");
+      }, 3000);
+    } catch {
+      setInviteMessage("Something went wrong. Please try again.");
+      setInviteError(true);
+      setInviting(false);
+    }
   }
 
   if (loading) {
@@ -259,9 +306,16 @@ export default function TeamPage() {
               Cancel
             </Button>
           </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            They&apos;ll receive an email with a link to join your agency workspace.
-          </p>
+          {inviteMessage && (
+            <p className={`mt-2 text-xs ${inviteError ? "text-destructive" : "text-emerald-400"}`}>
+              {inviteMessage}
+            </p>
+          )}
+          {!inviteMessage && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              They&apos;ll receive an email with a link to join your agency workspace.
+            </p>
+          )}
         </div>
       )}
 

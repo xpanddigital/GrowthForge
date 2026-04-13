@@ -271,7 +271,7 @@ export function HelpWidget() {
               Browse all articles
             </Link>
             <a
-              href="mailto:joel@xpanddigital.com"
+              href="mailto:joel@xpanddigital.io"
               className="text-xs text-muted-foreground hover:text-foreground"
             >
               Contact support
