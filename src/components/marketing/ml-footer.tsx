@@ -43,6 +43,7 @@ export function MLFooter() {
               { label: "Pricing", href: "/#pricing" },
               { label: "Blog", href: "/blog" },
               { label: "Academy", href: "/academy" },
+              { label: "Research", href: "/research" },
               { label: "Done for You", href: "/services" },
               { label: "Sign In", href: "/login" },
             ].map(({ label, href }) => (
