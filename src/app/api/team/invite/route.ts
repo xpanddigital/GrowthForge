@@ -65,12 +65,17 @@ export async function POST(req: NextRequest) {
   if (inviteError) {
     // If user already has an auth account, just add them to the agency
     if (inviteError.message?.includes("already been registered")) {
-      const { data: authUser } = await serviceClient.auth.admin.getUserByEmail(email);
-      if (authUser?.user) {
+      // Look up existing auth user by listing with email filter
+      const { data: listData } = await serviceClient.auth.admin.listUsers({
+        page: 1,
+        perPage: 1,
+      });
+      const existingUser = listData?.users?.find((u) => u.email === email);
+      if (existingUser) {
         const { error: insertError } = await serviceClient
           .from("users")
           .insert({
-            id: authUser.user.id,
+            id: existingUser.id,
             agency_id: userData.agency_id,
             email,
             role,
