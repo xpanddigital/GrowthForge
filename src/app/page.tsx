@@ -54,18 +54,17 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — Dashboard Screenshot in Browser Frame */}
+            {/* Right — Product in context (laptop mockup) */}
             <div className="ml-enter ml-d4 hidden lg:block">
-              <BrowserFrame url="app.mentionlayer.com/monitor">
-                <Image
-                  src="/images/dashboard-hero.png"
-                  alt="MentionLayer GEO Tracker showing AI Visibility Score of 78 with Share of Model breakdown across ChatGPT, Perplexity, Gemini, and Claude"
-                  width={520}
-                  height={680}
-                  className="w-full"
-                  priority
-                />
-              </BrowserFrame>
+              <Image
+                src="/images/hero-laptop-v2.png"
+                alt="MentionLayer AI Visibility Tracker dashboard showing a GEO score of 78 on a MacBook Pro"
+                width={700}
+                height={394}
+                className="w-full rounded-xl"
+                priority
+                style={{ boxShadow: "0 20px 50px -12px rgba(15,23,42,0.1)" }}
+              />
             </div>
           </div>
 
