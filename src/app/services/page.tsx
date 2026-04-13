@@ -70,7 +70,7 @@ function FAQ() {
 export default function ServicesPage() {
   return (
     <div className="ml">
-      <ServiceJsonLd />
+      <ServiceJsonLd name="MentionLayer Done-for-You Services" description="Fully managed AI visibility campaigns — citation seeding, press, entity optimization, and AI monitoring." url="/services" />
       <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Done for You", url: "/services" }]} />
       <FAQPageJsonLd questions={faqs.map(({ q, a }) => ({ question: q, answer: a }))} />
 
