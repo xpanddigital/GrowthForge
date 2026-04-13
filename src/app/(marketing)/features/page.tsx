@@ -156,6 +156,10 @@ const features = [
 ];
 
 export default function FeaturesPage() {
+  /* Citation Engine is the featured module — pull it out */
+  const citationEngine = features[0];
+  const remainingFeatures = features.slice(1);
+
   return (
     <>
       <WebPageJsonLd
@@ -164,84 +168,246 @@ export default function FeaturesPage() {
         url="/features"
       />
       <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Features", url: "/features" }]} />
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#6C5CE7]/5 to-transparent" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:py-28">
-          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-[#00D2D3]">
+
+      {/* ═══ HERO ═══ */}
+      <section className="relative overflow-hidden py-20 sm:py-28">
+        {/* Background texture */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(61,43,224,0.04), transparent)" }} />
+
+        <div className="relative max-w-[1200px] mx-auto px-6 text-center">
+          <p
+            className="text-[13px] font-semibold tracking-wide uppercase"
+            style={{ color: "var(--accent)", letterSpacing: "0.08em" }}
+          >
             The Full GEO Stack
           </p>
-          <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+
+          <h1
+            className="mx-auto mt-5 max-w-[800px] text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.08] tracking-tight"
+            style={{ color: "var(--ink)" }}
+          >
             10 Modules. One Mission:{" "}
-            <span className="text-[#6C5CE7]">
+            <em className="not-italic" style={{ color: "var(--accent)" }}>
               Get Your Brand Recommended by AI.
-            </span>
+            </em>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+
+          <p
+            className="mx-auto mt-6 max-w-[640px] text-[17px] leading-[1.65]"
+            style={{ color: "var(--ink-secondary)" }}
+          >
             AI models are replacing search results. When someone asks ChatGPT or
             Perplexity for a recommendation, your brand is either in the answer
             or it isn&apos;t. MentionLayer makes sure you are.
           </p>
-        </div>
-      </section>
 
-      {/* Feature Grid */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
-        <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
-          {features.map((feature) => (
+          <div className="mt-9 flex flex-wrap gap-3 justify-center">
             <Link
-              key={feature.title}
-              href={feature.href}
-              className="group relative rounded-xl border border-border bg-card p-6 transition-all hover:border-[#6C5CE7]/40 hover:bg-card/80 sm:p-8"
+              href="/free-audit"
+              className="h-12 px-7 rounded-lg text-[15px] font-semibold text-white inline-flex items-center gap-2 transition-transform hover:-translate-y-px"
+              style={{ background: "var(--accent)", boxShadow: "0 2px 8px rgba(61,43,224,0.25)" }}
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C5CE7]/10 text-[#6C5CE7] transition-colors group-hover:bg-[#6C5CE7]/20">
-                {feature.icon}
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {feature.description}
-              </p>
-              <span className="mt-4 inline-flex items-center text-sm font-medium text-[#6C5CE7] opacity-0 transition-opacity group-hover:opacity-100">
-                Learn more
-                <svg
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="ml-1 h-4 w-4"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-4 py-16 text-center sm:py-24">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Your competitors are already in the AI answers.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Run a free AI Visibility Audit and see exactly where you stand. Takes
-            5 minutes. No credit card required.
-          </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/signup"
-              className="inline-flex h-11 items-center rounded-md bg-[#6C5CE7] px-8 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
-            >
-              Start Free Audit
+              Run free visibility audit
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
             </Link>
             <Link
               href="/how-it-works"
-              className="inline-flex h-11 items-center rounded-md border border-border px-8 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="h-12 px-7 rounded-lg text-[15px] font-semibold inline-flex items-center border-[1.5px]"
+              style={{ color: "var(--ink)", borderColor: "rgba(26,26,46,0.15)" }}
+            >
+              How it works
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FEATURED MODULE — Citation Engine ═══ */}
+      <section className="py-20 sm:py-28" style={{ background: "var(--surface-raised)" }}>
+        <div className="max-w-[1200px] mx-auto px-6">
+          <p
+            className="text-[13px] font-semibold tracking-wide uppercase"
+            style={{ color: "var(--accent)", letterSpacing: "0.08em" }}
+          >
+            Core Module
+          </p>
+          <h2
+            className="mt-4 text-[36px] sm:text-[44px] leading-[1.08] max-w-[560px]"
+            style={{ color: "var(--ink)" }}
+          >
+            Citation Engine
+          </h2>
+
+          <div
+            className="mt-10 rounded-2xl overflow-hidden"
+            style={{ background: "var(--accent)", boxShadow: "0 8px 40px -8px rgba(61,43,224,0.25)" }}
+          >
+            <div className="grid lg:grid-cols-[1.2fr_1fr] gap-0">
+              {/* Left — copy */}
+              <div className="p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+                <div>
+                  <span
+                    className="inline-block text-[12px] font-semibold uppercase tracking-wide px-3 py-1 rounded-full text-white"
+                    style={{ background: "rgba(255,255,255,0.15)", letterSpacing: "0.06em" }}
+                  >
+                    Most Powerful Module
+                  </span>
+                  <h3 className="mt-6 text-[24px] sm:text-[28px] lg:text-[32px] leading-[1.12] text-white">
+                    Plant your brand where AI already looks
+                  </h3>
+                  <p className="mt-4 text-[16px] sm:text-[17px] leading-[1.6] text-white/80">
+                    {citationEngine.description}
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {["Reddit", "Quora", "Facebook Groups"].map((p) => (
+                    <span key={p} className="text-[12px] font-medium px-3 py-1 rounded-full text-white" style={{ background: "rgba(255,255,255,0.12)" }}>
+                      {p}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right — capabilities checklist */}
+              <div
+                className="p-8 sm:p-10 lg:p-12 flex flex-col justify-center"
+                style={{ background: "rgba(255,255,255,0.06)" }}
+              >
+                <p className="text-[13px] font-semibold uppercase tracking-wide text-white/50 mb-6" style={{ letterSpacing: "0.06em" }}>
+                  What it does
+                </p>
+                <div className="space-y-4">
+                  {[
+                    "Discovers threads Google and AI already cite",
+                    "Generates 3 response variants: casual, expert, story",
+                    "Human-quality, community-native tone per platform",
+                    "Opportunity scoring ranks threads by impact",
+                    "Human-in-the-loop approval before any posting",
+                    "Full audit trail of every placement",
+                  ].map((item) => (
+                    <div key={item} className="flex gap-3 items-start">
+                      <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="#fbbf24" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+                      <span className="text-[15px] text-white/85">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Link
+                  href={citationEngine.href}
+                  className="mt-8 inline-flex items-center gap-2 text-[14px] font-semibold text-white/90 hover:text-white transition-colors"
+                >
+                  Learn more about Citation Engine
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FEATURE GRID — Remaining 9 Modules ═══ */}
+      <section className="py-20 sm:py-28">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-14">
+            <p
+              className="text-[13px] font-semibold tracking-wide uppercase"
+              style={{ color: "var(--warm)", letterSpacing: "0.08em" }}
+            >
+              The Full Suite
+            </p>
+            <h2
+              className="mt-4 text-[36px] sm:text-[44px] leading-[1.08]"
+              style={{ color: "var(--ink)" }}
+            >
+              9 more modules working together
+            </h2>
+            <p
+              className="mx-auto mt-5 max-w-[560px] text-[17px] leading-[1.65]"
+              style={{ color: "var(--ink-secondary)" }}
+            >
+              Every pillar of AI visibility covered. Monitor, audit, seed, optimize, and prove ROI — from a single platform.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {remainingFeatures.map((feature) => (
+              <Link
+                key={feature.title}
+                href={feature.href}
+                className="group relative rounded-2xl p-7 sm:p-8 transition-all hover:-translate-y-px"
+                style={{
+                  background: "var(--surface-raised)",
+                  border: "1px solid rgba(26,26,46,0.06)",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)",
+                }}
+              >
+                {/* Icon */}
+                <div
+                  className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl"
+                  style={{ background: "var(--accent-subtle)", color: "var(--accent)" }}
+                >
+                  {feature.icon}
+                </div>
+
+                {/* Title */}
+                <h3
+                  className="mb-2 text-[18px] font-semibold leading-tight"
+                  style={{ color: "var(--ink)" }}
+                >
+                  {feature.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className="text-[15px] leading-[1.6]"
+                  style={{ color: "var(--ink-secondary)" }}
+                >
+                  {feature.description}
+                </p>
+
+                {/* Hover arrow */}
+                <span
+                  className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: "var(--accent)" }}
+                >
+                  Learn more
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CTA ═══ */}
+      <section className="py-20 sm:py-28" style={{ background: "var(--accent-subtle)" }}>
+        <div className="max-w-[1200px] mx-auto px-6 text-center">
+          <h2
+            className="text-[36px] sm:text-[44px] leading-[1.08]"
+            style={{ color: "var(--ink)" }}
+          >
+            Your competitors are already in the AI answers.
+          </h2>
+          <p
+            className="mx-auto mt-5 max-w-[560px] text-[17px] leading-[1.65]"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            Run a free AI Visibility Audit and see exactly where you stand. Takes
+            5 minutes. No credit card required.
+          </p>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/signup"
+              className="h-12 px-7 rounded-lg text-[15px] font-semibold text-white inline-flex items-center gap-2 transition-transform hover:-translate-y-px"
+              style={{ background: "var(--accent)", boxShadow: "0 2px 8px rgba(61,43,224,0.25)" }}
+            >
+              Start Free Audit
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="h-12 px-7 rounded-lg text-[15px] font-semibold inline-flex items-center border-[1.5px]"
+              style={{ color: "var(--ink)", borderColor: "rgba(26,26,46,0.15)" }}
             >
               See How It Works
             </Link>

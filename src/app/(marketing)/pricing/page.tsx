@@ -22,10 +22,27 @@ export const metadata: Metadata = {
 
 const checkIcon = (
   <svg
-    className="mt-0.5 h-4 w-4 shrink-0 text-[#00D2D3]"
+    className="mt-0.5 h-4 w-4 shrink-0"
     viewBox="0 0 20 20"
     fill="currentColor"
     aria-hidden="true"
+    style={{ color: "#059669" }}
+  >
+    <path
+      fillRule="evenodd"
+      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const checkIconGold = (
+  <svg
+    className="mt-0.5 h-4 w-4 shrink-0"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+    style={{ color: "#fbbf24" }}
   >
     <path
       fillRule="evenodd"
@@ -195,10 +212,11 @@ function ComparisonCell({ value }: { value: boolean | string }) {
   if (typeof value === "boolean") {
     return value ? (
       <svg
-        className="mx-auto h-5 w-5 text-[#00D2D3]"
+        className="mx-auto h-5 w-5"
         viewBox="0 0 20 20"
         fill="currentColor"
         aria-hidden="true"
+        style={{ color: "#059669" }}
       >
         <path
           fillRule="evenodd"
@@ -207,12 +225,12 @@ function ComparisonCell({ value }: { value: boolean | string }) {
         />
       </svg>
     ) : (
-      <span className="mx-auto block h-5 text-center text-muted-foreground/40">
+      <span className="mx-auto block h-5 text-center text-[14px]" style={{ color: "var(--ink-tertiary)" }}>
         &mdash;
       </span>
     );
   }
-  return <span className="text-sm text-foreground">{value}</span>;
+  return <span className="text-[14px]" style={{ color: "var(--ink)" }}>{value}</span>;
 }
 
 export default function PricingPage() {
@@ -222,7 +240,7 @@ export default function PricingPage() {
   }));
 
   return (
-    <div className="bg-background">
+    <div>
       <PricingJsonLd
         plans={visiblePlans.map((p) => ({
           name: p.name,
@@ -231,179 +249,319 @@ export default function PricingPage() {
         }))}
       />
       <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Pricing", url: "/pricing" }]} />
-      {/* Hero */}
-      <section className="px-4 pb-16 pt-20 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-          Every feature. Every plan.
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          All plans include the full MentionLayer platform — Citation Engine, AI
-          Monitor, PressForge, and more. Pick the plan that matches your scale.
-        </p>
-      </section>
 
-      {/* Plan Cards */}
-      <section className="mx-auto max-w-7xl px-4 pb-24">
-        <div className="grid gap-6 lg:grid-cols-4">
-          {visiblePlans.map((plan) => (
-            <div
-              key={plan.id}
-              className={`relative flex flex-col rounded-xl border p-8 ${
-                plan.popular
-                  ? "border-[#6C5CE7] bg-card shadow-lg shadow-[#6C5CE7]/10"
-                  : "border-border bg-card"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-[#6C5CE7] px-4 py-1 text-xs font-semibold text-white">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-              <div>
-                <h2 className="text-lg font-semibold text-foreground">
-                  {plan.name}
-                </h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {plan.tagline}
-                </p>
-              </div>
-              <div className="mt-6">
-                <span className="text-4xl font-bold tracking-tight text-foreground">
-                  ${plan.priceMonthly}
-                </span>
-                <span className="text-sm text-muted-foreground">/month</span>
-              </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                ${plan.priceAnnualMonthly}/mo billed annually
-              </p>
-              <Link
-                href="/signup/plan"
-                className={`mt-6 block rounded-md px-4 py-2.5 text-center text-sm font-medium transition-colors ${
-                  plan.popular
-                    ? "bg-[#6C5CE7] text-white hover:bg-[#5A4BD1]"
-                    : "bg-muted text-foreground hover:bg-muted/80"
-                }`}
-              >
-                Start free trial
-              </Link>
-              <ul className="mt-8 flex flex-col gap-3">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2 text-sm text-muted-foreground"
-                  >
-                    {checkIcon}
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      {/* ═══ HERO ═══ */}
+      <section className="py-20 sm:py-28">
+        <div className="max-w-[1200px] mx-auto px-6 text-center">
+          <p
+            className="text-[13px] font-semibold tracking-wide uppercase"
+            style={{ color: "var(--accent)", letterSpacing: "0.08em" }}
+          >
+            Pricing
+          </p>
+          <h1
+            className="mt-4 text-[36px] sm:text-[44px] leading-[1.08] mx-auto max-w-[700px]"
+            style={{ color: "var(--ink)" }}
+          >
+            Every feature. Every plan.
+          </h1>
+          <p
+            className="mx-auto mt-5 max-w-2xl text-[17px] leading-[1.65]"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            All plans include the full MentionLayer platform — Citation Engine, AI
+            Monitor, PressForge, and more. Pick the plan that matches your scale.
+          </p>
         </div>
       </section>
 
-      {/* Feature Comparison Table */}
-      <section className="mx-auto max-w-7xl px-4 pb-24">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-foreground">
-          Compare plans
-        </h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="px-6 py-4 text-left font-medium text-muted-foreground">
-                  Feature
-                </th>
-                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
-                  Solo
-                </th>
-                <th className="px-4 py-4 text-center font-medium text-foreground">
-                  Growth
-                </th>
-                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
-                  Agency
-                </th>
-                <th className="px-4 py-4 text-center font-medium text-muted-foreground">
-                  Agency Pro
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonFeatures.map((row, i) => (
-                <tr
-                  key={row.feature}
-                  className={
-                    i < comparisonFeatures.length - 1
-                      ? "border-b border-border"
-                      : ""
+      {/* ═══ PLAN CARDS ═══ */}
+      <section className="pb-20 sm:pb-28">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {visiblePlans.map((plan) => {
+              const pop = plan.popular;
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative rounded-2xl p-8 flex flex-col ${pop ? "text-white" : ""}`}
+                  style={
+                    pop
+                      ? { background: "var(--accent)", boxShadow: "0 8px 40px -8px rgba(61,43,224,0.3)" }
+                      : { background: "var(--surface-raised)", border: "1px solid rgba(26,26,46,0.06)" }
                   }
                 >
-                  <td className="px-6 py-3.5 text-sm text-foreground">
-                    {row.feature}
-                  </td>
-                  <td className="px-4 py-3.5 text-center">
-                    <ComparisonCell value={row.solo} />
-                  </td>
-                  <td className="px-4 py-3.5 text-center">
-                    <ComparisonCell value={row.growth} />
-                  </td>
-                  <td className="px-4 py-3.5 text-center">
-                    <ComparisonCell value={row.agency} />
-                  </td>
-                  <td className="px-4 py-3.5 text-center">
-                    <ComparisonCell value={row.agencyPro} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+                  {pop && (
+                    <span
+                      className="absolute -top-3 left-6 text-[12px] font-bold px-3 py-1 rounded-full"
+                      style={{ background: "#fbbf24", color: "#1a1a2e" }}
+                    >
+                      Most popular
+                    </span>
+                  )}
+                  <div>
+                    <p
+                      className={`text-[16px] font-semibold ${pop ? "text-white" : ""}`}
+                      style={pop ? {} : { color: "var(--ink)" }}
+                    >
+                      {plan.name}
+                    </p>
+                    <p
+                      className={`mt-1 text-[14px] ${pop ? "text-white/60" : ""}`}
+                      style={pop ? {} : { color: "var(--ink-tertiary)" }}
+                    >
+                      {plan.tagline}
+                    </p>
+                  </div>
+                  <div className="mt-6 mb-1">
+                    <span
+                      className={`serif text-[44px] ${pop ? "text-white" : ""}`}
+                      style={pop ? {} : { color: "var(--ink)" }}
+                    >
+                      ${plan.priceMonthly}
+                    </span>
+                    <span
+                      className={`text-[15px] ${pop ? "text-white/60" : ""}`}
+                      style={pop ? {} : { color: "var(--ink-tertiary)" }}
+                    >
+                      /mo
+                    </span>
+                  </div>
+                  <p
+                    className={`text-[14px] mb-6 ${pop ? "text-white/60" : ""}`}
+                    style={pop ? {} : { color: "var(--ink-tertiary)" }}
+                  >
+                    ${plan.priceAnnualMonthly}/mo billed annually
+                  </p>
+                  <Link
+                    href="/signup/plan"
+                    className={`h-11 rounded-lg text-[15px] font-semibold inline-flex items-center justify-center transition-all ${
+                      pop
+                        ? "bg-white hover:bg-white/90"
+                        : "hover:-translate-y-px"
+                    }`}
+                    style={
+                      pop
+                        ? { color: "var(--accent)" }
+                        : { background: "var(--accent)", color: "white" }
+                    }
+                  >
+                    Start free trial
+                  </Link>
+                  <ul className="mt-8 flex-1 space-y-2.5">
+                    {plan.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className={`flex items-start gap-2.5 text-[14px] ${pop ? "text-white/85" : ""}`}
+                        style={pop ? {} : { color: "var(--ink-secondary)" }}
+                      >
+                        {pop ? checkIconGold : checkIcon}
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
 
-      {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-4 pb-24">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-foreground">
-          Frequently asked questions
-        </h2>
-        <div className="space-y-6">
-          {faqs.map((faq) => (
-            <div
-              key={faq.question}
-              className="rounded-lg border border-border bg-card p-6"
+          <p
+            className="mt-10 text-[14px] text-center"
+            style={{ color: "var(--ink-tertiary)" }}
+          >
+            14-day free trial on all plans. No charge until it ends.{" "}
+            <a
+              href="mailto:joel@xpanddigital.io"
+              className="font-medium underline"
+              style={{ color: "var(--accent)" }}
             >
-              <h3 className="font-medium text-foreground">{faq.question}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {faq.answer}
-              </p>
-            </div>
-          ))}
+              Need enterprise?
+            </a>
+          </p>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t border-border bg-card px-4 py-20 text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">
-          Ready to own your AI visibility?
-        </h2>
-        <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-          Start with a free 14-day trial. Run your first AI Visibility Audit in
-          under 5 minutes. Cancel anytime during your trial.
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <Link
-            href="/signup/plan"
-            className="rounded-md bg-[#6C5CE7] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
+      {/* ═══ FEATURE COMPARISON TABLE ═══ */}
+      <section className="py-20 sm:py-28" style={{ borderTop: "1px solid rgba(26,26,46,0.06)" }}>
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-14">
+            <p
+              className="text-[13px] font-semibold tracking-wide uppercase"
+              style={{ color: "var(--accent)", letterSpacing: "0.08em" }}
+            >
+              Compare
+            </p>
+            <h2
+              className="mt-4 text-[36px] sm:text-[44px] leading-[1.08]"
+              style={{ color: "var(--ink)" }}
+            >
+              Compare plans
+            </h2>
+          </div>
+          <div
+            className="overflow-x-auto rounded-2xl"
+            style={{
+              background: "var(--surface-raised)",
+              border: "1px solid rgba(26,26,46,0.06)",
+            }}
           >
-            Start free trial
-          </Link>
-          <Link
-            href="/how-it-works"
-            className="rounded-md border border-border px-6 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            <table className="w-full text-[14px]">
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(26,26,46,0.06)" }}>
+                  <th
+                    className="px-6 py-4 text-left text-[13px] font-semibold"
+                    style={{ color: "var(--ink-tertiary)" }}
+                  >
+                    Feature
+                  </th>
+                  <th
+                    className="px-4 py-4 text-center text-[13px] font-semibold"
+                    style={{ color: "var(--ink-tertiary)" }}
+                  >
+                    Solo
+                  </th>
+                  <th
+                    className="px-4 py-4 text-center text-[13px] font-semibold"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    Growth
+                  </th>
+                  <th
+                    className="px-4 py-4 text-center text-[13px] font-semibold"
+                    style={{ color: "var(--ink-tertiary)" }}
+                  >
+                    Agency Light
+                  </th>
+                  <th
+                    className="px-4 py-4 text-center text-[13px] font-semibold"
+                    style={{ color: "var(--ink-tertiary)" }}
+                  >
+                    Agency Pro
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonFeatures.map((row, i) => (
+                  <tr
+                    key={row.feature}
+                    style={
+                      i < comparisonFeatures.length - 1
+                        ? { borderBottom: "1px solid rgba(26,26,46,0.06)" }
+                        : {}
+                    }
+                  >
+                    <td
+                      className="px-6 py-3.5 text-[14px]"
+                      style={{ color: "var(--ink)" }}
+                    >
+                      {row.feature}
+                    </td>
+                    <td className="px-4 py-3.5 text-center">
+                      <ComparisonCell value={row.solo} />
+                    </td>
+                    <td className="px-4 py-3.5 text-center">
+                      <ComparisonCell value={row.growth} />
+                    </td>
+                    <td className="px-4 py-3.5 text-center">
+                      <ComparisonCell value={row.agency} />
+                    </td>
+                    <td className="px-4 py-3.5 text-center">
+                      <ComparisonCell value={row.agencyPro} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ═══ */}
+      <section className="py-20 sm:py-28" style={{ borderTop: "1px solid rgba(26,26,46,0.06)" }}>
+        <div className="max-w-[800px] mx-auto px-6">
+          <div className="text-center mb-14">
+            <p
+              className="text-[13px] font-semibold tracking-wide uppercase"
+              style={{ color: "var(--accent)", letterSpacing: "0.08em" }}
+            >
+              FAQ
+            </p>
+            <h2
+              className="mt-4 text-[36px] sm:text-[44px] leading-[1.08]"
+              style={{ color: "var(--ink)" }}
+            >
+              Frequently asked questions
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <div
+                key={faq.question}
+                className="rounded-xl p-6"
+                style={{
+                  background: "var(--surface-raised)",
+                  border: "1px solid rgba(26,26,46,0.06)",
+                }}
+              >
+                <h3
+                  className="text-[16px] font-semibold"
+                  style={{ color: "var(--ink)" }}
+                >
+                  {faq.question}
+                </h3>
+                <p
+                  className="mt-2 text-[15px] leading-[1.65]"
+                  style={{ color: "var(--ink-secondary)" }}
+                >
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FINAL CTA ═══ */}
+      <section
+        className="py-20 sm:py-28"
+        style={{
+          background: "var(--surface-raised)",
+          borderTop: "1px solid rgba(26,26,46,0.06)",
+        }}
+      >
+        <div className="max-w-[1200px] mx-auto px-6 text-center">
+          <h2
+            className="text-[36px] sm:text-[44px] leading-[1.08]"
+            style={{ color: "var(--ink)" }}
           >
-            See how it works
-          </Link>
+            Ready to own your AI visibility?
+          </h2>
+          <p
+            className="mx-auto mt-5 max-w-xl text-[17px] leading-[1.65]"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            Start with a free 14-day trial. Run your first AI Visibility Audit in
+            under 5 minutes. Cancel anytime during your trial.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <Link
+              href="/signup/plan"
+              className="h-12 rounded-lg px-8 text-[15px] font-semibold inline-flex items-center justify-center transition-all hover:-translate-y-px"
+              style={{ background: "var(--accent)", color: "white" }}
+            >
+              Start free trial
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="h-12 rounded-lg px-8 text-[15px] font-semibold inline-flex items-center justify-center transition-all hover:-translate-y-px"
+              style={{
+                color: "var(--ink-secondary)",
+                border: "1px solid rgba(26,26,46,0.12)",
+              }}
+            >
+              See how it works
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { helpArticles } from "@/lib/help/articles";
 import { WebPageJsonLd, BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { MLNav } from "@/components/marketing/ml-nav";
+import { MLFooter } from "@/components/marketing/ml-footer";
 
 export const metadata: Metadata = {
   title: "Help Center",
@@ -49,7 +51,7 @@ const iconMap: Record<string, React.ReactNode> = {
   ),
   pressforge: (
     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
     </svg>
   ),
   "technical-geo": (
@@ -92,72 +94,104 @@ export default function HelpIndexPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <WebPageJsonLd
-        title="Help Center | MentionLayer"
-        description="Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more."
-        url="/help"
-      />
-      <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Help Center", url: "/help" }]} />
-      <div className="mb-12 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          MentionLayer Help Center
-        </h1>
-        <p className="mt-3 text-lg text-muted-foreground">
-          Everything you need to master AI visibility for your brand.
-        </p>
-      </div>
+    <div className="ml">
+      <MLNav />
+      <main className="pt-16">
+        <div className="mx-auto max-w-[1200px] px-6 py-16">
+          <WebPageJsonLd
+            title="Help Center | MentionLayer"
+            description="Learn how to use MentionLayer to improve your brand's AI visibility. Guides for the Citation Engine, AI Monitor, Audits, PressForge, Entity Sync, and more."
+            url="/help"
+          />
+          <BreadcrumbJsonLd items={[{ name: "Home", url: "/" }, { name: "Help Center", url: "/help" }]} />
 
-      {categories.map((category) => {
-        const articles = helpArticles.filter(
-          (a) => categoryMap[a.slug] === category
-        );
-        if (articles.length === 0) return null;
-
-        return (
-          <div key={category} className="mb-10">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              {category}
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {articles.map((article) => (
-                <Link
-                  key={article.slug}
-                  href={`/help/${article.slug}`}
-                  className="group flex gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-[#6C5CE7]/50 hover:bg-card/80"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#6C5CE7]/10 text-[#6C5CE7] transition-colors group-hover:bg-[#6C5CE7]/20">
-                    {iconMap[article.slug]}
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-foreground group-hover:text-[#6C5CE7]">
-                      {article.title}
-                    </h3>
-                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">
-                      {article.summary}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+          <div className="mb-14 text-center">
+            <p
+              className="mb-3 text-[13px] font-semibold uppercase tracking-wide"
+              style={{ color: "var(--accent)" }}
+            >
+              Help Center
+            </p>
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: "var(--ink)" }}>
+              MentionLayer Help Center
+            </h1>
+            <p className="mx-auto mt-4 max-w-lg text-[15px] leading-[1.65]" style={{ color: "var(--ink-secondary)" }}>
+              Everything you need to master AI visibility for your brand.
+            </p>
           </div>
-        );
-      })}
 
-      <div className="mt-12 rounded-lg border border-border bg-card p-6 text-center">
-        <h2 className="text-lg font-semibold text-foreground">
-          Can&apos;t find what you need?
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Reach out to our team and we&apos;ll get back to you within 24 hours.
-        </p>
-        <a
-          href="mailto:joel@xpanddigital.io"
-          className="mt-4 inline-block rounded-md bg-[#6C5CE7] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#5A4BD1]"
-        >
-          Contact Support
-        </a>
-      </div>
+          {categories.map((category) => {
+            const articles = helpArticles.filter(
+              (a) => categoryMap[a.slug] === category
+            );
+            if (articles.length === 0) return null;
+
+            return (
+              <div key={category} className="mb-12">
+                <h2
+                  className="mb-5 text-[13px] font-semibold uppercase tracking-wide"
+                  style={{ color: "var(--accent)" }}
+                >
+                  {category}
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {articles.map((article) => (
+                    <Link
+                      key={article.slug}
+                      href={`/help/${article.slug}`}
+                      className="group flex gap-4 rounded-xl border border-[rgba(26,26,46,0.06)] p-5 transition-all hover:border-[rgba(61,43,224,0.3)] hover:shadow-sm"
+                      style={{
+                        background: "var(--surface-raised)",
+                      }}
+                    >
+                      <div
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors"
+                        style={{
+                          background: "var(--accent-subtle)",
+                          color: "var(--accent)",
+                        }}
+                      >
+                        {iconMap[article.slug]}
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-[15px] font-semibold transition-colors" style={{ color: "var(--ink)" }}>
+                          {article.title}
+                        </h3>
+                        <p className="mt-1 line-clamp-2 text-[13px] leading-[1.65]" style={{ color: "var(--ink-secondary)" }}>
+                          {article.summary}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          <div
+            className="mt-16 rounded-xl p-8 text-center"
+            style={{
+              background: "var(--accent-subtle)",
+              border: "1px solid rgba(61,43,224,0.15)",
+            }}
+          >
+            <h2 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
+              Can&apos;t find what you need?
+            </h2>
+            <p className="mx-auto mt-2 max-w-md text-[15px] leading-[1.65]" style={{ color: "var(--ink-secondary)" }}>
+              Reach out to our team and we&apos;ll get back to you within 24 hours.
+            </p>
+            <a
+              href="mailto:joel@xpanddigital.io"
+              className="mt-5 inline-block h-12 rounded-lg px-7 text-[15px] font-semibold leading-[48px] text-white transition-opacity hover:opacity-90"
+              style={{ background: "var(--accent)" }}
+            >
+              Contact Support
+            </a>
+          </div>
+        </div>
+      </main>
+      <MLFooter />
     </div>
   );
 }
