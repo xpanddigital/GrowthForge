@@ -18,6 +18,7 @@ import {
   ChevronRight,
   X,
   Search,
+  MessageSquare,
   FileText,
   Activity,
   Lightbulb,
@@ -87,6 +88,7 @@ const navigation: NavItem[] = [
     children: [
       { name: "Overview", href: "/dashboard/monitor", icon: Radar },
       { name: "Keywords", href: "/dashboard/monitor/keywords", icon: Search },
+      { name: "Prompts", href: "/dashboard/monitor/prompts", icon: MessageSquare },
       { name: "Alerts", href: "/dashboard/monitor/alerts", icon: Bell },
     ],
   },
