@@ -39,9 +39,9 @@ export async function POST(req: NextRequest) {
   recentByIP.set(ip, now);
   // Cleanup stale entries periodically
   if (recentByIP.size > 1000) {
-    for (const [k, v] of recentByIP) {
+    recentByIP.forEach((v, k) => {
       if (now - v > RATE_LIMIT_WINDOW_MS) recentByIP.delete(k);
-    }
+    });
   }
 
   let body: AccessPayload;
