@@ -2,100 +2,215 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MLNav } from "@/components/marketing/ml-nav";
 import { MLFooter } from "@/components/marketing/ml-footer";
-import { ResearchCharts } from "./charts";
 import {
-  snapshots,
-  industryBreakdown,
-  keyStats,
-} from "@/lib/research/study-data";
+  studies,
+  researchUpdates,
+  hubStats,
+  crossStudyFindings,
+  type Study,
+  type ResearchUpdate,
+} from "@/lib/research/program";
 
 export const metadata: Metadata = {
-  title: "AI Visibility Index — Research",
+  title: "AI Visibility Index Research | MentionLayer",
   description:
-    "1,000 businesses. 5 AI models. 95,392 data points. The first large-scale study on which businesses get recommended by ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews.",
+    "The AI Visibility Index research program — a quarterly study on which businesses get recommended by AI models, and why. Live findings from 2,729 businesses across 14 industries and 4 markets, plus the controlled intervention trial that proves causation.",
   openGraph: {
-    title: "AI Visibility Index | MentionLayer Research",
+    title: "AI Visibility Index Research | MentionLayer",
     description:
-      "66% of businesses are completely invisible to AI. The AI Visibility Index reveals what separates the visible from the invisible.",
-    images: ["/api/og?title=AI+Visibility+Index"],
+      "Quarterly research on AI visibility. 2,729 businesses, 14 industries, 4 markets, 370k+ data points, and counting.",
+    type: "website",
+    images: ["/api/og?title=AI+Visibility+Index+Research"],
   },
 };
 
-const latest = snapshots[snapshots.length - 1];
+const STATUS_TONE: Record<
+  Study["status"],
+  { label: string; bg: string; fg: string }
+> = {
+  published: { label: "Published", bg: "rgba(31,157,94,0.12)", fg: "#1f9d5e" },
+  "in-recruitment": {
+    label: "Recruiting now",
+    bg: "rgba(232,114,58,0.12)",
+    fg: "#e8723a",
+  },
+  "in-progress": {
+    label: "In progress",
+    bg: "rgba(61,43,224,0.12)",
+    fg: "#3d2be0",
+  },
+  planned: {
+    label: "Planned",
+    bg: "rgba(142,144,166,0.12)",
+    fg: "#555770",
+  },
+};
 
-export default function ResearchPage() {
+export default function ResearchHubPage() {
+  const studyById = Object.fromEntries(studies.map((s) => [s.id, s]));
+  const publishedCount = studies.filter((s) => s.status === "published").length;
+
   return (
     <div className="ml">
       <MLNav />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-20">
+      <section className="relative overflow-hidden pt-28 pb-12 sm:pt-36 sm:pb-16">
         <div className="absolute inset-0 pointer-events-none">
           <div
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(61,43,224,0.06) 0%, transparent 70%)",
+                "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(61,43,224,0.08) 0%, transparent 70%)",
             }}
           />
         </div>
-        <div className="relative max-w-[1200px] mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[13px] font-medium" style={{ background: "var(--accent-subtle)", color: "var(--accent)" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            Ongoing Study &middot; {keyStats.totalBusinesses.toLocaleString()} Businesses
+        <div className="relative max-w-[1100px] mx-auto px-6">
+          <div className="flex flex-wrap items-center gap-2 text-[13px] mb-5">
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "4px 10px",
+                borderRadius: 999,
+                background: "var(--accent-subtle)",
+                color: "var(--accent)",
+                fontWeight: 600,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  background: "#1f9d5e",
+                  borderRadius: 3,
+                  display: "inline-block",
+                  boxShadow: "0 0 0 4px rgba(31,157,94,0.18)",
+                }}
+              />
+              Live · {hubStats.cadence}
+            </span>
+            <span style={{ color: "var(--ink-tertiary)" }}>·</span>
+            <span style={{ color: "var(--ink-tertiary)" }}>
+              Last updated{" "}
+              {new Date(researchUpdates[0]?.date ?? "2026-04-27").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            </span>
+            <span style={{ color: "var(--ink-tertiary)" }}>·</span>
+            <span style={{ color: "var(--ink-tertiary)" }}>
+              {hubStats.nextUpdate}
+            </span>
           </div>
           <h1
-            className="mt-6 text-[40px] sm:text-[56px] lg:text-[68px] leading-[1.06] tracking-tight"
+            className="text-[40px] sm:text-[56px] lg:text-[64px] leading-[1.04] tracking-tight"
             style={{ color: "var(--ink)" }}
           >
             The AI Visibility Index
+            <br />
+            <span style={{ color: "var(--accent)" }}>Research Program</span>
           </h1>
           <p
-            className="mt-6 text-[18px] sm:text-[20px] leading-[1.6] max-w-[640px] mx-auto"
+            className="mt-6 text-[18px] sm:text-[20px] leading-[1.55] max-w-[760px]"
             style={{ color: "var(--ink-secondary)" }}
           >
-            {keyStats.totalBusinesses.toLocaleString()} businesses. {keyStats.aiModels} AI models.{" "}
-            {keyStats.totalDataPoints.toLocaleString()} data points. The first large-scale study on which businesses get recommended by AI &mdash; and why.
+            A quarterly empirical study on which businesses get recommended by AI models — and why.{" "}
+            <strong style={{ color: "var(--ink)" }}>
+              {hubStats.totalStudies} studies published
+            </strong>
+            ,{" "}
+            <strong style={{ color: "var(--ink)" }}>
+              {hubStats.totalBusinesses.toLocaleString()} businesses analysed
+            </strong>
+            ,{" "}
+            <strong style={{ color: "var(--ink)" }}>
+              {hubStats.totalDataPoints} individual mention checks
+            </strong>{" "}
+            and counting. Built by Joel House (Forbes Agency Council) at MentionLayer. Updated monthly.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a
-              href="#findings"
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/free-audit"
               className="h-12 px-7 rounded-lg text-[15px] font-semibold text-white inline-flex items-center gap-2 transition-transform hover:-translate-y-px"
-              style={{ background: "var(--accent)", boxShadow: "0 2px 8px rgba(61,43,224,0.25)" }}
+              style={{
+                background: "var(--accent)",
+                boxShadow: "0 2px 8px rgba(61,43,224,0.25)",
+              }}
             >
-              View findings
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-            </a>
-            <a
-              href="#download"
-              className="h-12 px-7 rounded-lg text-[15px] font-semibold inline-flex items-center gap-2 transition-colors"
-              style={{ border: "1px solid rgba(61,43,224,0.2)", color: "var(--accent)" }}
+              Run your brand against the benchmarks
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+            <Link
+              href="/research/explore"
+              className="h-12 px-7 rounded-lg text-[15px] font-semibold inline-flex items-center gap-2"
+              style={{
+                border: "1px solid rgba(61,43,224,0.2)",
+                color: "var(--accent)",
+              }}
             >
-              Download CSV
-            </a>
+              Explore the data
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ═══ HEADLINE STAT ═══ */}
-      <section className="py-12 sm:py-16" style={{ background: "var(--surface-raised)" }}>
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid sm:grid-cols-4 gap-6 text-center">
+      {/* ═══ HUB STATS BAND ═══ */}
+      <section
+        className="py-10 sm:py-12"
+        style={{ background: "var(--surface-raised)" }}
+      >
+        <div className="max-w-[1100px] mx-auto px-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { value: `${latest.invisiblePct}%`, label: "Completely Invisible", sub: "to all 5 AI models" },
-              { value: `${keyStats.allFiveModelsPct}%`, label: "Visible in All 5", sub: "AI models" },
-              { value: `${latest.avgVisibilityScore}`, label: "Avg Visibility Score", sub: "out of 100" },
-              { value: `${keyStats.industries}`, label: "Industries Studied", sub: `${keyStats.totalBusinesses.toLocaleString()} businesses` },
+              {
+                v: publishedCount.toString(),
+                l: "Studies published",
+                s: `${studies.length - publishedCount} more in the pipeline`,
+              },
+              {
+                v: hubStats.totalBusinesses.toLocaleString(),
+                l: "Businesses analysed",
+                s: "across both studies",
+              },
+              {
+                v: hubStats.totalDataPoints,
+                l: "Mention checks",
+                s: "individual data points",
+              },
+              {
+                v: hubStats.totalIndustryCitySlots.toString(),
+                l: "Industry × market slots",
+                s: "in the live explorer",
+              },
             ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl p-6" style={{ background: "var(--surface)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-                <div className="text-[36px] sm:text-[42px] font-semibold tracking-tight" style={{ color: "var(--accent)" }}>
-                  {stat.value}
+              <div
+                key={stat.l}
+                className="rounded-2xl p-5"
+                style={{
+                  background: "var(--surface)",
+                  boxShadow:
+                    "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)",
+                }}
+              >
+                <div
+                  className="text-[30px] sm:text-[36px] font-semibold tracking-tight"
+                  style={{
+                    color: "var(--accent)",
+                    fontFamily: "'Outfit', system-ui, sans-serif",
+                  }}
+                >
+                  {stat.v}
                 </div>
-                <div className="mt-1 text-[14px] font-medium" style={{ color: "var(--ink)" }}>
-                  {stat.label}
+                <div
+                  className="mt-1 text-[13.5px] font-medium"
+                  style={{ color: "var(--ink)" }}
+                >
+                  {stat.l}
                 </div>
-                <div className="text-[13px]" style={{ color: "var(--ink-tertiary)" }}>
-                  {stat.sub}
+                <div
+                  className="text-[12px]"
+                  style={{ color: "var(--ink-tertiary)" }}
+                >
+                  {stat.s}
                 </div>
               </div>
             ))}
@@ -103,207 +218,765 @@ export default function ResearchPage() {
         </div>
       </section>
 
-      {/* ═══ KEY FINDINGS ═══ */}
-      <section id="findings" className="py-16 sm:py-24">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-[32px] sm:text-[40px] tracking-tight" style={{ color: "var(--ink)" }}>
-              Key Findings
-            </h2>
-            <p className="mt-3 text-[16px] max-w-[520px] mx-auto" style={{ color: "var(--ink-secondary)" }}>
-              What separates the businesses AI recommends from the ones it ignores.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Finding 1: Invisibility */}
-            <div className="rounded-2xl p-6 sm:p-8" style={{ background: "var(--surface-raised)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-subtle)" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                </div>
-                <h3 className="text-[18px] font-semibold" style={{ color: "var(--ink)", fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  The Invisibility Problem
-                </h3>
-              </div>
-              <p className="text-[40px] font-semibold tracking-tight" style={{ color: "var(--accent)" }}>
-                {latest.invisiblePct}%
-              </p>
-              <p className="mt-1 text-[14px]" style={{ color: "var(--ink-secondary)" }}>
-                of businesses are completely invisible to AI. They appear in zero AI-generated answers across all five models tested.
-              </p>
-            </div>
-
-            {/* Finding 2: Model Coverage */}
-            <div className="rounded-2xl p-6 sm:p-8" style={{ background: "var(--surface-raised)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-subtle)" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                </div>
-                <h3 className="text-[18px] font-semibold" style={{ color: "var(--ink)", fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  Multi-Model Coverage
-                </h3>
-              </div>
-              <p className="text-[40px] font-semibold tracking-tight" style={{ color: "var(--accent)" }}>
-                {keyStats.allFiveModelsPct}%
-              </p>
-              <p className="mt-1 text-[14px]" style={{ color: "var(--ink-secondary)" }}>
-                of businesses appear in all five AI models. Being visible in one model does not guarantee visibility in others.
-              </p>
-            </div>
-
-            {/* Finding 3: Review Cliff */}
-            <div className="rounded-2xl p-6 sm:p-8" style={{ background: "var(--surface-raised)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-subtle)" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
-                </div>
-                <h3 className="text-[18px] font-semibold" style={{ color: "var(--ink)", fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  The 1,000 Review Cliff
-                </h3>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <p className="text-[40px] font-semibold tracking-tight" style={{ color: "var(--accent)" }}>
-                  2.4x
-                </p>
-                <p className="text-[16px]" style={{ color: "var(--ink-tertiary)" }}>higher visibility</p>
-              </div>
-              <p className="mt-1 text-[14px]" style={{ color: "var(--ink-secondary)" }}>
-                Businesses with 1,000+ Google reviews score {keyStats.reviewCliff.aboveAvgScore} vs {keyStats.reviewCliff.belowAvgScore} average. Reviews are a strong signal AI models use to filter recommendations.
-              </p>
-            </div>
-
-            {/* Finding 4: Top Predictor */}
-            <div className="rounded-2xl p-6 sm:p-8" style={{ background: "var(--surface-raised)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-subtle)" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                </div>
-                <h3 className="text-[18px] font-semibold" style={{ color: "var(--ink)", fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  Top Predictors of Visibility
-                </h3>
-              </div>
-              <div className="space-y-3 mt-2">
-                {latest.topCorrelations.slice(0, 3).map((c) => (
-                  <div key={c.factor}>
-                    <div className="flex justify-between text-[13px] mb-1">
-                      <span style={{ color: "var(--ink)" }}>{c.factor}</span>
-                      <span className="font-mono font-medium" style={{ color: "var(--accent)" }}>
-                        r={c.correlation.toFixed(3)}
-                      </span>
-                    </div>
-                    <div className="h-2 rounded-full" style={{ background: "var(--accent-subtle)" }}>
-                      <div
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${Math.abs(c.correlation) * 300}%`,
-                          background: "var(--accent)",
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ INTERACTIVE CHARTS (Client Component) ═══ */}
-      <ResearchCharts
-        snapshots={snapshots}
-        industryBreakdown={industryBreakdown}
-        latest={latest}
-      />
-
-      {/* ═══ METHODOLOGY ═══ */}
-      <section className="py-16 sm:py-24">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-[32px] sm:text-[40px] tracking-tight" style={{ color: "var(--ink)" }}>
-              Methodology
-            </h2>
-            <p className="mt-3 text-[16px] max-w-[520px] mx-auto" style={{ color: "var(--ink-secondary)" }}>
-              How the AI Visibility Index is built each month.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { step: "01", title: "Sample Selection", desc: `${keyStats.totalBusinesses.toLocaleString()} businesses across ${keyStats.industries} industries, balanced between local service businesses and SaaS companies.` },
-              { step: "02", title: "AI Model Testing", desc: "Each business is queried across ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews using standardized buying-intent prompts." },
-              { step: "03", title: "Signal Collection", desc: "We collect 27 technical and authority signals per business including schema markup, review counts, blog content, robots.txt, and crawl accessibility." },
-              { step: "04", title: "Correlation Analysis", desc: "Pearson correlation coefficients are calculated between each signal and the composite visibility score to identify what actually drives AI recommendations." },
-            ].map((item) => (
-              <div key={item.step} className="rounded-2xl p-6" style={{ background: "var(--surface-raised)", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)" }}>
-                <div className="text-[13px] font-semibold" style={{ color: "var(--accent)" }}>
-                  Step {item.step}
-                </div>
-                <h3 className="mt-2 text-[16px] font-semibold" style={{ color: "var(--ink)", fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-[14px] leading-relaxed" style={{ color: "var(--ink-secondary)" }}>
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ DOWNLOAD ═══ */}
-      <section id="download" className="py-16 sm:py-24" style={{ background: "var(--surface-raised)" }}>
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
-          <h2 className="text-[32px] sm:text-[40px] tracking-tight" style={{ color: "var(--ink)" }}>
-            Download the Data
-          </h2>
-          <p className="mt-3 text-[16px] max-w-[520px] mx-auto" style={{ color: "var(--ink-secondary)" }}>
-            Full dataset available as CSV. Use it for your own analysis, research, or client reporting.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href="/data/ai-visibility-index-2026.csv"
-              download
-              className="h-12 px-7 rounded-lg text-[15px] font-semibold text-white inline-flex items-center gap-2 transition-transform hover:-translate-y-px"
-              style={{ background: "var(--accent)", boxShadow: "0 2px 8px rgba(61,43,224,0.25)" }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Full Dataset ({keyStats.totalBusinesses.toLocaleString()} rows)
-            </a>
-            <a
-              href="/data/ai-visibility-index-top-performers-2026.csv"
-              download
-              className="h-12 px-7 rounded-lg text-[15px] font-semibold inline-flex items-center gap-2 transition-colors"
-              style={{ border: "1px solid rgba(61,43,224,0.2)", color: "var(--accent)" }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Top Performers Only
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ CTA ═══ */}
-      <section className="py-16 sm:py-24">
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
-          <h2 className="text-[32px] sm:text-[40px] tracking-tight" style={{ color: "var(--ink)" }}>
-            Where does your business stand?
-          </h2>
-          <p className="mt-3 text-[16px] max-w-[520px] mx-auto" style={{ color: "var(--ink-secondary)" }}>
-            Run a free AI Visibility audit and get your score across all five AI models in under 60 seconds.
-          </p>
-          <Link
-            href="/free-audit"
-            className="mt-8 h-12 px-7 rounded-lg text-[15px] font-semibold text-white inline-flex items-center gap-2 transition-transform hover:-translate-y-px"
-            style={{ background: "var(--accent)", boxShadow: "0 2px 8px rgba(61,43,224,0.25)" }}
+      {/* ═══ MISSION ═══ */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[820px] mx-auto px-6">
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "var(--accent)",
+              marginBottom: 12,
+            }}
           >
-            Run Free Visibility Audit
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </Link>
+            The mission
+          </div>
+          <h2
+            className="text-[28px] sm:text-[36px] tracking-tight mb-5"
+            style={{ color: "var(--ink)", lineHeight: 1.15 }}
+          >
+            We&apos;re running the largest, most rigorous public study on AI visibility — and re-running it every quarter.
+          </h2>
+          <p
+            className="text-[17px] leading-[1.65] mb-4"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            AI search is rewriting how businesses get found. ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews now mediate billions of buying-intent queries per month — and the rules for being recommended are completely different from classical SEO.
+          </p>
+          <p
+            className="text-[17px] leading-[1.65] mb-4"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            Most published GEO advice is built on case studies of N=1, hot takes from a single account, or rebranded SEO playbooks. We wanted to know what actually moves AI visibility — across thousands of businesses, multiple verticals and markets, with statistical controls strong enough to hold up under attack.
+          </p>
+          <p
+            className="text-[17px] leading-[1.65]"
+            style={{ color: "var(--ink-secondary)" }}
+          >
+            So we built a research program. <strong style={{ color: "var(--ink)" }}>Same sample, same methodology, re-run quarterly.</strong> Each study layer adds a deeper question on top of the last. Findings published whether they validate our product or not.
+          </p>
+          <div
+            style={{
+              marginTop: 28,
+              padding: "20px 24px",
+              borderRadius: 12,
+              background: "var(--accent-subtle)",
+              borderLeft: "3px solid var(--accent)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: 6,
+              }}
+            >
+              Data posture
+            </div>
+            <p
+              style={{
+                fontSize: 15,
+                lineHeight: 1.6,
+                color: "var(--ink)",
+                margin: 0,
+              }}
+            >
+              <strong>Findings are public. Methodology is public. Per-slot statistics are public. Individual brand lookup is free.</strong> The 2,729-row underlying dataset is licensed to research partners under NDA — same posture as Pew, MIT Tech Review, Backlinko, GitHub Octoverse.{" "}
+              <a
+                href="mailto:joel@xpanddigital.io?subject=Research%20access%20application"
+                style={{
+                  color: "var(--accent)",
+                  textDecoration: "underline",
+                  textDecorationColor: "rgba(61,43,224,0.3)",
+                  textUnderlineOffset: 3,
+                }}
+              >
+                Apply for full access →
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CROSS-STUDY HEADLINE FINDINGS ═══ */}
+      <section
+        className="py-16 sm:py-20"
+        style={{ background: "var(--surface-raised)" }}
+      >
+        <div className="max-w-[1100px] mx-auto px-6">
+          <div className="text-center mb-12">
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: 8,
+              }}
+            >
+              The headlines so far
+            </div>
+            <h2
+              className="text-[30px] sm:text-[40px] tracking-tight"
+              style={{ color: "var(--ink)" }}
+            >
+              Six findings that will outlive the studies
+            </h2>
+            <p
+              className="mt-3 text-[16px] max-w-[600px] mx-auto"
+              style={{ color: "var(--ink-secondary)" }}
+            >
+              Pulled from across the published studies. Click any card to read the full evidence.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {crossStudyFindings.map((f, i) => {
+              const study = studyById[f.studyId];
+              return (
+                <Link
+                  key={i}
+                  href={study?.href ?? "#"}
+                  className="block rounded-2xl p-6 transition-transform hover:-translate-y-px"
+                  style={{
+                    background: "var(--surface)",
+                    boxShadow:
+                      "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)",
+                    border: "1px solid var(--accent-subtle)",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--accent)",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Study {study?.number ?? "?"} · {f.metric}
+                  </div>
+                  <p
+                    className="serif"
+                    style={{
+                      fontSize: 17,
+                      lineHeight: 1.4,
+                      color: "var(--ink)",
+                      fontFamily:
+                        "'Instrument Serif', Georgia, 'Times New Roman', serif",
+                      letterSpacing: "-0.01em",
+                      marginBottom: 14,
+                    }}
+                  >
+                    &ldquo;{f.text}&rdquo;
+                  </p>
+                  <div
+                    style={{
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: "var(--accent)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    Read the study
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ STUDIES TIMELINE ═══ */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[1100px] mx-auto px-6">
+          <div className="text-center mb-12">
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: 8,
+              }}
+            >
+              The study program
+            </div>
+            <h2
+              className="text-[30px] sm:text-[40px] tracking-tight"
+              style={{ color: "var(--ink)" }}
+            >
+              Phase 1 → 2 → 3 → 4 — and beyond
+            </h2>
+            <p
+              className="mt-3 text-[16px] max-w-[600px] mx-auto"
+              style={{ color: "var(--ink-secondary)" }}
+            >
+              Each study layer answers a question the previous one couldn&apos;t.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {studies.map((s) => (
+              <StudyTimelineCard key={s.id} study={s} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ MONTHLY UPDATES (CHANGELOG) ═══ */}
+      <section
+        className="py-16 sm:py-20"
+        style={{ background: "var(--surface-raised)" }}
+      >
+        <div className="max-w-[820px] mx-auto px-6">
+          <div className="mb-10">
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: 8,
+              }}
+            >
+              Updates
+            </div>
+            <h2
+              className="text-[30px] sm:text-[40px] tracking-tight"
+              style={{ color: "var(--ink)" }}
+            >
+              What&apos;s new in the research
+            </h2>
+            <p
+              className="mt-3 text-[16px]"
+              style={{ color: "var(--ink-secondary)" }}
+            >
+              Every release, milestone, and operational note. Newest first. Updated monthly.
+            </p>
+          </div>
+
+          <ol className="space-y-2" style={{ listStyle: "none", padding: 0 }}>
+            {researchUpdates.map((u, i) => (
+              <UpdateCard key={i} update={u} />
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ═══ SUBSCRIBE / CTA ═══ */}
+      <section className="py-16 sm:py-20">
+        <div className="max-w-[920px] mx-auto px-6">
+          <div
+            style={{
+              background:
+                "linear-gradient(135deg, #1a1a2e 0%, #2a2547 100%)",
+              borderRadius: 20,
+              padding: "44px 40px",
+              color: "#fff",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: -80,
+                right: -80,
+                width: 280,
+                height: 280,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(122,109,240,0.32) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "#a59cf2",
+                  marginBottom: 12,
+                }}
+              >
+                Three ways to plug in
+              </div>
+              <h2
+                className="serif"
+                style={{
+                  fontSize: 32,
+                  lineHeight: 1.15,
+                  fontFamily: "'Instrument Serif', Georgia, serif",
+                  marginBottom: 14,
+                }}
+              >
+                Get on the research distribution list
+              </h2>
+              <p
+                style={{
+                  fontSize: 16,
+                  lineHeight: 1.6,
+                  color: "rgba(255,255,255,0.9)",
+                  marginBottom: 24,
+                  maxWidth: 600,
+                }}
+              >
+                Each new study, each monthly update, and every Layer 3 result lands first with people on the research distribution list. Early access, no spam, unsubscribe anytime.
+              </p>
+              <div className="grid sm:grid-cols-3 gap-3">
+                <SubscribeCard
+                  title="Run your brand"
+                  body="Free · 60 sec · benchmarks live"
+                  cta="Run free audit"
+                  href="/free-audit"
+                  primary
+                />
+                <SubscribeCard
+                  title="Explore the data"
+                  body="Email · 30 industry × city slots"
+                  cta="Open the explorer"
+                  href="/research/explore"
+                />
+                <SubscribeCard
+                  title="Layer 3 trial"
+                  body="25–30 spots · 60-day intervention"
+                  cta="Apply now"
+                  href="mailto:joel@xpanddigital.io?subject=Layer%203%20trial%20application"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ABOUT THE AUTHOR ═══ */}
+      <section className="py-12 sm:py-16">
+        <div className="max-w-[820px] mx-auto px-6">
+          <div
+            style={{
+              padding: "24px 28px",
+              borderRadius: 16,
+              border: "1px solid var(--accent-subtle)",
+              background: "var(--surface-raised)",
+            }}
+          >
+            <div className="flex items-start gap-4">
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  background: "var(--accent)",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: 18,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                JH
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--ink)",
+                    marginBottom: 4,
+                  }}
+                >
+                  Joel House
+                </div>
+                <p
+                  style={{
+                    fontSize: 13.5,
+                    lineHeight: 1.55,
+                    color: "var(--ink-secondary)",
+                    marginBottom: 8,
+                  }}
+                >
+                  Founder of MentionLayer (GEO platform). Founder of Joel House Search Media (one of Australia&apos;s largest SEO agencies by headcount). Forbes Agency Council. The research program is funded by MentionLayer and runs as an independent quarterly study — Joel publishes findings whether they validate our product or not.
+                </p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-[13px]">
+                  <a
+                    href="mailto:joel@xpanddigital.io"
+                    style={{
+                      color: "var(--accent)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    joel@xpanddigital.io
+                  </a>
+                  <span style={{ color: "var(--ink-tertiary)" }}>·</span>
+                  <span style={{ color: "var(--ink-tertiary)" }}>
+                    Sydney + Los Angeles
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <MLFooter />
     </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  Components
+// ═══════════════════════════════════════════════════════════════════
+
+function StudyTimelineCard({ study: s }: { study: Study }) {
+  const tone = STATUS_TONE[s.status];
+  const isLinkable = !!s.href;
+  const Wrapper = isLinkable ? Link : "div";
+  const wrapperProps = isLinkable ? { href: s.href as string } : {};
+
+  return (
+    <Wrapper
+      {...(wrapperProps as { href: string })}
+      className="block rounded-2xl p-6 sm:p-7 transition-transform"
+      style={{
+        background: "var(--surface)",
+        border: "1px solid var(--accent-subtle)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+        textDecoration: "none",
+        ...(isLinkable ? { cursor: "pointer" } : {}),
+      }}
+    >
+      <div className="flex items-start gap-5">
+        {/* Number bubble */}
+        <div
+          style={{
+            flexShrink: 0,
+            width: 56,
+            height: 56,
+            borderRadius: 16,
+            background: s.status === "published" ? "var(--accent)" : "var(--accent-subtle)",
+            color: s.status === "published" ? "#fff" : "var(--accent)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "'Instrument Serif', Georgia, serif",
+            fontSize: 28,
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          {s.number}
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                padding: "3px 10px",
+                borderRadius: 999,
+                background: tone.bg,
+                color: tone.fg,
+              }}
+            >
+              {tone.label}
+            </span>
+            <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>·</span>
+            <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>
+              {s.date}
+            </span>
+          </div>
+
+          <h3
+            className="serif"
+            style={{
+              fontSize: 24,
+              lineHeight: 1.2,
+              color: "var(--ink)",
+              fontFamily: "'Instrument Serif', Georgia, serif",
+              marginBottom: 6,
+            }}
+          >
+            Study {s.number} — {s.title}
+          </h3>
+          <p
+            style={{
+              fontSize: 15,
+              lineHeight: 1.55,
+              color: "var(--ink-secondary)",
+              marginBottom: 14,
+            }}
+          >
+            {s.subtitle}
+          </p>
+
+          <div
+            style={{
+              padding: "12px 16px",
+              background: "var(--surface-raised)",
+              borderRadius: 10,
+              borderLeft: "3px solid var(--accent)",
+              marginBottom: 14,
+              fontSize: 14,
+              lineHeight: 1.55,
+              color: "var(--ink)",
+              fontStyle: "italic",
+              fontFamily: "'Instrument Serif', Georgia, serif",
+            }}
+          >
+            {s.headlineFinding}
+          </div>
+
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mb-3">
+            {s.stats.map((st) => (
+              <div key={st.label}>
+                <span
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    color: "var(--accent)",
+                    fontFamily: "'Outfit', system-ui, sans-serif",
+                  }}
+                >
+                  {st.value}
+                </span>{" "}
+                <span style={{ fontSize: 12, color: "var(--ink-tertiary)" }}>
+                  {st.label}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {isLinkable && (
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "var(--accent)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              Read the study
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+          )}
+          {!isLinkable && s.status === "in-recruitment" && (
+            <a
+              href="mailto:joel@xpanddigital.io?subject=Layer%203%20trial%20interest"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#e8723a",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              Apply for the trial
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </a>
+          )}
+          {!isLinkable && s.status === "planned" && (
+            <span style={{ fontSize: 13, color: "var(--ink-tertiary)" }}>
+              On the roadmap. Subscribe to be notified when it ships.
+            </span>
+          )}
+        </div>
+      </div>
+    </Wrapper>
+  );
+}
+
+const KIND_LABELS: Record<ResearchUpdate["kind"], string> = {
+  "study-published": "Study published",
+  milestone: "Milestone",
+  explorer: "New tool",
+  press: "Press",
+  operations: "Ops",
+};
+
+const KIND_COLORS: Record<ResearchUpdate["kind"], string> = {
+  "study-published": "#1f9d5e",
+  milestone: "#e8723a",
+  explorer: "#3d2be0",
+  press: "#7a6df0",
+  operations: "#8e90a6",
+};
+
+function UpdateCard({ update: u }: { update: ResearchUpdate }) {
+  const dateObj = new Date(u.date);
+  const dateLabel = dateObj.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  return (
+    <li
+      style={{
+        position: "relative",
+        padding: "20px 24px",
+        background: "var(--surface)",
+        borderRadius: 14,
+        border: "1px solid var(--accent-subtle)",
+      }}
+    >
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0">
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: "var(--ink-tertiary)",
+              fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+              marginBottom: 4,
+              minWidth: 92,
+            }}
+          >
+            {dateLabel}
+          </div>
+          <span
+            style={{
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: KIND_COLORS[u.kind],
+            }}
+          >
+            {KIND_LABELS[u.kind]}
+          </span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3
+            style={{
+              fontSize: 16.5,
+              fontWeight: 600,
+              color: "var(--ink)",
+              marginBottom: 6,
+              fontFamily: "'Outfit', system-ui, sans-serif",
+              lineHeight: 1.3,
+            }}
+          >
+            {u.title}
+          </h3>
+          <p
+            style={{
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: "var(--ink-secondary)",
+              marginBottom: u.href ? 8 : 0,
+            }}
+          >
+            {u.body}
+          </p>
+          {u.href && (
+            <a
+              href={u.href}
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "var(--accent)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+                textDecoration: "none",
+              }}
+            >
+              {u.hrefLabel ?? "Open"}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </a>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function SubscribeCard({
+  title,
+  body,
+  cta,
+  href,
+  primary,
+}: {
+  title: string;
+  body: string;
+  cta: string;
+  href: string;
+  primary?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        padding: "18px 20px",
+        borderRadius: 12,
+        background: primary ? "#fff" : "rgba(255,255,255,0.08)",
+        color: primary ? "#1a1a2e" : "#fff",
+        textDecoration: "none",
+        transition: "transform 0.15s ease",
+        border: primary ? "none" : "1px solid rgba(255,255,255,0.18)",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 14.5,
+          fontWeight: 600,
+          marginBottom: 4,
+          color: primary ? "#1a1a2e" : "#fff",
+        }}
+      >
+        {title}
+      </div>
+      <div
+        style={{
+          fontSize: 12.5,
+          color: primary ? "rgba(26,26,46,0.7)" : "rgba(255,255,255,0.7)",
+          marginBottom: 12,
+        }}
+      >
+        {body}
+      </div>
+      <div
+        style={{
+          fontSize: 13,
+          fontWeight: 600,
+          color: primary ? "var(--accent)" : "#a59cf2",
+          marginTop: "auto",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        {cta}
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+      </div>
+    </a>
   );
 }
