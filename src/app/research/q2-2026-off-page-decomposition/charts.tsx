@@ -16,8 +16,6 @@ import {
   PolarRadiusAxis,
   ReferenceLine,
   Legend,
-  LineChart,
-  Line,
 } from "recharts";
 import {
   topRawCorrelations,
@@ -26,7 +24,6 @@ import {
   directoryLiftByDAQuartile,
   industryAddressability,
   strictIsolation,
-  visibleVsInvisible,
   profileMetrics,
   sourceCategoryBreakdown,
   crossMarketSpotlight,
