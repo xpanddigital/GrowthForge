@@ -35,3 +35,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .stripe-live-keys.md
+
+# research moat — never commit raw study data, captured emails, or research-only assets
+/study-output
+/logs
+/data
+/reports
+/Seed Data
+/Files to copy
+.claude/worktrees
