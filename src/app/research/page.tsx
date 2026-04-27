@@ -7,8 +7,10 @@ import {
   researchUpdates,
   hubStats,
   crossStudyFindings,
+  whitePapers,
   type Study,
   type ResearchUpdate,
+  type WhitePaper,
 } from "@/lib/research/program";
 
 export const metadata: Metadata = {
@@ -397,8 +399,46 @@ export default function ResearchHubPage() {
         </div>
       </section>
 
+      {/* ═══ PUBLISHED PAPERS ═══ */}
+      <section id="papers" className="py-16 sm:py-20">
+        <div className="max-w-[1000px] mx-auto px-6">
+          <div className="mb-10">
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: 8,
+              }}
+            >
+              Published academic-format papers
+            </div>
+            <h2
+              className="text-[30px] sm:text-[40px] tracking-tight"
+              style={{ color: "var(--ink)" }}
+            >
+              White papers
+            </h2>
+            <p
+              className="mt-3 text-[16px] max-w-[660px]"
+              style={{ color: "var(--ink-secondary)" }}
+            >
+              The findings of each study, repackaged in formal academic register — abstract, methodology, results, discussion, limitations, references. Cite these versions in research, journalism, and analyst work.
+            </p>
+          </div>
+
+          <div className="space-y-5">
+            {whitePapers.map((paper) => (
+              <PaperCard key={paper.id} paper={paper} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ STUDIES TIMELINE ═══ */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20" style={{ background: "var(--surface-raised)" }}>
         <div className="max-w-[1100px] mx-auto px-6">
           <div className="text-center mb-12">
             <div
@@ -436,10 +476,7 @@ export default function ResearchHubPage() {
       </section>
 
       {/* ═══ MONTHLY UPDATES (CHANGELOG) ═══ */}
-      <section
-        className="py-16 sm:py-20"
-        style={{ background: "var(--surface-raised)" }}
-      >
+      <section className="py-16 sm:py-20">
         <div className="max-w-[820px] mx-auto px-6">
           <div className="mb-10">
             <div
@@ -913,6 +950,174 @@ function UpdateCard({ update: u }: { update: ResearchUpdate }) {
         </div>
       </div>
     </li>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PaperCard — academic-publication-style listing
+// ═══════════════════════════════════════════════════════════════════
+
+function PaperCard({ paper }: { paper: WhitePaper }) {
+  return (
+    <article
+      style={{
+        background: "var(--surface)",
+        borderRadius: 14,
+        border: "1px solid var(--accent-subtle)",
+        padding: "26px 28px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px -4px rgba(0,0,0,0.06)",
+      }}
+    >
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        <span
+          style={{
+            fontSize: 10.5,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            padding: "3px 10px",
+            borderRadius: 999,
+            background: "var(--accent-subtle)",
+            color: "var(--accent)",
+            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+          }}
+        >
+          Paper {paper.number} · v{paper.version}
+        </span>
+        <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>·</span>
+        <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>
+          {paper.date}
+        </span>
+        <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>·</span>
+        <span style={{ color: "var(--ink-tertiary)", fontSize: 13 }}>
+          ~{paper.pageCount} pages · {paper.wordCount.toLocaleString()} words
+        </span>
+      </div>
+
+      <h3
+        className="serif"
+        style={{
+          fontSize: 22,
+          lineHeight: 1.25,
+          color: "var(--ink)",
+          fontFamily: "'Instrument Serif', Georgia, serif",
+          marginBottom: 6,
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {paper.title}
+      </h3>
+      <p
+        style={{
+          fontSize: 14,
+          color: "var(--ink-secondary)",
+          marginBottom: 12,
+          fontStyle: "italic",
+        }}
+      >
+        {paper.subtitle}
+      </p>
+
+      <div
+        style={{
+          padding: "14px 18px",
+          background: "var(--surface-raised)",
+          borderRadius: 10,
+          borderLeft: "3px solid var(--accent)",
+          marginBottom: 16,
+          fontSize: 13.5,
+          lineHeight: 1.65,
+          color: "var(--ink)",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10.5,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--accent)",
+            marginBottom: 6,
+          }}
+        >
+          Abstract excerpt
+        </div>
+        {paper.abstractExcerpt}
+      </div>
+
+      <div
+        style={{
+          fontSize: 12,
+          color: "var(--ink-tertiary)",
+          marginBottom: 16,
+          fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+          padding: "10px 14px",
+          background: "var(--accent-subtle)",
+          borderRadius: 8,
+          lineHeight: 1.55,
+        }}
+      >
+        <span style={{ fontWeight: 600 }}>Cite as:</span> {paper.citation}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        {paper.formats.map((f) => (
+          <a
+            key={f.format}
+            href={f.href}
+            download
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              height: 40,
+              padding: "0 18px",
+              borderRadius: 8,
+              background: f.format === "pdf" ? "var(--accent)" : "var(--surface)",
+              color: f.format === "pdf" ? "#fff" : "var(--accent)",
+              border: f.format === "pdf" ? "none" : "1px solid var(--accent)",
+              fontSize: 13.5,
+              fontWeight: 600,
+              textDecoration: "none",
+              boxShadow:
+                f.format === "pdf"
+                  ? "0 2px 8px rgba(61,43,224,0.25)"
+                  : "none",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Download {f.format.toUpperCase()}
+            <span style={{ fontSize: 11, opacity: 0.75, fontFamily: "'JetBrains Mono', monospace" }}>
+              {(f.bytes / 1024).toFixed(0)} KB
+            </span>
+          </a>
+        ))}
+        {paper.studyIds.length > 0 && (
+          <Link
+            href={`/research/${paper.studyIds[0]}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              fontSize: 13.5,
+              fontWeight: 600,
+              color: "var(--accent)",
+              textDecoration: "none",
+              marginLeft: "auto",
+            }}
+          >
+            View web version
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        )}
+      </div>
+    </article>
   );
 }
 

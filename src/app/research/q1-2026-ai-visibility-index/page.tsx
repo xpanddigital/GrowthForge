@@ -89,6 +89,84 @@ export default function ResearchPage() {
         </div>
       </section>
 
+      {/* ═══ FORMAL PAPER CALLOUT ═══ */}
+      <section className="py-6">
+        <div className="max-w-[900px] mx-auto px-6">
+          <a
+            href="/research/papers/ai-visibility-index-phase-1-v1.1.docx"
+            download
+            className="block rounded-xl p-5 transition-transform hover:-translate-y-px"
+            style={{
+              background: "var(--surface-raised)",
+              border: "1px solid var(--accent-subtle)",
+              textDecoration: "none",
+            }}
+          >
+            <div className="flex flex-wrap items-center gap-4">
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 10,
+                  background: "var(--accent-subtle)",
+                  color: "var(--accent)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="9" y1="13" x2="15" y2="13" />
+                  <line x1="9" y1="17" x2="15" y2="17" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "var(--accent)",
+                    marginBottom: 2,
+                  }}
+                >
+                  Academic-format white paper available
+                </div>
+                <div
+                  style={{
+                    fontSize: 14.5,
+                    fontWeight: 500,
+                    color: "var(--ink)",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  Phase 1 White Paper · v1.1 · ~16 pages · with abstract, methodology, references
+                </div>
+              </div>
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "var(--accent)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                Download DOCX
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      </section>
+
       {/* ═══ HEADLINE STAT ═══ */}
       <section className="py-12 sm:py-16" style={{ background: "var(--surface-raised)" }}>
         <div className="max-w-[1200px] mx-auto px-6">

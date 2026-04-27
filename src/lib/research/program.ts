@@ -133,6 +133,15 @@ export interface ResearchUpdate {
 export const researchUpdates: ResearchUpdate[] = [
   {
     date: "2026-04-27",
+    kind: "press",
+    title: "Combined Phase 1 + 2 white paper published (v1.1)",
+    body:
+      "Formal academic-format white paper combining both phases of the research program. 38 pages, 20 tables, 6 inline figures, full methodology, pre-registration of Phase 3, and complete reference apparatus. Released alongside the standalone Phase 1 paper.",
+    href: "/research#papers",
+    hrefLabel: "Download papers",
+  },
+  {
+    date: "2026-04-27",
     kind: "study-published",
     title: "Study 2 shipped — Off-Page Decomposition",
     body:
@@ -180,6 +189,95 @@ export const hubStats = {
   cadence: "Quarterly",
   nextUpdate: "May 2026 — Layer 3 recruitment opens",
 };
+
+// ─── Published white papers (academic-format) ───
+//
+// The hub displays these as a "Published Papers" section. Each paper is a
+// formal repackaging of one or both phases' findings in academic register
+// (abstract, methodology, results, discussion, limitations, references).
+//
+// PDFs are produced from the canonical DOCX via the user's PDF workflow.
+// Both formats live under /public/research/papers/.
+
+export type PaperFormat = "pdf" | "docx";
+
+export interface WhitePaper {
+  id: string;
+  number: number;             // 1, 2, 3, ...
+  status: "published" | "in-progress";
+  title: string;
+  subtitle: string;
+  date: string;               // human-readable
+  isoDate: string;            // ISO yyyy-mm-dd for sorting
+  version: string;
+  pageCount: number;          // estimated typeset
+  wordCount: number;
+  abstractExcerpt: string;    // first ~200 words of abstract
+  citation: string;           // APA-style
+  formats: { format: PaperFormat; href: string; bytes: number }[];
+  studyIds: string[];         // links back to study deep-dive pages
+}
+
+export const whitePapers: WhitePaper[] = [
+  {
+    id: "phase-1-v1.1",
+    number: 1,
+    status: "published",
+    title:
+      "The AI Visibility Index: An Empirical Baseline of Business Visibility Across Five Generative AI Models, Ten Industries, and 1,004 Businesses",
+    subtitle: "Phase 1 of the AI Visibility Index Research Program",
+    date: "April 10, 2026",
+    isoDate: "2026-04-10",
+    version: "1.1",
+    pageCount: 16,
+    wordCount: 5538,
+    abstractExcerpt:
+      "This paper reports the results of an empirical baseline study examining business visibility within five generative AI search engines: ChatGPT (gpt-4o), Perplexity (sonar-pro), Gemini (2.5-flash), Claude (Sonnet), and Google AI Overview (via SerpApi). Conducted between February and April 2026, the study evaluated 1,004 businesses across ten industry verticals, probing each business against 100 prompt-model combinations and producing 95,392 individual mention checks. Three findings are reported: 66% of the sample is completely invisible to AI; Domain Authority (Pearson r = 0.337) and Google review count (r = 0.333) are the strongest single predictors; and AI models exhibit substantial cross-model disagreement on which businesses to recommend.",
+    citation:
+      "House, J. (2026). The AI Visibility Index: An empirical baseline of business visibility across five generative AI models, ten industries, and 1,004 businesses (Phase 1 white paper, v1.1). MentionLayer Research.",
+    formats: [
+      {
+        format: "docx",
+        href: "/research/papers/ai-visibility-index-phase-1-v1.1.docx",
+        bytes: 200_903,
+      },
+      // PDF will be added when the PDF workflow runs:
+      // { format: "pdf", href: "/research/papers/ai-visibility-index-phase-1-v1.1.pdf", bytes: 0 },
+    ],
+    studyIds: ["q1-2026-ai-visibility-index"],
+  },
+  {
+    id: "combined-v1.1",
+    number: 2,
+    status: "published",
+    title:
+      "The AI Visibility Index: A Cross-Market Empirical Study of Generative Engine Optimization Signals Across 2,729 Businesses, Five AI Models, Fourteen Industries, and Thirty-Two Industry-Market Slots",
+    subtitle:
+      "Phase 1 + Phase 2 Combined Findings, with Pre-Registration of Phase 3 Controlled Intervention",
+    date: "April 27, 2026",
+    isoDate: "2026-04-27",
+    version: "1.1",
+    pageCount: 38,
+    wordCount: 13510,
+    abstractExcerpt:
+      "This study examines the empirical predictors of business visibility within generative search engines, applying OLS-residual partial-correlation methodology to disentangle the independent contributions of 24 measurable off-page signals. Phase 2 (n = 2,729) finds that directory presence (r = 0.391) outranks Domain Authority (r = 0.338) as the top raw predictor, but no single off-page signal exceeds r = 0.10 in strict isolation; Reddit's predictive power collapses from r = 0.333 to r = 0.000 once general multi-platform presence is controlled for. The two AI models that return source URLs (Perplexity, Google AI Overview) exhibit a 5.5× lift in mention probability when the brand is the cited source. Phase 3 controlled-intervention design is pre-registered.",
+    citation:
+      "House, J. (2026). The AI Visibility Index: A cross-market empirical study of generative engine optimization signals across 2,729 businesses, five AI models, fourteen industries, and thirty-two industry-market slots (Phase 1 + 2 combined white paper, v1.1). MentionLayer Research.",
+    formats: [
+      {
+        format: "docx",
+        href: "/research/papers/ai-visibility-index-combined-v1.1.docx",
+        bytes: 709_818,
+      },
+      // PDF coming via user's workflow:
+      // { format: "pdf", href: "/research/papers/ai-visibility-index-combined-v1.1.pdf", bytes: 0 },
+    ],
+    studyIds: ["q1-2026-ai-visibility-index", "q2-2026-off-page-decomposition"],
+  },
+];
+
+// Helper for the hub to display the latest paper
+export const latestPaper = whitePapers[whitePapers.length - 1];
 
 // ─── Cross-study quotable findings (rotated on the hub) ───
 
