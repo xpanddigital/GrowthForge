@@ -485,7 +485,7 @@ export default function Q22026OffPageDecomposition() {
           </ChartFrame>
 
           <P>
-            <Strong>Editorial blogs and publications carry 69% of citations.</Strong> Brand-owned websites carry another 18%. Industry directories: 6%. YouTube: 4%. News media: 2.5%. <Strong style={{ color: "var(--warm)" }}>Reddit: zero.</Strong> Quora: 0.02%. Two Wikipedia citations across 95,000 responses.
+            <Strong>Editorial blogs and publications carry 69% of citations.</Strong> Brand-owned websites carry another 18%. Industry directories: 6%. YouTube: 4%. News media: 2.5%. <strong style={{ color: "var(--warm)", fontWeight: 600 }}>Reddit: zero.</strong> Quora: 0.02%. Two Wikipedia citations across 95,000 responses.
           </P>
           <P>
             The top industry directories AI actually cites are vertical-specific gatekeepers — and these are the URLs to fight for:

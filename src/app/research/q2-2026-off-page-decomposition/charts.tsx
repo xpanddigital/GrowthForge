@@ -167,7 +167,7 @@ export function RedditCollapseChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number) => [`r = ${v.toFixed(3)}`, "Reddit correlation"]}
+              formatter={(v) => [`r = ${Number(v).toFixed(3)}`, "Reddit correlation"]}
               labelFormatter={(label, payload) => payload?.[0]?.payload?.fullLabel || label}
             />
             <Bar dataKey="r" radius={[6, 6, 0, 0]}>
@@ -283,10 +283,13 @@ export function TopCorrelationsChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number, _: unknown, p: { payload?: { n?: number } }) => [
-                `r = ${v.toFixed(3)}  (n = ${p.payload?.n?.toLocaleString() ?? "?"})`,
-                "Correlation",
-              ]}
+              formatter={(v, _name, item) => {
+                const payload = (item as unknown as { payload?: { n?: number } } | undefined)?.payload;
+                return [
+                  `r = ${Number(v).toFixed(3)}  (n = ${payload?.n?.toLocaleString() ?? "?"})`,
+                  "Correlation",
+                ];
+              }}
             />
             <Bar dataKey="r" radius={[0, 4, 4, 0]}>
               {data.map((d, i) => (
@@ -499,9 +502,9 @@ export function AddressabilityChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number) => [`${v}% addressable`, "Citation share"]}
+              formatter={(v) => [`${v}% addressable`, "Citation share"]}
             />
-            <Bar dataKey="pct" radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 10.5, fill: COLORS.inkSecondary, formatter: (v: number) => `${v}%` }}>
+            <Bar dataKey="pct" radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 10.5, fill: COLORS.inkSecondary, formatter: (v) => `${v}%` }}>
               {data.map((d, i) => (
                 <Cell key={i} fill={d.fill} />
               ))}
@@ -617,11 +620,12 @@ export function VisibleVsInvisibleRadar() {
                   borderRadius: 8,
                   fontSize: 13,
                 }}
-                formatter={(_: number, name: string, p: { payload?: { metric?: string; visibleRaw?: number; invisibleRaw?: number; format?: "raw" | "pct" } }) => {
+                formatter={(_v, name, item) => {
+                  const payload = (item as unknown as { payload?: { metric?: string; visibleRaw?: number; invisibleRaw?: number; format?: "raw" | "pct" } } | undefined)?.payload;
                   const isVisible = name === "Visible (≥2 models)";
-                  const raw = isVisible ? p.payload?.visibleRaw : p.payload?.invisibleRaw;
-                  const fmt = p.payload?.format === "pct" ? `${raw}%` : raw?.toFixed(2);
-                  return [fmt, p.payload?.metric];
+                  const raw = isVisible ? payload?.visibleRaw : payload?.invisibleRaw;
+                  const fmt = payload?.format === "pct" ? `${raw}%` : raw?.toFixed(2);
+                  return [fmt ?? "", payload?.metric ?? ""];
                 }}
               />
             </RadarChart>
@@ -761,7 +765,7 @@ export function CitationLiftChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number) => [`${v}%`, ""]}
+              formatter={(v) => [`${v}%`, ""]}
             />
             <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
             <Bar dataKey="When NOT cited" fill={COLORS.warm} radius={[4, 4, 0, 0]} />
@@ -899,12 +903,15 @@ export function SourceCategoryChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number, _: unknown, p: { payload?: { count?: number } }) => [
-                `${v}%  (${p.payload?.count?.toLocaleString() ?? "?"} citations)`,
-                "Share",
-              ]}
+              formatter={(v, _name, item) => {
+                const payload = (item as unknown as { payload?: { count?: number } } | undefined)?.payload;
+                return [
+                  `${v}%  (${payload?.count?.toLocaleString() ?? "?"} citations)`,
+                  "Share",
+                ];
+              }}
             />
-            <Bar dataKey="pct" fill={COLORS.accent} radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 11, fill: COLORS.inkSecondary, formatter: (v: number) => `${v}%` }} />
+            <Bar dataKey="pct" fill={COLORS.accent} radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 11, fill: COLORS.inkSecondary, formatter: (v) => `${v}%` }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -989,12 +996,15 @@ export function CrossMarketChart() {
                 fontSize: 13,
                 maxWidth: 360,
               }}
-              formatter={(v: number, _: unknown, p: { payload?: { insight?: string } }) => [
-                `r = ${v.toFixed(3)}`,
-                p.payload?.insight ?? "",
-              ]}
+              formatter={(v, _name, item) => {
+                const payload = (item as unknown as { payload?: { insight?: string } } | undefined)?.payload;
+                return [
+                  `r = ${Number(v).toFixed(3)}`,
+                  payload?.insight ?? "",
+                ];
+              }}
             />
-            <Bar dataKey="r" fill={COLORS.accent} radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 11, fill: COLORS.inkSecondary, formatter: (v: number) => `r=${v.toFixed(3)}` }} />
+            <Bar dataKey="r" fill={COLORS.accent} radius={[0, 4, 4, 0]} label={{ position: "right", fontSize: 11, fill: COLORS.inkSecondary, formatter: (v) => `r=${Number(v).toFixed(3)}` }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -1080,7 +1090,7 @@ export function StrictIsolationChart() {
                 borderRadius: 8,
                 fontSize: 13,
               }}
-              formatter={(v: number) => [`r = ${v.toFixed(3)}`, "Strict isolated"]}
+              formatter={(v) => [`r = ${Number(v).toFixed(3)}`, "Strict isolated"]}
             />
             <ReferenceLine x={0} stroke={COLORS.ink} strokeWidth={1} />
             <ReferenceLine x={0.10} stroke={COLORS.warm} strokeDasharray="4 4" label={{ value: "r = 0.10", fill: COLORS.warm, fontSize: 10, position: "top" }} />
