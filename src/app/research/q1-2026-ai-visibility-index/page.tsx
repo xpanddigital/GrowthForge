@@ -93,7 +93,7 @@ export default function ResearchPage() {
       <section className="py-6">
         <div className="max-w-[900px] mx-auto px-6">
           <a
-            href="/research/papers/ai-visibility-index-phase-1-v1.1.docx"
+            href="/research/whitepapers/ai-visibility-index-phase-1-v1.1.docx"
             download
             className="block rounded-xl p-5 transition-transform hover:-translate-y-px"
             style={{

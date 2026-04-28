@@ -169,7 +169,7 @@ export default function Q22026OffPageDecomposition() {
       <section className="py-4">
         <div className="max-w-[920px] mx-auto px-6">
           <a
-            href="/research/papers/ai-visibility-index-combined-v1.1.docx"
+            href="/research/whitepapers/ai-visibility-index-combined-v1.1.docx"
             download
             className="block rounded-xl p-5 transition-transform hover:-translate-y-px"
             style={{

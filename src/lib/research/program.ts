@@ -197,7 +197,7 @@ export const hubStats = {
 // (abstract, methodology, results, discussion, limitations, references).
 //
 // PDFs are produced from the canonical DOCX via the user's PDF workflow.
-// Both formats live under /public/research/papers/.
+// Both formats live under /public/research/whitepapers/.
 
 export type PaperFormat = "pdf" | "docx";
 
@@ -238,11 +238,11 @@ export const whitePapers: WhitePaper[] = [
     formats: [
       {
         format: "docx",
-        href: "/research/papers/ai-visibility-index-phase-1-v1.1.docx",
+        href: "/research/whitepapers/ai-visibility-index-phase-1-v1.1.docx",
         bytes: 200_903,
       },
       // PDF will be added when the PDF workflow runs:
-      // { format: "pdf", href: "/research/papers/ai-visibility-index-phase-1-v1.1.pdf", bytes: 0 },
+      // { format: "pdf", href: "/research/whitepapers/ai-visibility-index-phase-1-v1.1.pdf", bytes: 0 },
     ],
     studyIds: ["q1-2026-ai-visibility-index"],
   },
@@ -266,11 +266,11 @@ export const whitePapers: WhitePaper[] = [
     formats: [
       {
         format: "docx",
-        href: "/research/papers/ai-visibility-index-combined-v1.1.docx",
+        href: "/research/whitepapers/ai-visibility-index-combined-v1.1.docx",
         bytes: 709_818,
       },
       // PDF coming via user's workflow:
-      // { format: "pdf", href: "/research/papers/ai-visibility-index-combined-v1.1.pdf", bytes: 0 },
+      // { format: "pdf", href: "/research/whitepapers/ai-visibility-index-combined-v1.1.pdf", bytes: 0 },
     ],
     studyIds: ["q1-2026-ai-visibility-index", "q2-2026-off-page-decomposition"],
   },
