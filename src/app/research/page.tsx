@@ -13,8 +13,9 @@ import {
   type WhitePaper,
 } from "@/lib/research/program";
 
+// Build marker: 2026-04-28 (post-Cloudflare cache invalidation)
 export const metadata: Metadata = {
-  title: "AI Visibility Index Research | MentionLayer",
+  title: "AI Visibility Index Research Program | MentionLayer",
   description:
     "The AI Visibility Index research program — a quarterly study on which businesses get recommended by AI models, and why. Live findings from 2,729 businesses across 14 industries and 4 markets, plus the controlled intervention trial that proves causation.",
   openGraph: {

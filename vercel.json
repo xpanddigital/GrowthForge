@@ -20,5 +20,25 @@
       "path": "/api/cron/press-coverage",
       "schedule": "0 10 * * 5"
     }
+  ],
+  "headers": [
+    {
+      "source": "/research/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/research",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600, must-revalidate"
+        }
+      ]
+    }
   ]
 }
